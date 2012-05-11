@@ -122,6 +122,11 @@ class MySqlPlatformTest extends AbstractPlatformTestCase
         $this->assertTrue($this->_platform->prefersIdentityColumns());
     }
 
+    public function testPrefersJoinsOverSubqueries()
+    {
+        $this->assertTrue($this->_platform->prefersJoinsOverSubqueries());
+    }
+
     public function testSupportsIdentityColumns()
     {
         $this->assertTrue($this->_platform->supportsIdentityColumns());

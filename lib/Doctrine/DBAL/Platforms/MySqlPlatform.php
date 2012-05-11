@@ -280,6 +280,18 @@ class MySqlPlatform extends AbstractPlatform
     }
 
     /**
+     * Whether the platform prefers identity columns (eg. autoincrement) for ID generation.
+     * Subclasses should override this method to return TRUE if they prefer identity columns.
+     *
+     * @return boolean
+     * @override
+     */
+    public function prefersJoinsOverSubqueries()
+    {
+        return true;
+    }
+
+    /**
      * Whether the platform supports identity columns.
      * MySql supports this through AUTO_INCREMENT columns.
      *

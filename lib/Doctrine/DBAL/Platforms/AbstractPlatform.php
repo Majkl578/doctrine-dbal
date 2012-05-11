@@ -2016,6 +2016,17 @@ abstract class AbstractPlatform
     }
 
     /**
+     * Whether the platform prefers joins or subqueries.
+     * Subclasses should override this method to return TRUE if they prefer joins.
+     *
+     * @return boolean
+     */
+    public function prefersJoinsOverSubqueries()
+    {
+        return false;
+    }
+
+    /**
      * Some platforms need the boolean values to be converted.
      *
      * The default conversion in this implementation converts to integers (false => 0, true => 1).

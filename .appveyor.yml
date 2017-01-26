@@ -5,9 +5,6 @@ platform:
 matrix:
   fast_finish: true
 clone_folder: C:\projects\dbal
-branches:
-  except:
-    - gh-pages
 
 ## Build matrix for lowest and highest possible targets
 environment:
@@ -62,19 +59,21 @@ install:
     - ps: >-
         If ($env:php_ver_target -eq "7.0") {
           If ($env:PHP -eq "1") {
-            appveyor DownloadFile https://github.com/Microsoft/msphpsql/releases/download/4.1.5-Windows/7.0.zip
-            7z x 7.0.zip > $null
-            copy 7.0\x64\php_pdo_sqlsrv_7_nts.dll ext\php_pdo_sqlsrv_nts.dll
-            copy 7.0\x64\php_sqlsrv_7_nts.dll ext\php_sqlsrv_nts.dll
-            Remove-Item c:\tools\php\* -include .zip}}
+            If ($env:db -like "mssql") {
+              appveyor DownloadFile https://github.com/Microsoft/msphpsql/releases/download/4.1.5-Windows/7.0.zip
+              7z x 7.0.zip > $null
+              copy 7.0\x64\php_pdo_sqlsrv_7_nts.dll ext\php_pdo_sqlsrv_nts.dll
+              copy 7.0\x64\php_sqlsrv_7_nts.dll ext\php_sqlsrv_nts.dll
+              Remove-Item c:\tools\php\* -include .zip}}}
     - ps: >-
         If ($env:php_ver_target -eq "7.1") {
-          If ($env:PHP -eq "1") {
-            appveyor DownloadFile https://github.com/Microsoft/msphpsql/releases/download/4.1.5-Windows/7.1.zip
-            7z x 7.1.zip > $null
-            copy 7.1\x64\php_pdo_sqlsrv_71_nts.dll ext\php_pdo_sqlsrv_nts.dll
-            copy 7.1\x64\php_sqlsrv_71_nts.dll ext\php_sqlsrv_nts.dll
-            Remove-Item c:\tools\php\* -include .zip}}
+          If ($env:db -like "mssql") {
+            If ($env:PHP -eq "1") {
+              appveyor DownloadFile https://github.com/Microsoft/msphpsql/releases/download/4.1.5-Windows/7.1.zip
+              7z x 7.1.zip > $null
+              copy 7.1\x64\php_pdo_sqlsrv_71_nts.dll ext\php_pdo_sqlsrv_nts.dll
+              copy 7.1\x64\php_sqlsrv_71_nts.dll ext\php_sqlsrv_nts.dll
+              Remove-Item c:\tools\php\* -include .zip}}}
     #Set PHP environment
     - IF %PHP%==1 copy php.ini-production php.ini /Y
     - IF %PHP%==1 echo date.timezone="UTC" >> php.ini
@@ -99,5 +98,5 @@ install:
 
 test_script:
   - cd C:\projects\dbal
-  - vendor/bin/phpunit -c tests/appveyor/$(db).appveyor.xml
+  - vendor/bin/phpunit -c tests/appveyor/%db%.appveyor.xml
   

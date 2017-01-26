@@ -10,29 +10,25 @@ clone_folder: C:\projects\dbal
 environment:
   dependencies: current
   matrix:
-  - db: sqlite
-    provider: sqlite
-    php_ver_target: 7.0
-  - db: sqlite
-    provider: sqlite
-    php_ver_target: 7.1
   - db: mysql
-    provider: mysql
     php_ver_target: 7.0
   - db: mysql
-    provider: mysql
     php_ver_target: 7.1
-  - db: postgresql94
-    provider: postgresql94
+  - db: pgsql
     php_ver_target: 7.0
-  - db: postgresql94
-    provider: postgresql94
+    provider: pgsql
     php_ver_target: 7.1
   - db: mssql
-    provider: mssql
     php_ver_target: 7.0
   - db: mssql
-    provider: mssql
+    php_ver_target: 7.1
+  - db: mysqli
+    php_ver_target: 7.0
+  - db: mysqli
+    php_ver_target: 7.1
+  - db: sqlite
+    php_ver_target: 7.0
+  - db: sqlite
     php_ver_target: 7.1
 
 ## Cache composer bits
@@ -102,5 +98,4 @@ install:
 
 test_script:
   - cd C:\projects\dbal
-  - vendor\bin\phpunit -c C:\projects\dbal\tests\appveyor\%db%.appveyor.xml
-  
+  - vendor\bin\phpunit -c tests\appveyor\%db%.appveyor.xml

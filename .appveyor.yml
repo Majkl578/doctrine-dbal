@@ -16,7 +16,7 @@ environment:
     php_ver_target: 7.1
   - db: pgsql
     php_ver_target: 7.0
-    provider: pgsql
+  - db: pgsql
     php_ver_target: 7.1
   - db: mssql
     php_ver_target: 7.0

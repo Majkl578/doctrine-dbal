@@ -82,8 +82,12 @@ install:
     - IF %PHP%==1 echo extension=php_mbstring.dll >> php.ini
     - IF %PHP%==1 echo extension=php_fileinfo.dll >> php.ini
     - IF %PHP%==1 echo extension=php_pdo_mysql.dll >> php.ini
-    - IF %PHP%==1 echo extension=php_pdo_sqlsrv_nts.dll >> php.ini
-    - IF %PHP%==1 echo extension=php_sqlsrv_nts.dll >> php.ini
+    - ps: >-
+        If ($env:db -like "mssql") {
+        If ($env:PHP -eq "1") {
+          echo extension=php_pdo_sqlsrv_nts.dll >> php.ini}
+        If ($env:PHP -eq "1") {
+          echo extension=php_sqlsrv_nts.dll >> php.ini}}
     - IF %PHP%==1 echo extension=php_pdo_pgsql.dll >> php.ini
     - IF %PHP%==1 echo extension=php_pdo_sqlite.dll >> php.ini
     - IF %PHP%==1 echo extension=php_sqlite3.dll >> php.ini
@@ -98,5 +102,5 @@ install:
 
 test_script:
   - cd C:\projects\dbal
-  - vendor/bin/phpunit -c tests/appveyor/%db%.appveyor.xml
+  - vendor\bin\phpunit -c tests\appveyor\%db%.appveyor.xml
   

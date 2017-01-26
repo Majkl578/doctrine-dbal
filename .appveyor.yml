@@ -99,5 +99,5 @@ install:
 
 test_script:
   - cd C:\projects\dbal
-  - vendor/bin/phpunit -c tests/appveyor/$env:db.appveyor.xml
+  - vendor/bin/phpunit -c tests/appveyor/$(db).appveyor.xml
   

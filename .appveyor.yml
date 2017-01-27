@@ -10,10 +10,6 @@ clone_folder: C:\projects\dbal
 environment:
   dependencies: current
   matrix:
-  - db: mysql
-    php_ver_target: 7.0
-  - db: mysql
-    php_ver_target: 7.1
   - db: mssql
     php_ver_target: 7.0
   - db: mssql
@@ -22,13 +18,21 @@ environment:
     php_ver_target: 7.0
   - db: sqlsrv
     php_ver_target: 7.1
+  - db: sqlite
+    php_ver_target: 7.0
+  - db: sqlite
+    php_ver_target: 7.1
+  - db: mysql
+    php_ver_target: 7.0
+  - db: mysql
+    php_ver_target: 7.1
   - db: mysqli
     php_ver_target: 7.0
   - db: mysqli
     php_ver_target: 7.1
-  - db: sqlite
+  - db: mariadb
     php_ver_target: 7.0
-  - db: sqlite
+  - db: mariadb
     php_ver_target: 7.1
   - db: pgsql
     php_ver_target: 7.0
@@ -54,6 +58,7 @@ install:
     - IF EXIST c:\tools\php (SET PHP=0)
     - ps: appveyor-retry cinst --ignore-checksums -y php --version ((choco search php --exact --all-versions -r | select-string -pattern $Env:php_ver_target | Select-Object -first 1) -replace '[php|]','')
     - cinst -y sqlite
+    - ps: If ($env:db -like "mariadb") {cinst -y mariadb}
     - cd c:\tools\php
     #get the MSSQL DLL's
     - ps: >-

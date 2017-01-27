@@ -2,8 +2,8 @@ build: false
 shallow_clone: true
 platform:
   - x64
-matrix:
-  fast_finish: true
+#matrix:
+#  fast_finish: true # kills the build at the first failure
 clone_folder: C:\projects\dbal
 
 ## Build matrix for lowest and highest possible targets

@@ -98,7 +98,4 @@ install:
 
 test_script:
   - cd C:\projects\dbal
-  - ps: Get-ChildItem -Path c:\projects\dbal\
-  - ps: Get-ChildItem -Path c:\projects\dbal\vendor
-  - ps: Get-ChildItem -Path c:\projects\dbal\tests\appveyor\
   - vendor\bin\phpunit -c tests\appveyor\%db%.appveyor.xml

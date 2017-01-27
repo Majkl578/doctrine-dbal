@@ -1,5 +1,4 @@
 build: false
-#shallow_clone: true
 platform:
   - x64
 #matrix:
@@ -10,6 +9,10 @@ clone_folder: C:\projects\dbal
 environment:
   dependencies: current
   matrix:
+  - db: pgsql
+    php_ver_target: 7.0
+  - db: pgsql
+    php_ver_target: 7.1
   - db: mssql
     php_ver_target: 7.0
   - db: mssql
@@ -33,10 +36,6 @@ environment:
   - db: mariadb
     php_ver_target: 7.0
   - db: mariadb
-    php_ver_target: 7.1
-  - db: pgsql
-    php_ver_target: 7.0
-  - db: pgsql
     php_ver_target: 7.1
 
 ## Cache composer bits
@@ -48,9 +47,9 @@ init:
   - SET PHP=1
   - SET ANSICON=121x90 (121x90)
 services:
-  - mssql2014
-  - mysql
-  - postgresql94
+#  - mssql2014
+#  - mysql
+#  - postgresql94
   - iis
 
 ## Install PHP and composer, and run the appropriate composer command
@@ -104,6 +103,15 @@ install:
     - IF %dependencies%==lowest appveyor-retry composer update --prefer-lowest --no-progress --profile -n
     - IF %dependencies%==current appveyor-retry composer install --no-progress --profile
     - IF %dependencies%==highest appveyor-retry composer update --no-progress --profile -n
+
+before_test:
+  - ps: >-
+      If ($env:db -like "mssql") {
+        net start 'MSSQL$SQL2014'}
+      Elseif ($env:db -like "mysql") {
+        Start-Service MySQL57}
+      Elseif ($env:db -like "pgsql") {
+        Start-Service postgresql-x64-9.4}
 
 test_script:
   - cd C:\projects\dbal

@@ -133,5 +133,5 @@ before_test:
 test_script:
   - cd C:\projects\dbal
   - ps: >-
-      If ($env:db_version -eq "True") {vendor\bin\phpunit -c tests\appveyor\%db%.%db_version%.%driver%.appveyor.xml}
+      If ($env:db_version) {vendor\bin\phpunit -c tests\appveyor\%db%.%db_version%.%driver%.appveyor.xml}
       Else {vendor\bin\phpunit -c tests\appveyor\%db%.%driver%.appveyor.xml}

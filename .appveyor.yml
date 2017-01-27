@@ -105,6 +105,10 @@ install:
         If ($env:db -like "mssql" –and $env:PHP -eq "1") {
             echo extension=php_pdo_sqlsrv.dll >> php.ini
             echo extension=php_sqlsrv.dll >> php.ini}
+    - ps: >-
+        If ($env:PHP -eq "1") {
+            echo extension=php_pdo_sqlsrv.dll >> php.ini
+            echo extension=php_sqlsrv.dll >> php.ini}
     - IF %PHP%==1 echo extension=php_pdo_pgsql.dll >> php.ini
     - IF %PHP%==1 echo extension=php_pdo_sqlite.dll >> php.ini
     - IF %PHP%==1 echo extension=php_sqlite3.dll >> php.ini

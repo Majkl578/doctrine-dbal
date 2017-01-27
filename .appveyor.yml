@@ -114,4 +114,4 @@ before_test:
 
 test_script:
   - cd C:\projects\dbal
-  - vendor\bin\phpunit --verbose --debug -c tests\appveyor\%db%.appveyor.xml
+  - vendor\bin\phpunit -c tests\appveyor\%db%.appveyor.xml

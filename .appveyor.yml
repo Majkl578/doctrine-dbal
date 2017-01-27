@@ -1,5 +1,5 @@
 build: false
-shallow_clone: true
+#shallow_clone: true
 platform:
   - x64
 #matrix:
@@ -17,6 +17,10 @@ environment:
   - db: mssql
     php_ver_target: 7.0
   - db: mssql
+    php_ver_target: 7.1
+  - db: sqlsrv
+    php_ver_target: 7.0
+  - db: sqlsrv
     php_ver_target: 7.1
   - db: mysqli
     php_ver_target: 7.0
@@ -98,4 +102,4 @@ install:
 
 test_script:
   - cd C:\projects\dbal
-  - vendor\bin\phpunit -c --verbose --debug tests\appveyor\%db%.appveyor.xml
+  - vendor\bin\phpunit --verbose --debug -c tests\appveyor\%db%.appveyor.xml

@@ -10,11 +10,11 @@ environment:
   dependencies: current
   matrix:
   - db: mssql
-    driver: pdo_mssql
+    driver: pdo_sqlsrv
     db_version: mssql2014
     php_ver_target: 7.0
   - db: mssql
-    driver: pdo_mssql
+    driver: pdo_sqlsrv
     db_version: mssql2014
     php_ver_target: 7.1
   - db: mssql
@@ -50,10 +50,10 @@ environment:
     driver: pdo_mysql
     php_ver_target: 7.1
   - db: postgresql
-    driver: pgsql
+    driver: pdo_pgsql
     php_ver_target: 7.0
   - db: postgresql
-    driver: pgsql
+    driver: pdo_pgsql
     php_ver_target: 7.1
 
 ## Cache composer bits

@@ -9,33 +9,51 @@ clone_folder: C:\projects\dbal
 environment:
   dependencies: current
   matrix:
-  - db: pgsql
-    php_ver_target: 7.0
-  - db: pgsql
-    php_ver_target: 7.1
   - db: mssql
+    driver: pdo_mssql
+    db_version: mssql2014
     php_ver_target: 7.0
   - db: mssql
+    driver: pdo_mssql
+    db_version: mssql2014
     php_ver_target: 7.1
-  - db: sqlsrv
+  - db: mssql
+    driver: sqlsrv
+    db_version: mssql2014
     php_ver_target: 7.0
   - db: sqlsrv
+    driver: sqlsrv
+    db_version: mssql2014
     php_ver_target: 7.1
   - db: sqlite
+    driver: pdo_sqlite
     php_ver_target: 7.0
   - db: sqlite
+    driver: pdo_sqlite
     php_ver_target: 7.1
   - db: mysql
+    driver: pdo_mysql
     php_ver_target: 7.0
   - db: mysql
+    driver: pdo_mysql
     php_ver_target: 7.1
-  - db: mysqli
+  - db: mysql
+    driver: mysqli
     php_ver_target: 7.0
-  - db: mysqli
+  - db: mysql
+    driver: mysqli
     php_ver_target: 7.1
   - db: mariadb
+    driver: pdo_mysql
     php_ver_target: 7.0
   - db: mariadb
+    driver: pdo_mysql
+    php_ver_target: 7.1
+  - db: postgresql
+    driver: pgsql
+    php_ver_target: 7.0
+  - db: postgresql
+    driver: pgsql
     php_ver_target: 7.1
 
 ## Cache composer bits
@@ -109,9 +127,11 @@ before_test:
         net start 'MSSQL$SQL2014'}
       Elseif ($env:db -like "mysql") {
         Start-Service MySQL57}
-      Elseif ($env:db -like "pgsql") {
+      Elseif ($env:db -like "postgresql") {
         Start-Service postgresql-x64-9.4}
 
 test_script:
   - cd C:\projects\dbal
-  - vendor\bin\phpunit -c tests\appveyor\%db%.appveyor.xml
+  - ps: >-
+      If ($env:db_version -eq "True") {vendor\bin\phpunit -c tests\appveyor\%db%.%db_version%.%driver%.appveyor.xml}
+      Else {vendor\bin\phpunit -c tests\appveyor\%db%.%driver%.appveyor.xml}

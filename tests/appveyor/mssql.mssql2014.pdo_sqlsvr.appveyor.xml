@@ -8,7 +8,7 @@
     <php>
         <ini name="error_reporting" value="-1" />
 
-        <var name="db_type" value="pdo_sqlvr"/>
+        <var name="db_type" value="pdo_sqlsvr"/>
         <var name="db_host" value="(local)\SQL2014" />
         <var name="db_username" value="sa" />
         <var name="db_password" value="Password12!" />

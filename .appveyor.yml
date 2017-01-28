@@ -65,6 +65,7 @@ init:
   - SET PHP=1
   - SET ANSICON=121x90 (121x90)
 services:
+# Services are started selectively at the before_test stage
 #  - mssql2014
 #  - mysql
 #  - postgresql94
@@ -76,23 +77,6 @@ install:
     - cinst -y sqlite
     - ps: If ($env:db -like "mariadb") {cinst -y mariadb}
     - cd c:\tools\php
-    #get the MSSQL DLL's
-    - ps: >-
-        If ($env:php_ver_target -eq "7.0" –and $env:db -like "mssql" –and $env:PHP -eq "1") {
-          cd c:\tools\php\ext\
-          cinst -y wget
-          wget -O php_sqlsrv_nts.dll "http://aka.ms/php_sqlsrv_7_nts.dll"
-          wget -O php_pdo_sqlsrv_nts.dll "https://aka.ms/php_pdo_sqlsrv_7_nts.dll"
-          Get-ChildItem -Path c:\tools\php\ext\
-          cd c:\tools\php\}
-    - ps: >-
-        If ($env:php_ver_target -eq "7.1" –and $env:db -like "mssql" –and $env:PHP -eq "1") {
-          cd c:\tools\php\ext\
-          cinst -y wget
-          wget -O php_sqlsrv_nts.dll "http://aka.ms/php_sqlsrv_71_nts.dll"
-          wget -O php_pdo_sqlsrv_nts.dll "https://aka.ms/php_pdo_sqlsrv_71_nts.dll"
-          Get-ChildItem -Path c:\tools\php\ext\
-          cd c:\tools\php\}
     #Set PHP environment
     - IF %PHP%==1 copy php.ini-production php.ini /Y
     - IF %PHP%==1 echo date.timezone="UTC" >> php.ini
@@ -101,17 +85,32 @@ install:
     - IF %PHP%==1 echo extension=php_mbstring.dll >> php.ini
     - IF %PHP%==1 echo extension=php_fileinfo.dll >> php.ini
     - IF %PHP%==1 echo extension=php_pdo_mysql.dll >> php.ini
-    - ps: >-
-        If ($env:db -like "mssql" –and $env:PHP -eq "1") {
-            echo extension=php_pdo_sqlsrv_nts.dll >> php.ini
-            echo extension=php_sqlsrv_nts.dll >> php.ini}
-    - echo extension=php_pdo_sqlsrv_nts.dll >> php.ini
-    #- echo extension=php_sqlsrv_nts.dll >> php.ini
     - IF %PHP%==1 echo extension=php_pdo_pgsql.dll >> php.ini
     - IF %PHP%==1 echo extension=php_pdo_sqlite.dll >> php.ini
     - IF %PHP%==1 echo extension=php_sqlite3.dll >> php.ini
     - IF %PHP%==1 echo extension=php_mysqli.dll >> php.ini
     - IF %PHP%==1 echo extension=php_pgsql.dll >> php.ini
+    #get the MSSQL DLL's
+    - ps: >-
+        If ($env:php_ver_target -eq "7.0" –and $env:db -like "mssql") {
+          cd c:\tools\php\ext\
+          cinst -y wget
+          wget -O php_sqlsrv_nts.dll "http://aka.ms/php_sqlsrv_7_nts.dll"
+          wget "https://aka.ms/php_pdo_sqlsrv_7_nts.dll"
+          Get-ChildItem -Path c:\tools\php\ext\
+          cd c:\tools\php\
+          echo extension=php_pdo_sqlsrv_7_nts.dll >> php.ini}
+    - ps: >-
+        If ($env:php_ver_target -eq "7.1" –and $env:db -like "mssql") {
+          cd c:\tools\php\ext\
+          cinst -y wget
+          wget -O php_sqlsrv_nts.dll "http://aka.ms/php_sqlsrv_71_nts.dll"
+          wget -O php_pdo_sqlsrv_nts.dll "https://aka.ms/php_pdo_sqlsrv_71_nts.dll"
+          Get-ChildItem -Path c:\tools\php\ext\
+          cd c:\tools\php\
+          echo extension=php_pdo_sqlsrv_71_nts.dll >> php.ini}
+    - ps: >-
+        If ($env:db -like "mssql") {echo extension=php_sqlsrv_nts.dll >> php.ini}
     - IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
     - appveyor-retry appveyor DownloadFile https://getcomposer.org/composer.phar
     - cd c:\projects\dbal
@@ -121,13 +120,11 @@ install:
     - php -m
 
 before_test:
+# Selectively start the services
   - ps: >-
-      If ($env:db -like "mssql") {
-        net start 'MSSQL$SQL2014'}
-      Elseif ($env:db -like "mysql") {
-        Start-Service MySQL57}
-      Elseif ($env:db -like "postgresql") {
-        Start-Service postgresql-x64-9.4}
+      If ($env:db -like "mssql") {net start 'MSSQL$SQL2014'}
+      Elseif ($env:db -like "mysql") {Start-Service MySQL57}
+      Elseif ($env:db -like "postgresql") {Start-Service postgresql-x64-9.4}
 
 test_script:
   - cd C:\projects\dbal

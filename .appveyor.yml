@@ -114,6 +114,7 @@ before_test:
   - ps: >-
       If ($env:db -like "mssql") {
         $instanceName = $env:db_version
+        Write-Host $instanceName
         $instanceName = $instanceName.ToUpper()
         net start "MSSQL`$$instanceName"}
       Elseif ($env:db -like "mysql") {Start-Service MySQL57}

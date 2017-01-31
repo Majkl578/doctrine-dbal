@@ -5,6 +5,10 @@ platform:
 #  fast_finish: true # kills the build at the first failure
 clone_folder: C:\projects\dbal
 
+cache:
+  - C:\ProgramData\chocolatey\bin -> appveyor.yml
+  - C:\ProgramData\chocolatey\lib -> appveyor.yml
+
 ## Build matrix for lowest and highest possible targets
 environment:
   matrix:

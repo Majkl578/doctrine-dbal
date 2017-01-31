@@ -113,8 +113,7 @@ before_test:
 # Selectively start the services
   - ps: >-
       If ($env:db -like "mssql") {
-        $instanceName = $env:db_version;
-        $instanceName = $instanceName.ToUpper();
+        $instanceName = $env:db_version.ToUpper();
         Start-Service "MSSQL`$$instanceName"}
       Elseif ($env:db -like "mysql") {Start-Service MySQL57}
       Elseif ($env:db -like "postgresql") {Start-Service postgresql-x64-9.4}

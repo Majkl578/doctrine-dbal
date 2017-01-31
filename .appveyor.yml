@@ -10,19 +10,19 @@ environment:
   matrix:
   - db: mssql
     driver: pdo_sqlsrv
-    db_version: mssql2014
+    db_version: sql2014
     php_ver_target: 7.0
   - db: mssql
     driver: pdo_sqlsrv
-    db_version: mssql2014
+    db_version: sql2014
     php_ver_target: 7.1
   - db: mssql
     driver: sqlsrv
-    db_version: mssql2014
+    db_version: sql2014
     php_ver_target: 7.0
   - db: mssql
     driver: sqlsrv
-    db_version: mssql2014
+    db_version: sql2014
     php_ver_target: 7.1
   - db: sqlite
     driver: pdo_sqlite
@@ -114,7 +114,6 @@ before_test:
   - ps: >-
       If ($env:db -like "mssql") {
         $instanceName = $env:db_version;
-        $instanceName = $instanceName -replace '[ms]','';
         $instanceName = $instanceName.ToUpper();
         Start-Service "MSSQL`$$instanceName"}
       Elseif ($env:db -like "mysql") {Start-Service MySQL57}

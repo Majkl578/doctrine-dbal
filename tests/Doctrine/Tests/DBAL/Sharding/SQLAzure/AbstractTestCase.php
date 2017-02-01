@@ -13,7 +13,7 @@ abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
-        if ((!isset($GLOBALS['db_type']) || strpos($GLOBALS['db_type'], "sqlsrv") === false) && preg_match('/(\*|tcp:)/i', $GLOBALS['db_host']) === false) {
+        if (!isset($GLOBALS['db_type']) || (strpos($GLOBALS['db_type'], "sqlsrv" || preg_match('/(\*|tcp:)/i', $GLOBALS['db_host']) === false)) {
             $this->markTestSkipped('No driver or sqlserver driver specified, or no SQL Azure connection specified.');
         }
 

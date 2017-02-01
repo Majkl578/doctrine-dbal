@@ -28,36 +28,36 @@ environment:
     driver: sqlsrv
     db_version: sql2014
     php_ver_target: 7.1
-  - db: sqlite
-    driver: pdo_sqlite
-    php_ver_target: 7.0
-  - db: sqlite
-    driver: pdo_sqlite
-    php_ver_target: 7.1
-  - db: mysql
-    driver: pdo_mysql
-    php_ver_target: 7.0
-  - db: mysql
-    driver: pdo_mysql
-    php_ver_target: 7.1
-  - db: mysql
-    driver: mysqli
-    php_ver_target: 7.0
-  - db: mysql
-    driver: mysqli
-    php_ver_target: 7.1
-  - db: mariadb
-    driver: pdo_mysql
-    php_ver_target: 7.0
-  - db: mariadb
-    driver: pdo_mysql
-    php_ver_target: 7.1
-  - db: postgresql
-    driver: pdo_pgsql
-    php_ver_target: 7.0
-  - db: postgresql
-    driver: pdo_pgsql
-    php_ver_target: 7.1
+#  - db: sqlite
+#    driver: pdo_sqlite
+#    php_ver_target: 7.0
+#  - db: sqlite
+#    driver: pdo_sqlite
+#    php_ver_target: 7.1
+#  - db: mysql
+#    driver: pdo_mysql
+#    php_ver_target: 7.0
+#  - db: mysql
+#    driver: pdo_mysql
+#    php_ver_target: 7.1
+#  - db: mysql
+#    driver: mysqli
+#    php_ver_target: 7.0
+#  - db: mysql
+#    driver: mysqli
+#    php_ver_target: 7.1
+#  - db: mariadb
+#    driver: pdo_mysql
+#    php_ver_target: 7.0
+#  - db: mariadb
+#    driver: pdo_mysql
+#    php_ver_target: 7.1
+#  - db: postgresql
+#    driver: pdo_pgsql
+#    php_ver_target: 7.0
+#  - db: postgresql
+#    driver: pdo_pgsql
+#    php_ver_target: 7.1
 
 init:
   - SET PATH=C:\Program Files\OpenSSL;c:\tools\php;%PATH%

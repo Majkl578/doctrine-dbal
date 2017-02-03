@@ -73,7 +73,7 @@ services:
 ## Install PHP and composer, and run the appropriate composer command
 install:
     - IF EXIST c:\tools\php (SET PHP=0)
-    - choco list php --all-versions
+    - choco list php --exact --all-versions
     - ps: appveyor-retry cinst --ignore-checksums -y php --version ((choco search php --exact --all-versions -r | select-string -pattern $Env:php_ver_target | Select-Object -First 1) -replace '[php|]','')
     - cinst -y sqlite
     - ps: If ($env:db -like "mariadb") {cinst -y mariadb}
@@ -112,7 +112,6 @@ install:
     - appveyor-retry appveyor DownloadFile https://getcomposer.org/composer.phar
     - cd c:\projects\dbal
     - appveyor-retry composer install --no-progress --profile
-    - php -m
 
 before_test:
 # Selectively start the services

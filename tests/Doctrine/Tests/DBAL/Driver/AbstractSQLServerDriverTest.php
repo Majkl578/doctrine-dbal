@@ -52,6 +52,8 @@ class AbstractSQLServerDriverTest extends AbstractDriverTest
             array('11.00.2100.99', 'Doctrine\DBAL\Platforms\SQLServer2012Platform'),
             array('11.00.2101', 'Doctrine\DBAL\Platforms\SQLServer2012Platform'),
             array('12', 'Doctrine\DBAL\Platforms\SQLServer2012Platform'),
+            array('14', 'Doctrine\DBAL\Platforms\SQLServer2014Platform'),
+            array('16', 'Doctrine\DBAL\Platforms\SQLServer2016Platform'),
         );
     }
 }

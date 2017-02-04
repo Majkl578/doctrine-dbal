@@ -119,7 +119,7 @@ before_test:
         $instanceName = $env:db_version.ToUpper();
         Start-Service "MSSQL`$$instanceName"
         # Try command line Database setup for MSSQL
-        $sqlInstance = "(local)\`$$instanceName"
+        $sqlInstance = "(local)\SQL2014"
         sqlcmd -b -E -S "$sqlInstance" -Q "CREATE DATABASE doctrine_tests"}
         #sqlcmd -S "$sqlInstance" -U "sa" -P "Password12!" -i $env:APPVEYOR_BUILD_FOLDER\Tests\Stubs\sqlsrv.sql}
       Elseif ($env:db -like "mysql") {Start-Service MySQL57}

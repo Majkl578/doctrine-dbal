@@ -120,7 +120,7 @@ before_test:
         Start-Service "MSSQL`$$instanceName"
         # Try command line Database setup for MSSQL
         $sqlInstance = "(local)\`$$instanceName"
-        sqlcmd -b -E -S "$sqlInstance" -Q "CREATE DATABASE doctrine_tests"
+        sqlcmd -b -E -S "$sqlInstance" -Q "CREATE DATABASE doctrine_tests"}
         #sqlcmd -S "$sqlInstance" -U "sa" -P "Password12!" -i $env:APPVEYOR_BUILD_FOLDER\Tests\Stubs\sqlsrv.sql}
       Elseif ($env:db -like "mysql") {Start-Service MySQL57}
       Elseif ($env:db -like "postgresql") {Start-Service postgresql-x64-9.4}

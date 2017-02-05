@@ -19,7 +19,7 @@
         <var name="tmpdb_host" value="(local)\SQL2014" />
         <var name="tmpdb_username" value="sa" />
         <var name="tmpdb_password" value="Password12!" />
-        <var name="tmpdb_name" value="1433" />
+        <var name="tmpdb_port" value="1433" />
     </php>
 
     <testsuites>

@@ -117,10 +117,10 @@ before_test:
   - ps: >-
       If ($env:db -like "mssql") {
         $instanceName = $env:db_version.ToUpper();
-        Start-Service "MSSQL`$$instanceName"}
+        Start-Service "MSSQL`$$instanceName"
         # Try command line Database setup for MSSQL
-        #$sqlInstance = "(local)\SQL2014"
-        #sqlcmd -b -E -S "$sqlInstance" -Q "CREATE DATABASE doctrine_tests"}
+        $sqlInstance = "(local)\SQL2014"
+        sqlcmd -b -E -S "$sqlInstance" -Q "CREATE DATABASE doctrine_tests"}
         #sqlcmd -b -E -S "$sqlInstance" -Q "CREATE DATABASE FEDERATION"
         #sqlcmd -b -E -S "$sqlInstance" -Q "CREATE FEDERATION FEDERATION"}
         #sqlcmd -S "$sqlInstance" -U "sa" -P "Password12!" -i $env:APPVEYOR_BUILD_FOLDER\Tests\Stubs\sqlsrv.sql}

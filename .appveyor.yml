@@ -8,6 +8,7 @@ clone_folder: C:\projects\dbal
 cache:
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
+  - c:\projects\dbal\vendor -> composer.lock
   - '%LOCALAPPDATA%\Composer\files -> composer.lock'
 
 ## Build matrix for lowest and highest possible targets

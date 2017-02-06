@@ -9,7 +9,7 @@ cache:
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
 #  - c:\projects\dbal\vendor -> composer.lock
-  - '%LOCALAPPDATA%\Composer\files'
+  - '%LOCALAPPDATA%\Composer\files -> composer.json'
 
 ## Build matrix for lowest and highest possible targets
 environment:

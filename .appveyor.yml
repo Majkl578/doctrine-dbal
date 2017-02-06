@@ -13,6 +13,46 @@ clone_folder: C:\projects\dbal
 environment:
   matrix:
   - db: mssql
+    driver: sqlsrv
+    db_version: sql2008r2sp2
+    php_ver_target: 7.0
+  - db: mssql
+    driver: sqlsrv
+    db_version: sql2008r2sp2
+    php_ver_target: 7.1
+  - db: mssql
+    driver: pdo_sqlsrv
+    db_version: sql2008r2sp2
+    php_ver_target: 7.0
+  - db: mssql
+    driver: pdo_sqlsrv
+    db_version: sql2008r2sp2
+    php_ver_target: 7.1
+  - db: mssql
+    driver: sqlsrv
+    db_version: sql2012sp1
+    php_ver_target: 7.0
+  - db: mssql
+    driver: sqlsrv
+    db_version: sql2012sp1
+    php_ver_target: 7.1
+  - db: mssql
+    driver: pdo_sqlsrv
+    db_version: sql2012sp1
+    php_ver_target: 7.0
+  - db: mssql
+    driver: pdo_sqlsrv
+    db_version: sql2012sp1
+    php_ver_target: 7.1
+  - db: mssql
+    driver: sqlsrv
+    db_version: sql2014
+    php_ver_target: 7.0
+  - db: mssql
+    driver: sqlsrv
+    db_version: sql2014
+    php_ver_target: 7.1
+  - db: mssql
     driver: pdo_sqlsrv
     db_version: sql2014
     php_ver_target: 7.0
@@ -22,11 +62,19 @@ environment:
     php_ver_target: 7.1
   - db: mssql
     driver: sqlsrv
-    db_version: sql2014
+    db_version: sql2016
     php_ver_target: 7.0
   - db: mssql
     driver: sqlsrv
-    db_version: sql2014
+    db_version: sql2016
+    php_ver_target: 7.1
+  - db: mssql
+    driver: pdo_sqlsrv
+    db_version: sql2016
+    php_ver_target: 7.0
+  - db: mssql
+    driver: pdo_sqlsrv
+    db_version: sql2016
     php_ver_target: 7.1
 #  - db: sqlite
 #    driver: pdo_sqlite

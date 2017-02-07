@@ -8,6 +8,7 @@ clone_folder: C:\projects\dbal
 cache:
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
+  - c:\tools\php -> .appveyor.yml
   - '%LOCALAPPDATA%\Composer'
   - vendor
 

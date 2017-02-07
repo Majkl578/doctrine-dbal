@@ -10,7 +10,7 @@ cache:
   - C:\ProgramData\chocolatey\lib -> .appveyor.yml
   - c:\tools\php -> .appveyor.yml
   - '%LOCALAPPDATA%\Composer\files'
-  - vendor
+  #- vendor
 
 ## Build matrix for lowest and highest possible targets
 environment:

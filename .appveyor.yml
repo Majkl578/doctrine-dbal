@@ -173,6 +173,7 @@ before_test:
       Elseif ($env:db -like "postgresql") {Start-Service postgresql-x64-9.4}
 
 test_script:
+  - php -v
   - cd C:\projects\dbal
   - ps: >-
       If ($env:db_version) {vendor\bin\phpunit -c tests\appveyor\%db%.%db_version%.%driver%.appveyor.xml}

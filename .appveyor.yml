@@ -14,6 +14,12 @@ cache:
 ## Build matrix for lowest and highest possible targets
 environment:
   matrix:
+  - db: sqlite
+    driver: pdo_sqlite
+    php_ver_target: 7.0
+  - db: sqlite
+    driver: pdo_sqlite
+    php_ver_target: 7.1
   - db: mssql
     driver: sqlsrv
     db_version: sql2008r2sp2
@@ -78,12 +84,6 @@ environment:
     driver: pdo_sqlsrv
     db_version: sql2016
     php_ver_target: 7.1
-#  - db: sqlite
-#    driver: pdo_sqlite
-#    php_ver_target: 7.0
-#  - db: sqlite
-#    driver: pdo_sqlite
-#    php_ver_target: 7.1
 #  - db: mysql
 #    driver: pdo_mysql
 #    php_ver_target: 7.0

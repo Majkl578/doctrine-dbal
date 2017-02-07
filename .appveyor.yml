@@ -128,7 +128,7 @@ install:
         If ($env:PHP -eq 1) {
           appveyor-retry cinst --ignore-checksums -y php --version ((choco search php --exact --all-versions -r | select-string -pattern $Env:php_ver_target | Select-Object -First 1) -replace '[php|]','')
           cinst -y sqlite
-          If ($env:db -like "mariadb") {cinst -y mariadb}
+          If ($env:db -eq "mariadb") {cinst -y mariadb}
         }
     #- ps: appveyor-retry cinst --ignore-checksums -y php --version ((choco search php --exact --all-versions -r | select-string -pattern $Env:php_ver_target | Select-Object -First 1) -replace '[php|]','')
     #- cinst -y sqlite
@@ -136,14 +136,14 @@ install:
     - cd c:\tools\php
     #get the MSSQL DLL's
     - ps: >-
-        If ($env:php_ver_target -eq "7.0" –and $env:db -like "mssql") {
+        If ($env:php_ver_target -eq "7.0" –And $env:db -eq "mssql") {
           appveyor DownloadFile https://github.com/Microsoft/msphpsql/releases/download/4.1.5-Windows/7.0.zip
           7z x 7.0.zip > $null
           copy 7.0\x64\php_pdo_sqlsrv_7_nts.dll ext\php_pdo_sqlsrv_nts.dll
           copy 7.0\x64\php_sqlsrv_7_nts.dll ext\php_sqlsrv_nts.dll
           Remove-Item c:\tools\php\* -include .zip}
     - ps: >-
-        If ($env:php_ver_target -eq "7.1" –and $env:db -like "mssql") {
+        If ($env:php_ver_target -eq "7.1" –And $env:db -eq "mssql") {
           appveyor DownloadFile https://github.com/Microsoft/msphpsql/releases/download/4.1.5-Windows/7.1.zip
           7z x 7.1.zip > $null
           copy 7.1\x64\php_pdo_sqlsrv_71_nts.dll ext\php_pdo_sqlsrv_nts.dll
@@ -158,8 +158,8 @@ install:
     - IF %PHP%==1 echo extension=php_fileinfo.dll >> php.ini
     - IF %PHP%==1 echo extension=php_pdo_mysql.dll >> php.ini
     - IF %PHP%==1 echo extension=php_mysqli.dll >> php.ini
-    - ps: If ($env:db -like "mssql") {Add-Content php.ini "`nextension=php_sqlsrv_nts.dll";}
-    - ps: If ($env:db -like "mssql") {Add-Content php.ini "`nextension=php_pdo_sqlsrv_nts.dll";}
+    - ps: If ($env:db -eq "mssql") {Add-Content php.ini "`nextension=php_sqlsrv_nts.dll";}
+    - ps: If ($env:db -eq "mssql") {Add-Content php.ini "`nextension=php_pdo_sqlsrv_nts.dll";}
     - IF %PHP%==1 echo extension=php_pdo_pgsql.dll >> php.ini
     - IF %PHP%==1 echo extension=php_pgsql.dll >> php.ini
     - IF %PHP%==1 echo extension=php_pdo_sqlite.dll >> php.ini
@@ -172,11 +172,11 @@ install:
 before_test:
 # Selectively start the services
   - ps: >-
-      If ($env:db -like "mssql") {
+      If ($env:db -eq "mssql") {
         $instanceName = $env:db_version.ToUpper();
         Start-Service "MSSQL`$$instanceName"}
-      Elseif ($env:db -like "mysql") {Start-Service MySQL57}
-      Elseif ($env:db -like "postgresql") {Start-Service postgresql-x64-9.4}
+      Elseif ($env:db -eq "mysql") {Start-Service MySQL57}
+      Elseif ($env:db -eq "postgresql") {Start-Service postgresql-x64-9.4}
 
 test_script:
   - php -v

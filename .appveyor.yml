@@ -130,10 +130,18 @@ install:
           }
           
           cd c:\tools\php
-          
+
+          # Set PHP environment items that are always needed        
           copy php.ini-production php.ini
+          Add-Content php.ini "`n date.timezone=UTC"
+          Add-Content php.ini "`n extension_dir=ext"
+          Add-Content php.ini "`n extension=php_openssl.dll"
+          Add-Content php.ini "`n extension=php_mbstring.dll"
+          Add-Content php.ini "`n extension=php_fileinfo.dll"
+          Add-Content php.ini "`n extension=php_pdo_sqlite.dll"
+          Add-Content php.ini "`n extension=php_sqlite3.dll"
           
-          #get the MSSQL DLL's
+          # If needed get the MSSQL DLL's
           if ($env:db -eq "mssql") {
             if ($env:php -eq "7.0") {
               $SQLSRV=7
@@ -151,19 +159,15 @@ install:
             Add-Content php.ini "`n extension=php_pdo_sqlsrv_nts.dll"
             Remove-Item c:\tools\php\* -include .zip
           }
-          
-          # Set PHP environment
-          Add-Content php.ini "`n date.timezone=UTC"
-          Add-Content php.ini "`n extension_dir=ext"
-          Add-Content php.ini "`n extension=php_openssl.dll"
-          Add-Content php.ini "`n extension=php_mbstring.dll"
-          Add-Content php.ini "`n extension=php_fileinfo.dll"
+
+          # If needed set the the MySQL DLL's
+          if ($env:db -eq "mysql" or $env:db -eq "mariadb" ) {
           Add-Content php.ini "`n extension=php_pdo_mysql.dll"
-          Add-Content php.ini "`n extension=php_mysqli.dll"
-          Add-Content php.ini "`n extension=php_pdo_pgsql.dll"
-          Add-Content php.ini "`n extension=php_pdo_sqlite.dll"
-          Add-Content php.ini "`n extension=php_sqlite3.dll"
-          
+          Add-Content php.ini "`n extension=php_mysqli.dll"}
+
+          # If needed set the the postgresql/PGSQL DLL's
+          if ($env:db -eq "postgresql") {Add-Content php.ini "`n extension=php_pdo_pgsql.dll"}
+
           cd c:\projects\dbal
           
           if (!(Test-Path c:\projects\dbal\composer.phar)) {

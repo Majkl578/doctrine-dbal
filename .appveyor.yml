@@ -154,18 +154,18 @@ install:
           
           # Set PHP environment
           $phpConfig = @"
-            date.timezone="UTC"
-            extension_dir=ext
-            extension=php_openssl.dll
-            extension=php_mbstring.dll
-            extension=php_fileinfo.dll
-            extension=php_pdo_mysql.dll
-            extension=php_mysqli.dll
-            extension=php_pdo_pgsql.dll
-            extension=php_pgsql.dll
-            extension=php_pdo_sqlite.dll
-            extension=php_sqlite3.dll
-          "@
+date.timezone="UTC"
+extension_dir=ext
+extension=php_openssl.dll
+extension=php_mbstring.dll
+extension=php_fileinfo.dll
+extension=php_pdo_mysql.dll
+extension=php_mysqli.dll
+extension=php_pdo_pgsql.dll
+extension=php_pgsql.dll
+extension=php_pdo_sqlite.dll
+extension=php_sqlite3.dll
+"@
           Add-Content php.ini "`n $phpConfig"
           
           cd c:\projects\dbal

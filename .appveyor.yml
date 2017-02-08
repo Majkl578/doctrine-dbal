@@ -15,68 +15,68 @@ cache:
 ## Build matrix for lowest and highest possible targets
 environment:
   matrix:
-  - db: sqlite
-    driver: pdo_sqlite
+#  - db: sqlite
+#    driver: pdo_sqlite
+#    php_ver_target: 7.0
+#  - db: sqlite
+#    driver: pdo_sqlite
+#    php_ver_target: 7.1
+#  - db: mssql
+#    driver: sqlsrv
+#    db_version: sql2008r2sp2
+#    php_ver_target: 7.0
+#  - db: mssql
+#    driver: sqlsrv
+#    db_version: sql2008r2sp2
+#    php_ver_target: 7.1
+#  - db: mssql
+#    driver: pdo_sqlsrv
+#    db_version: sql2008r2sp2
+#    php_ver_target: 7.0
+#  - db: mssql
+#    driver: pdo_sqlsrv
+#    db_version: sql2008r2sp2
+#    php_ver_target: 7.1
+#  - db: mssql
+#    driver: sqlsrv
+#    db_version: sql2012sp1
+#    php_ver_target: 7.0
+#  - db: mssql
+#    driver: sqlsrv
+#    db_version: sql2012sp1
+#    php_ver_target: 7.1
+#  - db: mssql
+#    driver: pdo_sqlsrv
+#    db_version: sql2012sp1
+#    php_ver_target: 7.0
+#  - db: mssql
+#    driver: pdo_sqlsrv
+#    db_version: sql2012sp1
+#    php_ver_target: 7.1
+#  - db: mssql
+#    driver: sqlsrv
+#    db_version: sql2014
+#    php_ver_target: 7.0
+#  - db: mssql
+#    driver: sqlsrv
+#    db_version: sql2014
+#    php_ver_target: 7.1
+#  - db: mssql
+#    driver: pdo_sqlsrv
+#    db_version: sql2014
+#    php_ver_target: 7.0
+#  - db: mssql
+#    driver: pdo_sqlsrv
+#    db_version: sql2014
+#    php_ver_target: 7.1
+  - db: mssql
+    driver: sqlsrv
+    db_version: sql2016
     php_ver_target: 7.0
-  - db: sqlite
-    driver: pdo_sqlite
+  - db: mssql
+    driver: sqlsrv
+    db_version: sql2016
     php_ver_target: 7.1
-#  - db: mssql
-#    driver: sqlsrv
-#    db_version: sql2008r2sp2
-#    php_ver_target: 7.0
-#  - db: mssql
-#    driver: sqlsrv
-#    db_version: sql2008r2sp2
-#    php_ver_target: 7.1
-#  - db: mssql
-#    driver: pdo_sqlsrv
-#    db_version: sql2008r2sp2
-#    php_ver_target: 7.0
-#  - db: mssql
-#    driver: pdo_sqlsrv
-#    db_version: sql2008r2sp2
-#    php_ver_target: 7.1
-#  - db: mssql
-#    driver: sqlsrv
-#    db_version: sql2012sp1
-#    php_ver_target: 7.0
-#  - db: mssql
-#    driver: sqlsrv
-#    db_version: sql2012sp1
-#    php_ver_target: 7.1
-#  - db: mssql
-#    driver: pdo_sqlsrv
-#    db_version: sql2012sp1
-#    php_ver_target: 7.0
-#  - db: mssql
-#    driver: pdo_sqlsrv
-#    db_version: sql2012sp1
-#    php_ver_target: 7.1
-#  - db: mssql
-#    driver: sqlsrv
-#    db_version: sql2014
-#    php_ver_target: 7.0
-#  - db: mssql
-#    driver: sqlsrv
-#    db_version: sql2014
-#    php_ver_target: 7.1
-#  - db: mssql
-#    driver: pdo_sqlsrv
-#    db_version: sql2014
-#    php_ver_target: 7.0
-#  - db: mssql
-#    driver: pdo_sqlsrv
-#    db_version: sql2014
-#    php_ver_target: 7.1
-#  - db: mssql
-#    driver: sqlsrv
-#    db_version: sql2016
-#    php_ver_target: 7.0
-#  - db: mssql
-#    driver: sqlsrv
-#    db_version: sql2016
-#    php_ver_target: 7.1
 #  - db: mssql
 #    driver: pdo_sqlsrv
 #    db_version: sql2016
@@ -136,19 +136,27 @@ install:
     - cd c:\tools\php
     #get the MSSQL DLL's
     - ps: >-
-        If ($env:php_ver_target -eq "7.0" –And $env:db -eq "mssql") {
-          appveyor DownloadFile https://github.com/Microsoft/msphpsql/releases/download/4.1.5-Windows/7.0.zip
-          7z x 7.0.zip > $null
-          copy 7.0\x64\php_pdo_sqlsrv_7_nts.dll ext\php_pdo_sqlsrv_nts.dll
-          copy 7.0\x64\php_sqlsrv_7_nts.dll ext\php_sqlsrv_nts.dll
+        If ($env:db -eq "mssql") {
+          IF %php_ver_target%=="7.0" (SET SQLSRV=7) ELSE (SET SQLSRV=71)
+          appveyor DownloadFile https://github.com/Microsoft/msphpsql/releases/download/4.1.5-Windows/%php_ver_target%.zip
+          7z x %php_ver_target%.zip > $null
+          copy %php_ver_target%\x64\php_pdo_sqlsrv_%SQLSRV%_nts.dll ext\php_pdo_sqlsrv_nts.dll
+          copy %php_ver_target%\x64\php_sqlsrv_%SQLSRV%_nts.dll ext\php_sqlsrv_nts.dll
           Remove-Item c:\tools\php\* -include .zip}
-    - ps: >-
-        If ($env:php_ver_target -eq "7.1" –And $env:db -eq "mssql") {
-          appveyor DownloadFile https://github.com/Microsoft/msphpsql/releases/download/4.1.5-Windows/7.1.zip
-          7z x 7.1.zip > $null
-          copy 7.1\x64\php_pdo_sqlsrv_71_nts.dll ext\php_pdo_sqlsrv_nts.dll
-          copy 7.1\x64\php_sqlsrv_71_nts.dll ext\php_sqlsrv_nts.dll
-          Remove-Item c:\tools\php\* -include .zip}
+    #- ps: >-
+    #    If ($env:php_ver_target -eq "7.0" –And $env:db -eq "mssql") {
+    #      appveyor DownloadFile https://github.com/Microsoft/msphpsql/releases/download/4.1.5-Windows/7.0.zip
+    #      7z x 7.0.zip > $null
+    #      copy 7.0\x64\php_pdo_sqlsrv_7_nts.dll ext\php_pdo_sqlsrv_nts.dll
+    #      copy 7.0\x64\php_sqlsrv_7_nts.dll ext\php_sqlsrv_nts.dll
+    #      Remove-Item c:\tools\php\* -include .zip}
+    #- ps: >-
+    #    If ($env:php_ver_target -eq "7.1" –And $env:db -eq "mssql") {
+    #      appveyor DownloadFile https://github.com/Microsoft/msphpsql/releases/download/4.1.5-Windows/7.1.zip
+    #      7z x 7.1.zip > $null
+    #      copy 7.1\x64\php_pdo_sqlsrv_71_nts.dll ext\php_pdo_sqlsrv_nts.dll
+    #      copy 7.1\x64\php_sqlsrv_71_nts.dll ext\php_sqlsrv_nts.dll
+    #      Remove-Item c:\tools\php\* -include .zip}
     #Set PHP environment
     - IF %PHP%==1 copy php.ini-production php.ini /Y
     - IF %PHP%==1 echo date.timezone="UTC" >> php.ini

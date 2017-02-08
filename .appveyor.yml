@@ -149,17 +149,16 @@ install:
             else {
               $SQLSRV=71
             }
-            $Version = $env:php           
+            $Version = $env:php
+            cd c:\tools\php\ext
             appveyor-retry appveyor DownloadFile http://windows.php.net/downloads/pecl/releases/sqlsrv/4.1.6.1/php_sqlsrv-4.1.6.1-$($env:php)-nts-vc14-x64.zip
             7z x -y php_sqlsrv-4.1.6.1-$($env:php)-nts-vc14-x64.zip > $null
-            copy php_sqlsrv.dll ext\php_sqlsrv.dll
-            Add-Content php.ini "`n extension=php_sqlsrv.dll"
-            Remove-Item c:\tools\php\* -include .zip
             appveyor-retry appveyor DownloadFile http://windows.php.net/downloads/pecl/releases/pdo_sqlsrv/4.1.6.1/php_pdo_sqlsrv-4.1.6.1-$($env:php)-nts-vc14-x64.zip
             7z x -y php_pdo_sqlsrv-4.1.6.1-$($env:php)-nts-vc14-x64.zip > $null
-            copy php_pdo_sqlsrv.dll ext\php_pdo_sqlsrv.dll
+            Add-Content php.ini "`n extension=php_sqlsrv.dll"
             Add-Content php.ini "`n extension=php_pdo_sqlsrv.dll"
             Remove-Item c:\tools\php\* -include .zip
+            cd c:\tools\php
           }
 
           # If needed set the the MySQL DLL's

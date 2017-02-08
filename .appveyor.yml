@@ -119,16 +119,16 @@ init:
 
 ## Install PHP and composer, and run the appropriate composer command
 install:
-    - ps: |
+  - ps: >-
         # Check if installation is cached
         if (!(Test-Path c:\tools\php)) {
           appveyor-retry cinst --ignore-checksums -y php --version ((choco search php --exact --all-versions -r | select-string -pattern $Env:php | Select-Object -First 1) -replace '[php|]','')
           appveyor-retry cinst -y sqlite
-            
+
           if ($env:db -eq "mariadb") {
             appveyor-retry cinst -y mariadb
           }
-          
+
           cd c:\tools\php
 
           # Set PHP environment items that are always needed        
@@ -162,7 +162,8 @@ install:
             copy php_pdo_sqlsrv.dll ext\php_pdo_sqlsrv.dll
             Add-Content php.ini "`n extension=php_pdo_sqlsrv.dll"
             Remove-Item c:\tools\php\* -include .zip
-            } else {
+            }
+            else {
             appveyor-retry appveyor DownloadFile http://windows.php.net/downloads/pecl/releases/sqlsrv/4.1.6.1/php_sqlsrv-4.1.6.1-7.1-nts-vc14-x64.zip
             copy "$($env:php)\x64\php_sqlsrv_$($SQLSRV)_nts.dll" ext\php_sqlsrv_nts.dll
             Add-Content php.ini "`n extension=php_sqlsrv.dll"
@@ -171,7 +172,7 @@ install:
             7z x -y php_pdo_sqlsrv-4.1.6.1-7.1-nts-vc14-x64.zip > $null
             copy php_pdo_sqlsrv.dll ext\php_pdo_sqlsrv.dll
             Add-Content php.ini "`n extension=php_pdo_sqlsrv.dll"
-            Remove-Item c:\tools\php\* -include .zip}
+            Remove-Item c:\tools\php\* -include .zip}}
            
 #            appveyor-retry appveyor DownloadFile https://github.com/Microsoft/msphpsql/releases/download/4.1.5-Windows/$($env:php).zip
 #            7z x -y "$Version.zip" > $null
@@ -180,7 +181,7 @@ install:
 #            Add-Content php.ini "`n extension=php_sqlsrv_nts.dll"
 #            Add-Content php.ini "`n extension=php_pdo_sqlsrv_nts.dll"
 #            Remove-Item c:\tools\php\* -include .zip
-          }
+#            }
 
           # If needed set the the MySQL DLL's
           if ($env:db -eq "mysql" -Or $env:db -eq "mariadb" ) {

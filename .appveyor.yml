@@ -138,15 +138,15 @@ install:
     - ps: >-
         If ($env:db -eq "mssql") {
           If ($env:php_ver_target -eq "7.0") {
-            SET SQLSRV=7;
+            $SQLSRV=7;
           } else {
-            SET SQLSRV=71;
+            $SQLSRV=71;
           }
           appveyor DownloadFile https://github.com/Microsoft/msphpsql/releases/download/4.1.5-Windows/$($env:php_ver_target).zip;
           $Version = $env:php_ver_target;
-          7z x -y $Version+.zip > $null;
-          copy "$($env:php_ver_target)\x64\php_pdo_sqlsrv_$($env:SQLSRV)_nts.dll" ext\php_pdo_sqlsrv_nts.dll;
-          copy "$($env:php_ver_target)\x64\php_sqlsrv_$($env:SQLSRV)_nts.dll" ext\php_sqlsrv_nts.dll;
+          7z x -y $Version.zip > $null;
+          copy "$($env:php_ver_target)\x64\php_pdo_sqlsrv_$($SQLSRV)_nts.dll" ext\php_pdo_sqlsrv_nts.dll;
+          copy "$($env:php_ver_target)\x64\php_sqlsrv_$($SQLSRV)_nts.dll" ext\php_sqlsrv_nts.dll;
           Remove-Item c:\tools\php\* -include .zip;}
     #- ps: >-
     #    If ($env:php_ver_target -eq "7.0" –And $env:db -eq "mssql") {

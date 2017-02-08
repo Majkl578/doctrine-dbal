@@ -157,6 +157,7 @@ install:
             7z x -y php_pdo_sqlsrv-4.1.6.1-$($env:php)-nts-vc14-x64.zip > $null
             Add-Content php.ini "`n extension=php_sqlsrv.dll"
             Add-Content php.ini "`n extension=php_pdo_sqlsrv.dll"
+            Get-ChildItem -Path c:\tools\php\ext
             Remove-Item c:\tools\php\* -include .zip
             cd c:\tools\php
           }
@@ -177,6 +178,7 @@ install:
         }
     - appveyor-retry php composer.phar self-update
     - appveyor-retry php composer.phar install --no-progress --profile
+    - php -m
 
 before_test:
 # Selectively start the services

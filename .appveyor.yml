@@ -19,185 +19,181 @@ environment:
   matrix:
   - db: sqlite
     driver: pdo_sqlite
-    php_ver_target: 7.0
+    php: 7.0
   - db: sqlite
     driver: pdo_sqlite
-    php_ver_target: 7.1
+    php: 7.1
 #  - db: mssql
 #    driver: sqlsrv
 #    db_version: sql2008r2sp2
-#    php_ver_target: 7.0
+#    php: 7.0
 #  - db: mssql
 #    driver: sqlsrv
 #    db_version: sql2008r2sp2
-#    php_ver_target: 7.1
+#    php: 7.1
 #  - db: mssql
 #    driver: pdo_sqlsrv
 #    db_version: sql2008r2sp2
-#    php_ver_target: 7.0
+#    php: 7.0
 #  - db: mssql
 #    driver: pdo_sqlsrv
 #    db_version: sql2008r2sp2
-#    php_ver_target: 7.1
+#    php: 7.1
 #  - db: mssql
 #    driver: sqlsrv
 #    db_version: sql2012sp1
-#    php_ver_target: 7.0
+#    php: 7.0
 #  - db: mssql
 #    driver: sqlsrv
 #    db_version: sql2012sp1
-#    php_ver_target: 7.1
+#    php: 7.1
 #  - db: mssql
 #    driver: pdo_sqlsrv
 #    db_version: sql2012sp1
-#    php_ver_target: 7.0
+#    php: 7.0
 #  - db: mssql
 #    driver: pdo_sqlsrv
 #    db_version: sql2012sp1
-#    php_ver_target: 7.1
+#    php: 7.1
 #  - db: mssql
 #    driver: sqlsrv
 #    db_version: sql2014
-#    php_ver_target: 7.0
+#    php: 7.0
 #  - db: mssql
 #    driver: sqlsrv
 #    db_version: sql2014
-#    php_ver_target: 7.1
+#    php: 7.1
 #  - db: mssql
 #    driver: pdo_sqlsrv
 #    db_version: sql2014
-#    php_ver_target: 7.0
+#    php: 7.0
 #  - db: mssql
 #    driver: pdo_sqlsrv
 #    db_version: sql2014
-#    php_ver_target: 7.1
+#    php: 7.1
 #  - db: mssql
 #    driver: sqlsrv
 #    db_version: sql2016
-#    php_ver_target: 7.0
+#    php: 7.0
 #  - db: mssql
 #    driver: sqlsrv
 #    db_version: sql2016
-#    php_ver_target: 7.1
+#    php: 7.1
 #  - db: mssql
 #    driver: pdo_sqlsrv
 #    db_version: sql2016
-#    php_ver_target: 7.0
+#    php: 7.0
 #  - db: mssql
 #    driver: pdo_sqlsrv
 #    db_version: sql2016
-#    php_ver_target: 7.1
+#    php: 7.1
 #  - db: mysql
 #    driver: pdo_mysql
-#    php_ver_target: 7.0
+#    php: 7.0
 #  - db: mysql
 #    driver: pdo_mysql
-#    php_ver_target: 7.1
-#  - db: mysql
-#    driver: mysqli
-#    php_ver_target: 7.0
+#    php: 7.1
 #  - db: mysql
 #    driver: mysqli
-#    php_ver_target: 7.1
+#    php: 7.0
+#  - db: mysql
+#    driver: mysqli
+#    php: 7.1
 #  - db: mariadb
 #    driver: pdo_mysql
-#    php_ver_target: 7.0
+#    php: 7.0
 #  - db: mariadb
 #    driver: pdo_mysql
-#    php_ver_target: 7.1
+#    php: 7.1
 #  - db: postgresql
 #    driver: pdo_pgsql
-#    php_ver_target: 7.0
+#    php: 7.0
 #  - db: postgresql
 #    driver: pdo_pgsql
-#    php_ver_target: 7.1
+#    php: 7.1
 
 init:
   - SET PATH=C:\Program Files\OpenSSL;c:\tools\php;%PATH%
   - SET COMPOSER_NO_INTERACTION=1
-  - SET PHP=1 # this var is related to caching the php install
   - SET ANSICON=121x90 (121x90)
-services:
-# Services are started selectively at the before_test stage
-#  - mssql2014
-#  - mysql
-#  - postgresql94
 
 ## Install PHP and composer, and run the appropriate composer command
 install:
-    - IF EXIST c:\tools\php (SET PHP=0)
     - ps: >-
-        If ($env:PHP -eq 1) {
-          appveyor-retry cinst --ignore-checksums -y php --version ((choco search php --exact --all-versions -r | select-string -pattern $Env:php_ver_target | Select-Object -First 1) -replace '[php|]','')
-          cinst -y sqlite
-          If ($env:db -eq "mariadb") {cinst -y mariadb}
-        }
-    #- ps: appveyor-retry cinst --ignore-checksums -y php --version ((choco search php --exact --all-versions -r | select-string -pattern $Env:php_ver_target | Select-Object -First 1) -replace '[php|]','')
-    #- cinst -y sqlite
-    #- ps: If ($env:db -like "mariadb") {cinst -y mariadb}
-    - cd c:\tools\php
-    #get the MSSQL DLL's
-    - ps: >-
-        If ($env:db -eq "mssql") {
-          If ($env:php_ver_target -eq "7.0") {
-            $SQLSRV=7;
-          } else {
-            $SQLSRV=71;
+        # Check if installation is cached
+        if (!(Test-Path c:\tools\php)) {
+          appveyor-retry cinst --ignore-checksums -y php --version ((choco search php --exact --all-versions -r | select-string -pattern $Env:php | Select-Object -First 1) -replace '[php|]','')
+          appveyor-retry cinst -y sqlite
+            
+          if ($env:db -eq "mariadb") {
+            appveyor-retry cinst -y mariadb
           }
-          appveyor DownloadFile https://github.com/Microsoft/msphpsql/releases/download/4.1.5-Windows/$($env:php_ver_target).zip;
-          $Version = $env:php_ver_target;
-          7z x -y "$Version.zip" > $null;
-          copy "$($env:php_ver_target)\x64\php_pdo_sqlsrv_$($SQLSRV)_nts.dll" ext\php_pdo_sqlsrv_nts.dll;
-          copy "$($env:php_ver_target)\x64\php_sqlsrv_$($SQLSRV)_nts.dll" ext\php_sqlsrv_nts.dll;
-          Remove-Item c:\tools\php\* -include .zip;}
-    #- ps: >-
-    #    If ($env:php_ver_target -eq "7.0" –And $env:db -eq "mssql") {
-    #      appveyor DownloadFile https://github.com/Microsoft/msphpsql/releases/download/4.1.5-Windows/7.0.zip
-    #      7z x 7.0.zip > $null
-    #      copy 7.0\x64\php_pdo_sqlsrv_7_nts.dll ext\php_pdo_sqlsrv_nts.dll
-    #      copy 7.0\x64\php_sqlsrv_7_nts.dll ext\php_sqlsrv_nts.dll
-    #      Remove-Item c:\tools\php\* -include .zip}
-    #- ps: >-
-    #    If ($env:php_ver_target -eq "7.1" –And $env:db -eq "mssql") {
-    #      appveyor DownloadFile https://github.com/Microsoft/msphpsql/releases/download/4.1.5-Windows/7.1.zip
-    #      7z x 7.1.zip > $null
-    #      copy 7.1\x64\php_pdo_sqlsrv_71_nts.dll ext\php_pdo_sqlsrv_nts.dll
-    #      copy 7.1\x64\php_sqlsrv_71_nts.dll ext\php_sqlsrv_nts.dll
-    #      Remove-Item c:\tools\php\* -include .zip}
-    #Set PHP environment
-    - IF %PHP%==1 copy php.ini-production php.ini /Y
-    - IF %PHP%==1 echo date.timezone="UTC" >> php.ini
-    - IF %PHP%==1 echo extension_dir=ext >> php.ini
-    - IF %PHP%==1 echo extension=php_openssl.dll >> php.ini
-    - IF %PHP%==1 echo extension=php_mbstring.dll >> php.ini
-    - IF %PHP%==1 echo extension=php_fileinfo.dll >> php.ini
-    - IF %PHP%==1 echo extension=php_pdo_mysql.dll >> php.ini
-    - IF %PHP%==1 echo extension=php_mysqli.dll >> php.ini
-    - ps: If ($env:db -eq "mssql") {Add-Content php.ini "`n extension=php_sqlsrv_nts.dll";}
-    - ps: If ($env:db -eq "mssql") {Add-Content php.ini "`n extension=php_pdo_sqlsrv_nts.dll";}
-    - IF %PHP%==1 echo extension=php_pdo_pgsql.dll >> php.ini
-    - IF %PHP%==1 echo extension=php_pgsql.dll >> php.ini
-    - IF %PHP%==1 echo extension=php_pdo_sqlite.dll >> php.ini
-    - IF %PHP%==1 echo extension=php_sqlite3.dll >> php.ini
-    #- IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
-    #- appveyor-retry appveyor DownloadFile https://getcomposer.org/composer.phar
-    - cd c:\projects\dbal
-    - IF NOT EXIST composer.phar (appveyor-retry appveyor DownloadFile https://getcomposer.org/composer.phar)
-    - appveyor-retry php composer.phar self-update    
-    - appveyor-retry php composer.phar install --no-progress
+          
+          cd c:\tools\php
+          
+          copy php.ini-production php.ini /Y
+          
+          #get the MSSQL DLL's
+          if ($env:db -eq "mssql") {
+            if ($env:php -eq "7.0") {
+              $SQLSRV=7
+            } else {
+              $SQLSRV=71
+            }
+            
+            appveyor-retry appveyor DownloadFile https://github.com/Microsoft/msphpsql/releases/download/4.1.5-Windows/$($env:php).zip
+            $Version = $env:php
+            7z x -y "$Version.zip" > $null
+            copy "$($env:php)\x64\php_pdo_sqlsrv_$($SQLSRV)_nts.dll" ext\php_pdo_sqlsrv_nts.dll
+            copy "$($env:php)\x64\php_sqlsrv_$($SQLSRV)_nts.dll" ext\php_sqlsrv_nts.dll
+            Add-Content php.ini "`n extension=php_sqlsrv_nts.dll"
+            Add-Content php.ini "`n extension=php_pdo_sqlsrv_nts.dll"
+            Remove-Item c:\tools\php\* -include .zip
+          }
+          
+          # Set PHP environment
+          echo date.timezone="UTC" >> php.ini
+          echo extension_dir=ext >> php.ini
+          echo extension=php_openssl.dll >> php.ini
+          echo extension=php_mbstring.dll >> php.ini
+          echo extension=php_fileinfo.dll >> php.ini
+          echo extension=php_pdo_mysql.dll >> php.ini
+          echo extension=php_mysqli.dll >> php.ini
+          echo extension=php_pdo_pgsql.dll >> php.ini
+          echo extension=php_pgsql.dll >> php.ini
+          echo extension=php_pdo_sqlite.dll >> php.ini
+          echo extension=php_sqlite3.dll >> php.ini
+          
+          cd c:\projects\dbal
+          
+          if (!(Test-Path c:\projects\dbal\composer.phar)) {
+            appveyor-retry appveyor DownloadFile https://getcomposer.org/composer.phar
+          }
+          
+          appveyor-retry php composer.phar self-update
+          appveyor-retry php composer.phar install --no-progress --profile
+        }
 
 before_test:
 # Selectively start the services
   - ps: >-
-      If ($env:db -eq "mssql") {
-        $instanceName = $env:db_version.ToUpper();
-        Start-Service "MSSQL`$$instanceName"}
-      Elseif ($env:db -eq "mysql") {Start-Service MySQL57}
-      Elseif ($env:db -eq "postgresql") {Start-Service postgresql-x64-9.4}
+      if ($env:db -eq "mssql") {
+        $instanceName = $env:db_version.ToUpper()
+        Start-Service "MSSQL`$$instanceName"
+      }
+      elseif ($env:db -eq "mysql") {
+        Start-Service MySQL57
+      }
+      elseif ($env:db -eq "postgresql") {
+        Start-Service postgresql-x64-9.4
+      }
 
 test_script:
-  - php -v
   - cd C:\projects\dbal
   - ps: >-
-      If ($env:db_version) {vendor\bin\phpunit -c tests\appveyor\%db%.%db_version%.%driver%.appveyor.xml}
-      Else {vendor\bin\phpunit -c tests\appveyor\%db%.%driver%.appveyor.xml}
+      if ($env:db_version) {
+        vendor\bin\phpunit -c tests\appveyor\%db%.%db_version%.%driver%.appveyor.xml
+      }
+      else {
+        vendor\bin\phpunit -c tests\appveyor\%db%.%driver%.appveyor.xml
+      }

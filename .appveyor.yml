@@ -137,7 +137,8 @@ install:
           if ($env:db -eq "mssql") {
             if ($env:php -eq "7.0") {
               $SQLSRV=7
-            } else {
+            }
+            else {
               $SQLSRV=71
             }
             

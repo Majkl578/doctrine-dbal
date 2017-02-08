@@ -170,10 +170,9 @@ install:
           if (!(Test-Path c:\projects\dbal\composer.phar)) {
             appveyor-retry appveyor DownloadFile https://getcomposer.org/composer.phar
           }
-          
-          appveyor-retry php composer.phar self-update
-          appveyor-retry php composer.phar install --no-progress --profile
         }
+    - appveyor-retry php composer.phar self-update
+    - appveyor-retry php composer.phar install --no-progress --profile
 
 before_test:
 # Selectively start the services

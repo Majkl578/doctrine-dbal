@@ -143,7 +143,7 @@ install:
             SET SQLSRV=71
           }
           appveyor DownloadFile https://github.com/Microsoft/msphpsql/releases/download/4.1.5-Windows/$($env:php_ver_target).zip
-          7z x ${env:php_ver_target}.zip > $null
+          7z x {0}.zip > $null -f $env:php_ver_target
           copy $($env:php_ver_target)\x64\php_pdo_sqlsrv_$($env:SQLSRV)_nts.dll ext\php_pdo_sqlsrv_nts.dll
           copy $($env:php_ver_target)\x64\php_sqlsrv_$($env:SQLSRV)_nts.dll ext\php_sqlsrv_nts.dll
           Remove-Item c:\tools\php\* -include .zip}

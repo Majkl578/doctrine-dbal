@@ -119,7 +119,7 @@ init:
 
 ## Install PHP and composer, and run the appropriate composer command
 install:
-    - ps: >-
+    - ps: |
         # Check if installation is cached
         if (!(Test-Path c:\tools\php)) {
           appveyor-retry cinst --ignore-checksums -y php --version ((choco search php --exact --all-versions -r | select-string -pattern $Env:php | Select-Object -First 1) -replace '[php|]','')

@@ -119,7 +119,7 @@ init:
 
 ## Install PHP and composer, and run the appropriate composer command
 install:
-  - ps: >-
+    - ps: |
         # Check if installation is cached
         if (!(Test-Path c:\tools\php)) {
           appveyor-retry cinst --ignore-checksums -y php --version ((choco search php --exact --all-versions -r | select-string -pattern $Env:php | Select-Object -First 1) -replace '[php|]','')
@@ -140,17 +140,16 @@ install:
           Add-Content php.ini "`n extension=php_fileinfo.dll"
           Add-Content php.ini "`n extension=php_pdo_sqlite.dll"
           Add-Content php.ini "`n extension=php_sqlite3.dll"
-          
+
           # If needed get the MSSQL DLL's
           if ($env:db -eq "mssql") {
-            $Version = $env:php
             if ($env:php -eq "7.0") {
               $SQLSRV=7
             }
             else {
               $SQLSRV=71
             }
- 
+            $Version = $env:php           
             if ($env:php -eq "7.0") {
             appveyor-retry appveyor DownloadFile http://windows.php.net/downloads/pecl/releases/sqlsrv/4.1.6.1/php_sqlsrv-4.1.6.1-7.0-nts-vc14-x64.zip
             7z x -y php_sqlsrv-4.1.6.1-7.0-nts-vc14-x64.zip > $null
@@ -172,16 +171,8 @@ install:
             7z x -y php_pdo_sqlsrv-4.1.6.1-7.1-nts-vc14-x64.zip > $null
             copy php_pdo_sqlsrv.dll ext\php_pdo_sqlsrv.dll
             Add-Content php.ini "`n extension=php_pdo_sqlsrv.dll"
-            Remove-Item c:\tools\php\* -include .zip}}
-           
-#            appveyor-retry appveyor DownloadFile https://github.com/Microsoft/msphpsql/releases/download/4.1.5-Windows/$($env:php).zip
-#            7z x -y "$Version.zip" > $null
-#            copy "$($env:php)\x64\php_pdo_sqlsrv_$($SQLSRV)_nts.dll" ext\php_pdo_sqlsrv_nts.dll
-#            copy "$($env:php)\x64\php_sqlsrv_$($SQLSRV)_nts.dll" ext\php_sqlsrv_nts.dll
-#            Add-Content php.ini "`n extension=php_sqlsrv_nts.dll"
-#            Add-Content php.ini "`n extension=php_pdo_sqlsrv_nts.dll"
-#            Remove-Item c:\tools\php\* -include .zip
-#            }
+            Remove-Item c:\tools\php\* -include .zip}
+          }
 
           # If needed set the the MySQL DLL's
           if ($env:db -eq "mysql" -Or $env:db -eq "mariadb" ) {
@@ -192,7 +183,7 @@ install:
           if ($env:db -eq "postgresql") {Add-Content php.ini "`n extension=php_pdo_pgsql.dll"}
 
           cd c:\projects\dbal
-          
+
           if (!(Test-Path c:\projects\dbal\composer.phar)) {
             appveyor-retry appveyor DownloadFile https://getcomposer.org/composer.phar
           }

@@ -161,7 +161,7 @@ install:
           }
 
           # If needed set the the MySQL DLL's
-          if ($env:db -eq "mysql" or $env:db -eq "mariadb" ) {
+          if ($env:db -eq "mysql" -Or $env:db -eq "mariadb" ) {
           Add-Content php.ini "`n extension=php_pdo_mysql.dll"
           Add-Content php.ini "`n extension=php_mysqli.dll"}
 

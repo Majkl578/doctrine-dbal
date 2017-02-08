@@ -71,21 +71,21 @@ environment:
 #    driver: pdo_sqlsrv
 #    db_version: sql2014
 #    php: 7.1
-#  - db: mssql
-#    driver: sqlsrv
-#    db_version: sql2016
-#    php: 7.0
-#  - db: mssql
-#    driver: sqlsrv
-#    db_version: sql2016
-#    php: 7.1
-#  - db: mssql
-#    driver: pdo_sqlsrv
-#    db_version: sql2016
-#    php: 7.0
-#  - db: mssql
-#    driver: pdo_sqlsrv
-#    db_version: sql2016
+  - db: mssql
+    driver: sqlsrv
+    db_version: sql2016
+    php: 7.0
+  - db: mssql
+    driver: sqlsrv
+    db_version: sql2016
+    php: 7.1
+  - db: mssql
+    driver: pdo_sqlsrv
+    db_version: sql2016
+    php: 7.0
+  - db: mssql
+    driver: pdo_sqlsrv
+    db_version: sql2016
 #    php: 7.1
 #  - db: mysql
 #    driver: pdo_mysql

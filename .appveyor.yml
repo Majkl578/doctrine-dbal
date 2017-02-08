@@ -4,6 +4,7 @@ platform:
 #matrix:
 #  fast_finish: true # kills the build at the first failure
 clone_folder: C:\projects\dbal
+clone_depth: 1
 
 cache:
   - C:\ProgramData\chocolatey\bin -> .appveyor.yml

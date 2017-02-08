@@ -131,7 +131,7 @@ install:
           
           cd c:\tools\php
           
-          copy php.ini-production php.ini /Y
+          copy php.ini-production php.ini
           
           #get the MSSQL DLL's
           if ($env:db -eq "mssql") {

@@ -10,6 +10,7 @@ cache:
   - C:\ProgramData\chocolatey\bin -> .appveyor.yml
   - C:\ProgramData\chocolatey\lib -> .appveyor.yml
   - c:\tools\php -> .appveyor.yml
+  - composer.phar
   - '%LOCALAPPDATA%\Composer\files'
   #- vendor
 
@@ -178,10 +179,12 @@ install:
     - IF %PHP%==1 echo extension=php_pgsql.dll >> php.ini
     - IF %PHP%==1 echo extension=php_pdo_sqlite.dll >> php.ini
     - IF %PHP%==1 echo extension=php_sqlite3.dll >> php.ini
-    - IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
-    - appveyor-retry appveyor DownloadFile https://getcomposer.org/composer.phar
+    #- IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
+    #- appveyor-retry appveyor DownloadFile https://getcomposer.org/composer.phar
     - cd c:\projects\dbal
-    - appveyor-retry composer install --no-progress --profile
+    - IF NOT EXIST composer.phar (appveyor-retry appveyor DownloadFile https://getcomposer.org/composer.phar)
+    - appveyor-retry php composer.phar self-update    
+    - appveyor-retry php composer.phar install --no-progress
 
 before_test:
 # Selectively start the services

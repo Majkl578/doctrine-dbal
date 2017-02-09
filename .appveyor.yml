@@ -143,13 +143,6 @@ install:
 
           # If needed get the MSSQL DLL's
           if ($env:db -eq "mssql") {
-            if ($env:php -eq "7.0") {
-              $SQLSRV=7
-            }
-            else {
-              $SQLSRV=71
-            }
-            $Version = $env:php
             $DLLVersion = "4.1.6.1"
             cd c:\tools\php\ext
             appveyor-retry appveyor DownloadFile http://windows.php.net/downloads/pecl/releases/sqlsrv/$($:DLLVersion)/php_sqlsrv-$($DLLVersion)-$($env:php)-nts-vc14-x64.zip
@@ -191,7 +184,7 @@ before_test:
         Start-Service MySQL57
       }
       elseif ($env:db -eq "postgresql") {
-        Start-Service postgresql-x64-9.4
+        Start-Service postgresql-x64-9.5
       }
 
 test_script:

@@ -23,54 +23,54 @@ environment:
   - db: sqlite
     driver: pdo_sqlite
     php: 7.1
-#  - db: mssql
-#    driver: sqlsrv
-#    db_version: sql2008r2sp2
-#    php: 7.0
-#  - db: mssql
-#    driver: sqlsrv
-#    db_version: sql2008r2sp2
-#    php: 7.1
-#  - db: mssql
-#    driver: pdo_sqlsrv
-#    db_version: sql2008r2sp2
-#    php: 7.0
-#  - db: mssql
-#    driver: pdo_sqlsrv
-#    db_version: sql2008r2sp2
-#    php: 7.1
-#  - db: mssql
-#    driver: sqlsrv
-#    db_version: sql2012sp1
-#    php: 7.0
-#  - db: mssql
-#    driver: sqlsrv
-#    db_version: sql2012sp1
-#    php: 7.1
-#  - db: mssql
-#    driver: pdo_sqlsrv
-#    db_version: sql2012sp1
-#    php: 7.0
-#  - db: mssql
-#    driver: pdo_sqlsrv
-#    db_version: sql2012sp1
-#    php: 7.1
-#  - db: mssql
-#    driver: sqlsrv
-#    db_version: sql2014
-#    php: 7.0
-#  - db: mssql
-#    driver: sqlsrv
-#    db_version: sql2014
-#    php: 7.1
-#  - db: mssql
-#    driver: pdo_sqlsrv
-#    db_version: sql2014
-#    php: 7.0
-#  - db: mssql
-#    driver: pdo_sqlsrv
-#    db_version: sql2014
-#    php: 7.1
+  - db: mssql
+    driver: sqlsrv
+    db_version: sql2008r2sp2
+    php: 7.0
+  - db: mssql
+    driver: sqlsrv
+    db_version: sql2008r2sp2
+    php: 7.1
+  - db: mssql
+    driver: pdo_sqlsrv
+    db_version: sql2008r2sp2
+    php: 7.0
+  - db: mssql
+    driver: pdo_sqlsrv
+    db_version: sql2008r2sp2
+    php: 7.1
+  - db: mssql
+    driver: sqlsrv
+    db_version: sql2012sp1
+    php: 7.0
+  - db: mssql
+    driver: sqlsrv
+    db_version: sql2012sp1
+    php: 7.1
+  - db: mssql
+    driver: pdo_sqlsrv
+    db_version: sql2012sp1
+    php: 7.0
+  - db: mssql
+    driver: pdo_sqlsrv
+    db_version: sql2012sp1
+    php: 7.1
+  - db: mssql
+    driver: sqlsrv
+    db_version: sql2014
+    php: 7.0
+  - db: mssql
+    driver: sqlsrv
+    db_version: sql2014
+    php: 7.1
+  - db: mssql
+    driver: pdo_sqlsrv
+    db_version: sql2014
+    php: 7.0
+  - db: mssql
+    driver: pdo_sqlsrv
+    db_version: sql2014
+    php: 7.1
   - db: mssql
     driver: sqlsrv
     db_version: sql2016
@@ -87,30 +87,30 @@ environment:
     driver: pdo_sqlsrv
     db_version: sql2016
     php: 7.1
-#  - db: mysql
-#    driver: pdo_mysql
-#    php: 7.0
-#  - db: mysql
-#    driver: pdo_mysql
-#    php: 7.1
-#  - db: mysql
-#    driver: mysqli
-#    php: 7.0
-#  - db: mysql
-#    driver: mysqli
-#    php: 7.1
-#  - db: mariadb
-#    driver: pdo_mysql
-#    php: 7.0
-#  - db: mariadb
-#    driver: pdo_mysql
-#    php: 7.1
-#  - db: postgresql
-#    driver: pdo_pgsql
-#    php: 7.0
-#  - db: postgresql
-#    driver: pdo_pgsql
-#    php: 7.1
+  - db: mysql
+    driver: pdo_mysql
+    php: 7.0
+  - db: mysql
+    driver: pdo_mysql
+    php: 7.1
+  - db: mysql
+    driver: mysqli
+    php: 7.0
+  - db: mysql
+    driver: mysqli
+    php: 7.1
+  - db: mariadb
+    driver: pdo_mysql
+    php: 7.0
+  - db: mariadb
+    driver: pdo_mysql
+    php: 7.1
+  - db: postgresql
+    driver: pdo_pgsql
+    php: 7.0
+  - db: postgresql
+    driver: pdo_pgsql
+    php: 7.1
 
 init:
   - SET PATH=C:\Program Files\OpenSSL;c:\tools\php;%PATH%

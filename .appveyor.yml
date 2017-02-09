@@ -86,7 +86,7 @@ environment:
   - db: mssql
     driver: pdo_sqlsrv
     db_version: sql2016
-#    php: 7.1
+    php: 7.1
 #  - db: mysql
 #    driver: pdo_mysql
 #    php: 7.0
@@ -155,7 +155,6 @@ install:
             7z x -y php_sqlsrv-4.1.6.1-$($env:php)-nts-vc14-x64.zip > $null
             appveyor-retry appveyor DownloadFile http://windows.php.net/downloads/pecl/releases/pdo_sqlsrv/4.1.6.1/php_pdo_sqlsrv-4.1.6.1-$($env:php)-nts-vc14-x64.zip
             7z x -y php_pdo_sqlsrv-4.1.6.1-$($env:php)-nts-vc14-x64.zip > $null
-            Get-ChildItem -Path c:\tools\php\ext
             Remove-Item c:\tools\php\* -include .zip
             cd c:\tools\php
             Add-Content php.ini "`nextension=php_sqlsrv.dll"
@@ -179,7 +178,6 @@ install:
         }
     - appveyor-retry php composer.phar self-update
     - appveyor-retry php composer.phar install --no-progress --profile
-    - php -m
 
 before_test:
 # Selectively start the services

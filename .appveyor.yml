@@ -150,11 +150,12 @@ install:
               $SQLSRV=71
             }
             $Version = $env:php
+            $DLLVersion = "4.1.6.1"
             cd c:\tools\php\ext
-            appveyor-retry appveyor DownloadFile http://windows.php.net/downloads/pecl/releases/sqlsrv/4.1.6.1/php_sqlsrv-4.1.6.1-$($env:php)-nts-vc14-x64.zip
-            7z x -y php_sqlsrv-4.1.6.1-$($env:php)-nts-vc14-x64.zip > $null
-            appveyor-retry appveyor DownloadFile http://windows.php.net/downloads/pecl/releases/pdo_sqlsrv/4.1.6.1/php_pdo_sqlsrv-4.1.6.1-$($env:php)-nts-vc14-x64.zip
-            7z x -y php_pdo_sqlsrv-4.1.6.1-$($env:php)-nts-vc14-x64.zip > $null
+            appveyor-retry appveyor DownloadFile http://windows.php.net/downloads/pecl/releases/sqlsrv/$($:DLLVersion)/php_sqlsrv-$($DLLVersion)-$($env:php)-nts-vc14-x64.zip
+            7z x -y php_sqlsrv-$($DLLVersion)-$($env:php)-nts-vc14-x64.zip > $null
+            appveyor-retry appveyor DownloadFile http://windows.php.net/downloads/pecl/releases/pdo_sqlsrv/$($DLLVersion)/php_pdo_sqlsrv-$($DLLVersion)-$($env:php)-nts-vc14-x64.zip
+            7z x -y php_pdo_sqlsrv-$($DLLVersion)-$($env:php)-nts-vc14-x64.zip > $null
             Remove-Item c:\tools\php\* -include .zip
             cd c:\tools\php
             Add-Content php.ini "`nextension=php_sqlsrv.dll"

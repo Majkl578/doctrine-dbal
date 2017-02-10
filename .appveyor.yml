@@ -123,11 +123,8 @@ install:
         # Check if installation is cached
         if (!(Test-Path c:\tools\php)) {
           appveyor-retry cinst --ignore-checksums -y php --version ((choco search php --exact --all-versions -r | select-string -pattern $Env:php | Select-Object -First 1) -replace '[php|]','')
+          # install sqlite
           appveyor-retry cinst -y sqlite
-
-          if ($env:db -eq "mariadb") {
-            appveyor-retry cinst -y mariadb
-          }
 
           cd c:\tools\php
 
@@ -170,6 +167,9 @@ install:
             appveyor-retry appveyor DownloadFile https://getcomposer.org/composer.phar
           }
         }
+    # if needed install mariadb
+    - ps: if ($env:db -eq "mariadb") { appveyor-retry cinst -y mariadb }
+    # install composer dependencies
     - appveyor-retry php composer.phar self-update
     - appveyor-retry php composer.phar install --no-progress --profile
 

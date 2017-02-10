@@ -182,6 +182,9 @@ before_test:
       elseif ($env:db -eq "postgresql") {
         Start-Service postgresql-x64-9.5
       }
+      elseif ($env:db -eq "mariadb") {
+        NET START mariadb
+      }
 
 test_script:
   - cd C:\projects\dbal

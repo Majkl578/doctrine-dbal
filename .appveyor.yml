@@ -137,6 +137,10 @@ install:
           Add-Content php.ini "`n extension=php_fileinfo.dll"
           Add-Content php.ini "`n extension=php_pdo_sqlite.dll"
           Add-Content php.ini "`n extension=php_sqlite3.dll"
+          # We allways include these since they are included with PHP, and it just makes the build simpler to set up
+          Add-Content php.ini "`n extension=php_pdo_mysql.dll"
+          Add-Content php.ini "`n extension=php_mysqli.dll"
+          Add-Content php.ini "`n extension=php_pdo_pgsql.dll"
 
           # If needed get the MSSQL DLL's
           if ($env:db -eq "mssql") {
@@ -152,14 +156,6 @@ install:
             Add-Content php.ini "`nextension=php_pdo_sqlsrv.dll"
             Add-Content php.ini "`n"
           }
-
-          # If needed set the the MySQL DLL's
-          if ($env:db -eq "mysql" -Or $env:db -eq "mariadb" ) {
-          Add-Content php.ini "`n extension=php_pdo_mysql.dll"
-          Add-Content php.ini "`n extension=php_mysqli.dll"}
-
-          # If needed set the the postgresql/PGSQL DLL's
-          if ($env:db -eq "postgresql") {Add-Content php.ini "`n extension=php_pdo_pgsql.dll"}
 
           cd c:\projects\dbal
 

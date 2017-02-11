@@ -164,10 +164,8 @@ install:
           }
         }
     # if needed install mariadb
-    - ps: if ($env:db -eq "mariadb") {
-            appveyor-retry cinst -y mariadb
-            Get-Service
-          }
+    - ps: if ($env:db -eq "mariadb") {appveyor-retry cinst -y mariadb}
+    - ps: if ($env:db -eq "mariadb") {Get-Service}
     # install composer dependencies
     - appveyor-retry php composer.phar self-update
     - appveyor-retry php composer.phar install --no-progress --profile

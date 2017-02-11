@@ -183,7 +183,8 @@ before_test:
         Start-Service postgresql-x64-9.5
       }
       elseif ($env:db -eq "mariadb") {
-        cd C:\Program Files\MariaDB 10.1\bin
+        SET PATH=C:\Program Files\MariaDB 10.1\bin;%PATH%
+        cd "C:\Program Files\MariaDB 10.1\bin"
         NET START mariadb
       }
 

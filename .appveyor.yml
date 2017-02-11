@@ -125,7 +125,7 @@ install:
           appveyor-retry cinst --ignore-checksums -y php --version ((choco search php --exact --all-versions -r | select-string -pattern $Env:php | Select-Object -First 1) -replace '[php|]','')
           # install sqlite
           appveyor-retry cinst -y sqlite
-
+          Get-ChildItem -Path c:\tools\php
           cd c:\tools\php
 
           # Set PHP environment items that are always needed        

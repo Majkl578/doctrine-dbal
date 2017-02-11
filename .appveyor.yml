@@ -183,7 +183,7 @@ before_test:
         Start-Service postgresql-x64-9.5
       }
       elseif ($env:db -eq "mariadb") {
-        mysql.server start
+        mysqld start
       }
 
 test_script:

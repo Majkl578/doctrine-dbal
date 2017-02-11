@@ -183,9 +183,10 @@ before_test:
         Start-Service postgresql-x64-9.5
       }
       elseif ($env:db -eq "mariadb") {
-        cd "C:\Program Files\MariaDB 10.1\bin"
-        Get-ChildItem -Path "C:\Program Files\MariaDB 10.1\bin"
-        net start mysql
+        $sqlService = Get-Service -Name mysql
+        if ($sqlService.Status -ne "Running"){
+          Start-Service mysql
+        }
       }
 
 test_script:

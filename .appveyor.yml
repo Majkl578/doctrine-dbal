@@ -17,11 +17,11 @@ cache:
 ## Build matrix for lowest and highest possible targets
 environment:
   matrix:
-  - db: sqlite
-    driver: pdo_sqlite
+  - db: mariadb
+    driver: pdo_mysql
     php: 7.0
-  - db: sqlite
-    driver: pdo_sqlite
+  - db: mariadb
+    driver: pdo_mysql
     php: 7.1
   - db: mssql
     driver: sqlsrv
@@ -99,17 +99,17 @@ environment:
   - db: mysql
     driver: mysqli
     php: 7.1
-  - db: mariadb
-    driver: pdo_mysql
+  - db: postgresql
+    driver: pdo_pgsql
     php: 7.0
-  - db: mariadb
-    driver: pdo_mysql
+  - db: postgresql
+    driver: pdo_pgsql
     php: 7.1
-  - db: postgresql
-    driver: pdo_pgsql
+  - db: sqlite
+    driver: pdo_sqlite
     php: 7.0
-  - db: postgresql
-    driver: pdo_pgsql
+  - db: sqlite
+    driver: pdo_sqlite
     php: 7.1
 
 init:
@@ -183,7 +183,7 @@ before_test:
         Start-Service postgresql-x64-9.5
       }
       elseif ($env:db -eq "mariadb") {
-        NET START mariadb
+        mysql.server start
       }
 
 test_script:

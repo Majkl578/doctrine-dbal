@@ -184,7 +184,8 @@ before_test:
       }
       elseif ($env:db -eq "mariadb") {
         cd "C:\Program Files\MariaDB 10.1\bin"
-        mysqld start
+        Get-ChildItem -Path "C:\Program Files\MariaDB 10.1\bin"
+        net start mysql
       }
 
 test_script:

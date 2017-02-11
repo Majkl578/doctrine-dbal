@@ -183,12 +183,6 @@ before_test:
         Start-Service postgresql-x64-9.5
       }
       elseif ($env:db -eq "mariadb") {
-#        Clear-Host
-#        $AddedLocation ="C:\Program Files\MariaDB 10.1\bin"
-#        $Reg = "Registry::HKLM\System\CurrentControlSet\Control\Session Manager\Environment"
-#        $OldPath = (Get-ItemProperty -Path "$Reg" -Name PATH).Path
-#        $NewPath= $OldPath + ’;’ + $AddedLocation
-#        Set-ItemProperty -Path "$Reg" -Name PATH –Value $NewPath
         cd "C:\Program Files\MariaDB 10.1\bin"
         mysqld start
       }

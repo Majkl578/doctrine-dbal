@@ -184,9 +184,9 @@ before_test:
         Start-Service postgresql-x64-9.5
       }
       elseif ($env:db -eq "mariadb") {
-        $sqlService = Get-Service -Name mysql
+        $sqlService = Get-Service -Name MySQL
         if ($sqlService.Status -ne "Running"){
-          Start-Service mysql
+          Start-Service $sqlService
         }
       }
 

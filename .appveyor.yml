@@ -122,7 +122,7 @@ install:
     - ps: |
         # Check if installation is cached
         if (!(Test-Path c:\tools\php)) {
-          appveyor-retry cinst --ignore-checksums -y php --version ((choco search php --exact --all-versions -r | select-string -pattern $Env:php | Select-Object -First 1) -replace '[php|]','')
+          appveyor-retry cinst --params '""/InstallDir:C:\tools\php""' --ignore-checksums -y php --version ((choco search php --exact --all-versions -r | select-string -pattern $env:php_ver_target | sort { [version]($_ -split '\|' | select -last 1) } -Descending | Select-Object -first 1) -replace '[php|]','')
           # install sqlite
           appveyor-retry cinst -y sqlite
           Get-ChildItem -Path c:\tools\php
@@ -163,9 +163,6 @@ install:
             appveyor-retry appveyor DownloadFile https://getcomposer.org/composer.phar
           }
         }
-    # if needed install mariadb
-    - ps: if ($env:db -eq "mariadb") {appveyor-retry cinst -y mariadb}
-    - ps: if ($env:db -eq "mariadb") {Get-Service}
     # install composer dependencies
     - appveyor-retry php composer.phar self-update
     - appveyor-retry php composer.phar install --no-progress --profile
@@ -184,10 +181,7 @@ before_test:
         Start-Service postgresql-x64-9.5
       }
       elseif ($env:db -eq "mariadb") {
-        $sqlService = Get-Service -Name MySQL
-        if ($sqlService.Status -ne "Running"){
-          Start-Service $sqlService
-        }
+        appveyor-retry cinst -y --force mariadb
       }
 
 test_script:

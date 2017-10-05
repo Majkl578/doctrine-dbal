@@ -213,6 +213,28 @@ jobs:
       addons:
         postgresql: "9.6"
 
+    - stage: Test
+      php: 7.1
+      env: DB=pgsql POSTGRESQL_VERSION=10.0
+      services:
+        - postgresql
+      addons:
+        postgresql: "10.0"
+    - stage: Test
+      php: 7.2
+      env: DB=pgsql POSTGRESQL_VERSION=10.0
+      services:
+        - postgresql
+      addons:
+        postgresql: "10.0"
+    - stage: Test
+      php: nightly
+      env: DB=pgsql POSTGRESQL_VERSION=10.0
+      services:
+        - postgresql
+      addons:
+        postgresql: "10.0"
+
     - stage: Coverage
       php: 7.1
       env: DB=sqlite

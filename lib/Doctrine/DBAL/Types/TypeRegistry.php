@@ -10,7 +10,7 @@ final class TypeRegistry
 {
     /**
      * Map of already instantiated type objects. One instance per type (flyweight).
-     * @var Type[]
+     * @var TypeInterface[]
      */
     private $typeInstances = [];
 
@@ -28,7 +28,7 @@ final class TypeRegistry
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function getType(string $name) : Type
+    public function getType(string $name) : TypeInterface
     {
         if ( ! isset($this->typeInstances[$name])) {
             if ( ! isset($this->typesMap[$name])) {

@@ -31,80 +31,64 @@ use Doctrine\DBAL\DBALException;
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @since  2.0
  */
-abstract class Type
+abstract class Type implements TypeInterface
 {
-    const TARRAY = 'array';
-    const SIMPLE_ARRAY = 'simple_array';
-    const JSON_ARRAY = 'json_array';
-    const JSON = 'json';
-    const BIGINT = 'bigint';
-    const BOOLEAN = 'boolean';
-    const DATETIME = 'datetime';
-    const DATETIME_IMMUTABLE = 'datetime_immutable';
-    const DATETIMETZ = 'datetimetz';
-    const DATETIMETZ_IMMUTABLE = 'datetimetz_immutable';
-    const DATE = 'date';
-    const DATE_IMMUTABLE = 'date_immutable';
-    const TIME = 'time';
-    const TIME_IMMUTABLE = 'time_immutable';
-    const DECIMAL = 'decimal';
-    const INTEGER = 'integer';
-    const OBJECT = 'object';
-    const SMALLINT = 'smallint';
-    const STRING = 'string';
-    const TEXT = 'text';
-    const BINARY = 'binary';
-    const BLOB = 'blob';
-    const FLOAT = 'float';
-    const GUID = 'guid';
-    const DATEINTERVAL = 'dateinterval';
+    public const TARRAY = BuiltInTypes::TARRAY;
+    public const SIMPLE_ARRAY = BuiltInTypes::SIMPLE_ARRAY;
+    public const JSON_ARRAY = BuiltInTypes::JSON_ARRAY;
+    public const JSON = BuiltInTypes::JSON;
+    public const BIGINT = BuiltInTypes::BIGINT;
+    public const BOOLEAN = BuiltInTypes::BOOLEAN;
+    public const DATETIME = BuiltInTypes::DATETIME;
+    public const DATETIME_IMMUTABLE = BuiltInTypes::DATETIME_IMMUTABLE;
+    public const DATETIMETZ = BuiltInTypes::DATETIMETZ;
+    public const DATETIMETZ_IMMUTABLE = BuiltInTypes::DATETIMETZ_IMMUTABLE;
+    public const DATE = BuiltInTypes::DATE;
+    public const DATE_IMMUTABLE = BuiltInTypes::DATE_IMMUTABLE;
+    public const TIME = BuiltInTypes::TIME;
+    public const TIME_IMMUTABLE = BuiltInTypes::TIME_IMMUTABLE;
+    public const DECIMAL = BuiltInTypes::DECIMAL;
+    public const INTEGER = BuiltInTypes::INTEGER;
+    public const OBJECT = BuiltInTypes::OBJECT;
+    public const SMALLINT = BuiltInTypes::SMALLINT;
+    public const STRING = BuiltInTypes::STRING;
+    public const TEXT = BuiltInTypes::TEXT;
+    public const BINARY = BuiltInTypes::BINARY;
+    public const BLOB = BuiltInTypes::BLOB;
+    public const FLOAT = BuiltInTypes::FLOAT;
+    public const GUID = BuiltInTypes::GUID;
+    public const DATEINTERVAL = BuiltInTypes::DATEINTERVAL;
 
-    /**
-     * Map of already instantiated type objects. One instance per type (flyweight).
-     *
-     * @var array
-     */
-    private static $_typeObjects = [];
-
-    /**
-     * The map of supported doctrine mapping types.
-     *
-     * @var array
-     */
-    private static $_typesMap = [
-        self::TARRAY => ArrayType::class,
-        self::SIMPLE_ARRAY => SimpleArrayType::class,
-        self::JSON_ARRAY => JsonArrayType::class,
-        self::JSON => JsonType::class,
-        self::OBJECT => ObjectType::class,
-        self::BOOLEAN => BooleanType::class,
-        self::INTEGER => IntegerType::class,
-        self::SMALLINT => SmallIntType::class,
-        self::BIGINT => BigIntType::class,
-        self::STRING => StringType::class,
-        self::TEXT => TextType::class,
-        self::DATETIME => DateTimeType::class,
-        self::DATETIME_IMMUTABLE => DateTimeImmutableType::class,
-        self::DATETIMETZ => DateTimeTzType::class,
-        self::DATETIMETZ_IMMUTABLE => DateTimeTzImmutableType::class,
-        self::DATE => DateType::class,
-        self::DATE_IMMUTABLE => DateImmutableType::class,
-        self::TIME => TimeType::class,
-        self::TIME_IMMUTABLE => TimeImmutableType::class,
-        self::DECIMAL => DecimalType::class,
-        self::FLOAT => FloatType::class,
-        self::BINARY => BinaryType::class,
-        self::BLOB => BlobType::class,
-        self::GUID => GuidType::class,
-        self::DATEINTERVAL => DateIntervalType::class,
+    private const BUILT_IN_TYPES_MAP = [
+        BuiltInTypes::TARRAY => ArrayType::class,
+        BuiltInTypes::SIMPLE_ARRAY => SimpleArrayType::class,
+        BuiltInTypes::JSON_ARRAY => JsonArrayType::class,
+        BuiltInTypes::JSON => JsonType::class,
+        BuiltInTypes::OBJECT => ObjectType::class,
+        BuiltInTypes::BOOLEAN => BooleanType::class,
+        BuiltInTypes::INTEGER => IntegerType::class,
+        BuiltInTypes::SMALLINT => SmallIntType::class,
+        BuiltInTypes::BIGINT => BigIntType::class,
+        BuiltInTypes::STRING => StringType::class,
+        BuiltInTypes::TEXT => TextType::class,
+        BuiltInTypes::DATETIME => DateTimeType::class,
+        BuiltInTypes::DATETIME_IMMUTABLE => DateTimeImmutableType::class,
+        BuiltInTypes::DATETIMETZ => DateTimeTzType::class,
+        BuiltInTypes::DATETIMETZ_IMMUTABLE => DateTimeTzImmutableType::class,
+        BuiltInTypes::DATE => DateType::class,
+        BuiltInTypes::DATE_IMMUTABLE => DateImmutableType::class,
+        BuiltInTypes::TIME => TimeType::class,
+        BuiltInTypes::TIME_IMMUTABLE => TimeImmutableType::class,
+        BuiltInTypes::DECIMAL => DecimalType::class,
+        BuiltInTypes::FLOAT => FloatType::class,
+        BuiltInTypes::BINARY => BinaryType::class,
+        BuiltInTypes::BLOB => BlobType::class,
+        BuiltInTypes::GUID => GuidType::class,
+        BuiltInTypes::DATEINTERVAL => DateIntervalType::class,
     ];
 
-    /**
-     * Prevents instantiation and forces use of the factory method.
-     */
-    final private function __construct()
-    {
-    }
+    /** @var TypeRegistry|null */
+    private static $typeRegistry;
 
     /**
      * Converts a value from its PHP representation to its database representation
@@ -167,6 +151,19 @@ abstract class Type
      */
     abstract public function getName();
 
+    private static function getRegistry() : TypeRegistry
+    {
+        if (self::$typeRegistry === null) {
+            self::$typeRegistry = new TypeRegistry();
+
+            foreach (self::BUILT_IN_TYPES_MAP as $name => $class) {
+                self::$typeRegistry->addType($name, $class);
+            }
+        }
+
+        return self::$typeRegistry;
+    }
+
     /**
      * Factory method to create type instances.
      * Type instances are implemented as flyweights.
@@ -179,14 +176,7 @@ abstract class Type
      */
     public static function getType($name)
     {
-        if ( ! isset(self::$_typeObjects[$name])) {
-            if ( ! isset(self::$_typesMap[$name])) {
-                throw DBALException::unknownColumnType($name);
-            }
-            self::$_typeObjects[$name] = new self::$_typesMap[$name]();
-        }
-
-        return self::$_typeObjects[$name];
+        return self::getRegistry()->getType($name);
     }
 
     /**
@@ -201,11 +191,7 @@ abstract class Type
      */
     public static function addType($name, $className)
     {
-        if (isset(self::$_typesMap[$name])) {
-            throw DBALException::typeExists($name);
-        }
-
-        self::$_typesMap[$name] = $className;
+        self::getRegistry()->addType($name, $className);
     }
 
     /**
@@ -217,7 +203,7 @@ abstract class Type
      */
     public static function hasType($name)
     {
-        return isset(self::$_typesMap[$name]);
+        return self::getRegistry()->hasType($name);
     }
 
     /**
@@ -232,15 +218,7 @@ abstract class Type
      */
     public static function overrideType($name, $className)
     {
-        if ( ! isset(self::$_typesMap[$name])) {
-            throw DBALException::typeNotFound($name);
-        }
-
-        if (isset(self::$_typeObjects[$name])) {
-            unset(self::$_typeObjects[$name]);
-        }
-
-        self::$_typesMap[$name] = $className;
+        self::getRegistry()->overrideType($name, $className);
     }
 
     /**
@@ -270,7 +248,7 @@ abstract class Type
      */
     public static function getTypesMap()
     {
-        return self::$_typesMap;
+        return self::getRegistry()->getTypesMap();
     }
 
     /**

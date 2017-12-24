@@ -30,11 +30,6 @@ class DateImmutableTypeTest extends \PHPUnit\Framework\TestCase
         self::assertSame(DateImmutableType::class, get_class($this->type));
     }
 
-    public function testReturnsName()
-    {
-        self::assertSame('date_immutable', $this->type->getName());
-    }
-
     public function testReturnsBindingType()
     {
         self::assertSame(\PDO::PARAM_STR, $this->type->getBindingType());

@@ -6,6 +6,7 @@ use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Comparator;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\TableDiff;
+use Doctrine\DBAL\Types\ArrayType;
 use Doctrine\DBAL\Types\Type;
 
 abstract class AbstractPostgreSqlPlatformTestCase extends AbstractPlatformTestCase
@@ -326,7 +327,7 @@ abstract class AbstractPostgreSqlPlatformTestCase extends AbstractPlatformTestCa
     {
         return array(
             "CREATE TABLE test (id INT NOT NULL, data TEXT NOT NULL, PRIMARY KEY(id))",
-            "COMMENT ON COLUMN test.data IS '(DC2Type:array)'"
+            "COMMENT ON COLUMN test.data IS '(DC2Type:Doctrine\\\\DBAL\\\\Types\\\\ArrayType)'"
         );
     }
 

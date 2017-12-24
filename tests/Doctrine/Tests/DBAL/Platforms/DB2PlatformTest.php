@@ -135,7 +135,7 @@ class DB2PlatformTest extends AbstractPlatformTestCase
     {
         return array(
             'CREATE TABLE test (id INTEGER NOT NULL, "data" CLOB(1M) NOT NULL, PRIMARY KEY(id))',
-            'COMMENT ON COLUMN test."data" IS \'(DC2Type:array)\'',
+            'COMMENT ON COLUMN test."data" IS \'(DC2Type:Doctrine\\DBAL\\Types\\ArrayType)\'',
         );
     }
 

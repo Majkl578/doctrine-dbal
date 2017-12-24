@@ -62,14 +62,6 @@ class BlobType extends Type
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return Type::BLOB;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBindingType()
     {
         return \PDO::PARAM_LOB;

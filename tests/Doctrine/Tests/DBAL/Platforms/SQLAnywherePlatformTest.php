@@ -115,7 +115,7 @@ class SQLAnywherePlatformTest extends AbstractPlatformTestCase
     {
         return array(
             "CREATE TABLE test (id INT NOT NULL, data TEXT NOT NULL, PRIMARY KEY (id))",
-            "COMMENT ON COLUMN test.data IS '(DC2Type:array)'"
+            "COMMENT ON COLUMN test.data IS '(DC2Type:Doctrine\\DBAL\\Types\\ArrayType)'"
         );
     }
 

@@ -8,6 +8,7 @@ use Doctrine\DBAL\Schema\ForeignKeyConstraint;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\TableDiff;
+use Doctrine\DBAL\Types\ArrayType;
 
 abstract class AbstractMySQLPlatformTestCase extends AbstractPlatformTestCase
 {
@@ -208,7 +209,7 @@ abstract class AbstractMySQLPlatformTestCase extends AbstractPlatformTestCase
 
     public function getCreateTableColumnTypeCommentsSQL()
     {
-        return array("CREATE TABLE test (id INT NOT NULL, data LONGTEXT NOT NULL COMMENT '(DC2Type:array)', PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB");
+        return array("CREATE TABLE test (id INT NOT NULL, data LONGTEXT NOT NULL COMMENT '(DC2Type:Doctrine\\\\DBAL\\\\Types\\\\ArrayType)', PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB");
     }
 
     /**

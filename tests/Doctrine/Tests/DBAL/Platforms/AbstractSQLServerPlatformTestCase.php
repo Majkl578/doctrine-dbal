@@ -6,6 +6,8 @@ use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\ColumnDiff;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\TableDiff;
+use Doctrine\DBAL\Types\ArrayType;
+use Doctrine\DBAL\Types\ObjectType;
 use Doctrine\DBAL\Types\Type;
 
 abstract class AbstractSQLServerPlatformTestCase extends AbstractPlatformTestCase
@@ -609,7 +611,7 @@ abstract class AbstractSQLServerPlatformTestCase extends AbstractPlatformTestCas
     {
         return array(
             "CREATE TABLE test (id INT NOT NULL, data VARCHAR(MAX) NOT NULL, PRIMARY KEY (id))",
-            "EXEC sp_addextendedproperty N'MS_Description', N'(DC2Type:array)', N'SCHEMA', dbo, N'TABLE', test, N'COLUMN', data",
+            "EXEC sp_addextendedproperty N'MS_Description', N'(DC2Type:Doctrine\\DBAL\\Types\\ArrayType)', N'SCHEMA', dbo, N'TABLE', test, N'COLUMN', data",
         );
     }
 
@@ -643,8 +645,8 @@ abstract class AbstractSQLServerPlatformTestCase extends AbstractPlatformTestCas
                 "EXEC sp_addextendedproperty N'MS_Description', N'Doctrine 0wnz you!', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', comment",
                 "EXEC sp_addextendedproperty N'MS_Description', N'Doctrine 0wnz comments for explicitly quoted columns!', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', [comment_quoted]",
                 "EXEC sp_addextendedproperty N'MS_Description', N'Doctrine 0wnz comments for reserved keyword columns!', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', [create]",
-                "EXEC sp_addextendedproperty N'MS_Description', N'(DC2Type:object)', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', commented_type",
-                "EXEC sp_addextendedproperty N'MS_Description', N'Doctrine array type.(DC2Type:array)', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', commented_type_with_comment",
+                "EXEC sp_addextendedproperty N'MS_Description', N'(DC2Type:Doctrine\\DBAL\\Types\ObjectType)', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', commented_type",
+                "EXEC sp_addextendedproperty N'MS_Description', N'Doctrine array type.(DC2Type:Doctrine\\DBAL\\Types\\ArrayType)', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', commented_type_with_comment",
                 "EXEC sp_addextendedproperty N'MS_Description', N'O''Reilly', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', comment_with_string_literal_char",
             ),
             $this->_platform->getCreateTableSQL($table)
@@ -814,20 +816,20 @@ abstract class AbstractSQLServerPlatformTestCase extends AbstractPlatformTestCas
                 "EXEC sp_addextendedproperty N'MS_Description', N'Doctrine', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', added_comment",
                 "EXEC sp_addextendedproperty N'MS_Description', N'rulez', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', [added_comment_quoted]",
                 "EXEC sp_addextendedproperty N'MS_Description', N'666', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', [select]",
-                "EXEC sp_addextendedproperty N'MS_Description', N'(DC2Type:object)', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', added_commented_type",
-                "EXEC sp_addextendedproperty N'MS_Description', N'666(DC2Type:array)', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', added_commented_type_with_comment",
+                "EXEC sp_addextendedproperty N'MS_Description', N'(DC2Type:Doctrine\\DBAL\\Types\\ObjectType)', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', added_commented_type",
+                "EXEC sp_addextendedproperty N'MS_Description', N'666(DC2Type:Doctrine\\DBAL\\Types\\ArrayType)', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', added_commented_type_with_comment",
                 "EXEC sp_addextendedproperty N'MS_Description', N'''''', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', added_comment_with_string_literal_char",
 
                 // Changed columns.
                 "EXEC sp_addextendedproperty N'MS_Description', N'primary', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', id",
                 "EXEC sp_addextendedproperty N'MS_Description', N'false', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', comment_false",
-                "EXEC sp_addextendedproperty N'MS_Description', N'(DC2Type:object)', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', comment_empty_string",
+                "EXEC sp_addextendedproperty N'MS_Description', N'(DC2Type:Doctrine\\DBAL\\Types\\ObjectType)', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', comment_empty_string",
                 "EXEC sp_dropextendedproperty N'MS_Description', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', comment_string_0",
                 "EXEC sp_dropextendedproperty N'MS_Description', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', comment",
-                "EXEC sp_updateextendedproperty N'MS_Description', N'Doctrine array.(DC2Type:array)', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', [comment_quoted]",
-                "EXEC sp_updateextendedproperty N'MS_Description', N'(DC2Type:object)', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', [create]",
+                "EXEC sp_updateextendedproperty N'MS_Description', N'Doctrine array.(DC2Type:Doctrine\\DBAL\\Types\\ArrayType)', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', [comment_quoted]",
+                "EXEC sp_updateextendedproperty N'MS_Description', N'(DC2Type:Doctrine\\DBAL\\Types\\ObjectType)', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', [create]",
                 "EXEC sp_updateextendedproperty N'MS_Description', N'foo', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', commented_type",
-                "EXEC sp_updateextendedproperty N'MS_Description', N'(DC2Type:array)', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', commented_type_with_comment",
+                "EXEC sp_updateextendedproperty N'MS_Description', N'(DC2Type:Doctrine\\DBAL\\Types\\ArrayType)', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', commented_type_with_comment",
                 "EXEC sp_updateextendedproperty N'MS_Description', N'''', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', comment_with_string_literal_char",
             ),
             $this->_platform->getAlterTableSQL($tableDiff)

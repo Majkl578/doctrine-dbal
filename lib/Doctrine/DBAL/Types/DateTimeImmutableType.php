@@ -32,14 +32,6 @@ class DateTimeImmutableType extends DateTimeType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return Type::DATETIME_IMMUTABLE;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         if (null === $value) {
@@ -52,7 +44,7 @@ class DateTimeImmutableType extends DateTimeType
 
         throw ConversionException::conversionFailedInvalidType(
             $value,
-            $this->getName(),
+            static::class,
             ['null', \DateTimeImmutable::class]
         );
     }
@@ -75,7 +67,7 @@ class DateTimeImmutableType extends DateTimeType
         if (! $dateTime) {
             throw ConversionException::conversionFailedFormat(
                 $value,
-                $this->getName(),
+                static::class,
                 $platform->getDateTimeFormatString()
             );
         }

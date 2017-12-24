@@ -68,14 +68,6 @@ class SimpleArrayType extends Type
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return Type::SIMPLE_ARRAY;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function requiresSQLCommentHint(AbstractPlatform $platform)
     {
         return true;

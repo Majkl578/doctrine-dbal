@@ -26,14 +26,6 @@ class FloatType extends Type
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return Type::FLOAT;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
         return $platform->getFloatDeclarationSQL($fieldDeclaration);

@@ -43,12 +43,4 @@ class TextType extends Type
     {
         return (is_resource($value)) ? stream_get_contents($value) : $value;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return Type::TEXT;
-    }
 }

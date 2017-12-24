@@ -71,18 +71,10 @@ class JsonType extends Type
         $val = json_decode($value, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw ConversionException::conversionFailed($value, $this->getName());
+            throw ConversionException::conversionFailed($value, static::class);
         }
 
         return $val;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return Type::JSON;
     }
 
     /**

@@ -119,17 +119,13 @@ abstract class Type implements TypeInterface
      */
     abstract public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform);
 
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function getName();
-
     private static function getRegistry() : TypeRegistry
     {
         if (self::$typeRegistry === null) {
             self::$typeRegistry = new TypeRegistry();
 
             foreach (self::BUILT_IN_TYPES_MAP as $name => $class) {
+                self::$typeRegistry->addType($class, $class);
                 self::$typeRegistry->addType($name, $class);
             }
         }

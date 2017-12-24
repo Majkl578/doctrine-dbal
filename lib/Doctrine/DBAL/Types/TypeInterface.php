@@ -46,13 +46,6 @@ interface TypeInterface
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform);
 
     /**
-     * Gets the name of this type.
-     * @return string
-     * @todo Needed?
-     */
-    public function getName();
-
-    /**
      * Gets the (preferred) binding type for values of this type that
      * can be used when binding parameters to prepared statements.
      * This method should return one of the PDO::PARAM_* constants, that is, one of:

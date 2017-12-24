@@ -10,6 +10,9 @@ use Doctrine\DBAL\Schema\ColumnDiff;
 use Doctrine\DBAL\Schema\Comparator;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\TableDiff;
+use Doctrine\DBAL\Types\DateTimeType;
+use Doctrine\DBAL\Types\DateType;
+use Doctrine\DBAL\Types\TimeType;
 use Doctrine\DBAL\Types\Type;
 
 class SchemaManagerFunctionalTestCase extends \Doctrine\Tests\DbalFunctionalTestCase
@@ -265,14 +268,22 @@ class SchemaManagerFunctionalTestCase extends \Doctrine\Tests\DbalFunctionalTest
 
         self::assertEquals('baz2', strtolower($columns['baz2']->getname()));
         self::assertEquals(5, array_search('baz2', $columnsKeys));
-        self::assertContains($columns['baz2']->gettype()->getName(), array('time', 'date', 'datetime'));
+        self::assertTrue(
+            $columns['baz2']->getType() instanceof TimeType
+            || $columns['baz2']->getType() instanceof DateType
+            || $columns['baz2']->getType() instanceof DateTimeType
+        );
         self::assertEquals(true,   $columns['baz2']->getnotnull());
         self::assertEquals(null,   $columns['baz2']->getdefault());
         self::assertInternalType('array',  $columns['baz2']->getPlatformOptions());
 
         self::assertEquals('baz3', strtolower($columns['baz3']->getname()));
         self::assertEquals(6, array_search('baz3', $columnsKeys));
-        self::assertContains($columns['baz3']->gettype()->getName(), array('time', 'date', 'datetime'));
+        self::assertTrue(
+            $columns['baz3']->getType() instanceof TimeType
+            || $columns['baz3']->getType() instanceof DateType
+            || $columns['baz3']->getType() instanceof DateTimeType
+        );
         self::assertEquals(true,   $columns['baz3']->getnotnull());
         self::assertEquals(null,   $columns['baz3']->getdefault());
         self::assertInternalType('array',  $columns['baz3']->getPlatformOptions());

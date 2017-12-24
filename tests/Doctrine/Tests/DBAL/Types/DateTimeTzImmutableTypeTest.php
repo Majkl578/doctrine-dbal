@@ -30,11 +30,6 @@ class DateTimeTzImmutableTypeTest extends \PHPUnit\Framework\TestCase
         self::assertSame(DateTimeTzImmutableType::class, get_class($this->type));
     }
 
-    public function testReturnsName()
-    {
-        self::assertSame('datetimetz_immutable', $this->type->getName());
-    }
-
     public function testReturnsBindingType()
     {
         self::assertSame(\PDO::PARAM_STR, $this->type->getBindingType());

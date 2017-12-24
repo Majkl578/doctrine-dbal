@@ -47,14 +47,6 @@ class JsonArrayType extends JsonType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return Type::JSON_ARRAY;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function requiresSQLCommentHint(AbstractPlatform $platform)
     {
         return true;

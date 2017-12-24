@@ -21,6 +21,10 @@ namespace Doctrine\DBAL\Sharding\SQLAzure;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\BigIntType;
+use Doctrine\DBAL\Types\GuidType;
+use Doctrine\DBAL\Types\IntegerType;
+use Doctrine\DBAL\Types\SmallIntType;
 use Doctrine\DBAL\Types\Type;
 
 use Doctrine\DBAL\Schema\Synchronizer\AbstractSchemaSynchronizer;
@@ -267,13 +271,13 @@ class SQLAzureFederationsSynchronizer extends AbstractSchemaSynchronizer
     {
         $federationType = Type::getType($this->shardManager->getDistributionType());
 
-        switch ($federationType->getName()) {
-            case Type::GUID:
+        switch (true) {
+            case $federationType instanceof GuidType:
                 $defaultValue = '00000000-0000-0000-0000-000000000000';
                 break;
-            case Type::INTEGER:
-            case Type::SMALLINT:
-            case Type::BIGINT:
+            case $federationType instanceof IntegerType:
+            case $federationType instanceof SmallIntType:
+            case $federationType instanceof BigIntType:
                 $defaultValue = '0';
                 break;
             default:

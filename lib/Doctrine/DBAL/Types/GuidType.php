@@ -40,14 +40,6 @@ class GuidType extends StringType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return Type::GUID;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function requiresSQLCommentHint(AbstractPlatform $platform)
     {
         return !$platform->hasNativeGuidType();

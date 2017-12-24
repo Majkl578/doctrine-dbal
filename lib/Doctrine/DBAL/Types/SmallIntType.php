@@ -31,14 +31,6 @@ class SmallIntType extends Type implements PhpIntegerMappingType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return Type::SMALLINT;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
         return $platform->getSmallIntTypeDeclarationSQL($fieldDeclaration);

@@ -31,11 +31,6 @@ class JsonArrayTest extends \Doctrine\Tests\DbalTestCase
         self::assertSame(\PDO::PARAM_STR, $this->type->getBindingType());
     }
 
-    public function testReturnsName()
-    {
-        self::assertSame(Type::JSON_ARRAY, $this->type->getName());
-    }
-
     public function testReturnsSQLDeclaration()
     {
         self::assertSame('DUMMYJSON', $this->type->getSQLDeclaration(array(), $this->platform));

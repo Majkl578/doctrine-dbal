@@ -16,45 +16,33 @@ use Doctrine\DBAL\DBALException;
  */
 abstract class Type
 {
-    const TARRAY = 'array';
-    const SIMPLE_ARRAY = 'simple_array';
-    const JSON_ARRAY = 'json_array';
-    const JSON = 'json';
-    const BIGINT = 'bigint';
-    const BOOLEAN = 'boolean';
-    const DATETIME = 'datetime';
-    const DATETIME_IMMUTABLE = 'datetime_immutable';
-    const DATETIMETZ = 'datetimetz';
-    const DATETIMETZ_IMMUTABLE = 'datetimetz_immutable';
-    const DATE = 'date';
-    const DATE_IMMUTABLE = 'date_immutable';
-    const TIME = 'time';
-    const TIME_IMMUTABLE = 'time_immutable';
-    const DECIMAL = 'decimal';
-    const INTEGER = 'integer';
-    const OBJECT = 'object';
-    const SMALLINT = 'smallint';
-    const STRING = 'string';
-    const TEXT = 'text';
-    const BINARY = 'binary';
-    const BLOB = 'blob';
-    const FLOAT = 'float';
-    const GUID = 'guid';
-    const DATEINTERVAL = 'dateinterval';
+    public const TARRAY = 'array';
+    public const SIMPLE_ARRAY = 'simple_array';
+    public const JSON_ARRAY = 'json_array';
+    public const JSON = 'json';
+    public const BIGINT = 'bigint';
+    public const BOOLEAN = 'boolean';
+    public const DATETIME = 'datetime';
+    public const DATETIME_IMMUTABLE = 'datetime_immutable';
+    public const DATETIMETZ = 'datetimetz';
+    public const DATETIMETZ_IMMUTABLE = 'datetimetz_immutable';
+    public const DATE = 'date';
+    public const DATE_IMMUTABLE = 'date_immutable';
+    public const TIME = 'time';
+    public const TIME_IMMUTABLE = 'time_immutable';
+    public const DECIMAL = 'decimal';
+    public const INTEGER = 'integer';
+    public const OBJECT = 'object';
+    public const SMALLINT = 'smallint';
+    public const STRING = 'string';
+    public const TEXT = 'text';
+    public const BINARY = 'binary';
+    public const BLOB = 'blob';
+    public const FLOAT = 'float';
+    public const GUID = 'guid';
+    public const DATEINTERVAL = 'dateinterval';
 
-    /**
-     * Map of already instantiated type objects. One instance per type (flyweight).
-     *
-     * @var array
-     */
-    private static $_typeObjects = [];
-
-    /**
-     * The map of supported doctrine mapping types.
-     *
-     * @var array
-     */
-    private static $_typesMap = [
+    private const DEFAULT_TYPES_MAP = [
         self::TARRAY => ArrayType::class,
         self::SIMPLE_ARRAY => SimpleArrayType::class,
         self::JSON_ARRAY => JsonArrayType::class,
@@ -82,12 +70,8 @@ abstract class Type
         self::DATEINTERVAL => DateIntervalType::class,
     ];
 
-    /**
-     * Prevents instantiation and forces use of the factory method.
-     */
-    final private function __construct()
-    {
-    }
+    /** @var TypeRegistry|null */
+    private static $typeRegistry;
 
     /**
      * Converts a value from its PHP representation to its database representation
@@ -150,6 +134,19 @@ abstract class Type
      */
     abstract public function getName();
 
+    private static function getRegistry() : TypeRegistry
+    {
+        if (self::$typeRegistry === null) {
+            self::$typeRegistry = new TypeRegistry();
+
+            foreach (self::DEFAULT_TYPES_MAP as $name => $class) {
+                self::$typeRegistry->addType($name, $class);
+            }
+        }
+
+        return self::$typeRegistry;
+    }
+
     /**
      * Factory method to create type instances.
      * Type instances are implemented as flyweights.
@@ -162,14 +159,7 @@ abstract class Type
      */
     public static function getType($name)
     {
-        if ( ! isset(self::$_typeObjects[$name])) {
-            if ( ! isset(self::$_typesMap[$name])) {
-                throw DBALException::unknownColumnType($name);
-            }
-            self::$_typeObjects[$name] = new self::$_typesMap[$name]();
-        }
-
-        return self::$_typeObjects[$name];
+        return self::getRegistry()->getType($name);
     }
 
     /**
@@ -184,11 +174,7 @@ abstract class Type
      */
     public static function addType($name, $className)
     {
-        if (isset(self::$_typesMap[$name])) {
-            throw DBALException::typeExists($name);
-        }
-
-        self::$_typesMap[$name] = $className;
+        self::getRegistry()->addType($name, $className);
     }
 
     /**
@@ -200,7 +186,7 @@ abstract class Type
      */
     public static function hasType($name)
     {
-        return isset(self::$_typesMap[$name]);
+        return self::getRegistry()->hasType($name);
     }
 
     /**
@@ -215,15 +201,7 @@ abstract class Type
      */
     public static function overrideType($name, $className)
     {
-        if ( ! isset(self::$_typesMap[$name])) {
-            throw DBALException::typeNotFound($name);
-        }
-
-        if (isset(self::$_typeObjects[$name])) {
-            unset(self::$_typeObjects[$name]);
-        }
-
-        self::$_typesMap[$name] = $className;
+        self::getRegistry()->overrideType($name, $className);
     }
 
     /**
@@ -253,7 +231,7 @@ abstract class Type
      */
     public static function getTypesMap()
     {
-        return self::$_typesMap;
+        return self::getRegistry()->getTypesMap();
     }
 
     /**

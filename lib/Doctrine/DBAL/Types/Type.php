@@ -197,16 +197,6 @@ abstract class Type implements TypeInterface
     }
 
     /**
-     * @return string
-     */
-    public function __toString()
-    {
-        $e = explode('\\', get_class($this));
-
-        return str_replace('Type', '', end($e));
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function canRequireSQLConversion()

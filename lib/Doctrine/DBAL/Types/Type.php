@@ -91,13 +91,7 @@ abstract class Type implements TypeInterface
     private static $typeRegistry;
 
     /**
-     * Converts a value from its PHP representation to its database representation
-     * of this type.
-     *
-     * @param mixed                                     $value    The value to convert.
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform The currently used database platform.
-     *
-     * @return mixed The database representation of the value.
+     * {@inheritdoc}
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
@@ -105,13 +99,7 @@ abstract class Type implements TypeInterface
     }
 
     /**
-     * Converts a value from its database representation to its PHP representation
-     * of this type.
-     *
-     * @param mixed                                     $value    The value to convert.
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform The currently used database platform.
-     *
-     * @return mixed The PHP representation of the value.
+     * {@inheritdoc}
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
@@ -119,13 +107,7 @@ abstract class Type implements TypeInterface
     }
 
     /**
-     * Gets the default length of this type.
-     *
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
-     *
-     * @return integer|null
-     *
-     * @todo Needed?
+     * {@inheritdoc}
      */
     public function getDefaultLength(AbstractPlatform $platform)
     {
@@ -133,21 +115,12 @@ abstract class Type implements TypeInterface
     }
 
     /**
-     * Gets the SQL declaration snippet for a field of this type.
-     *
-     * @param array                                     $fieldDeclaration The field declaration.
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform         The currently used database platform.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     abstract public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform);
 
     /**
-     * Gets the name of this type.
-     *
-     * @return string
-     *
-     * @todo Needed?
+     * {@inheritdoc}
      */
     abstract public function getName();
 
@@ -222,18 +195,7 @@ abstract class Type implements TypeInterface
     }
 
     /**
-     * Gets the (preferred) binding type for values of this type that
-     * can be used when binding parameters to prepared statements.
-     *
-     * This method should return one of the PDO::PARAM_* constants, that is, one of:
-     *
-     * PDO::PARAM_BOOL
-     * PDO::PARAM_NULL
-     * PDO::PARAM_INT
-     * PDO::PARAM_STR
-     * PDO::PARAM_LOB
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getBindingType()
     {
@@ -262,14 +224,7 @@ abstract class Type implements TypeInterface
     }
 
     /**
-     * Does working with this column require SQL conversion functions?
-     *
-     * This is a metadata function that is required for example in the ORM.
-     * Usage of {@link convertToDatabaseValueSQL} and
-     * {@link convertToPHPValueSQL} works for any type and mostly
-     * does nothing. This method can additionally be used for optimization purposes.
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function canRequireSQLConversion()
     {
@@ -277,12 +232,7 @@ abstract class Type implements TypeInterface
     }
 
     /**
-     * Modifies the SQL expression (identifier, parameter) to convert to a database value.
-     *
-     * @param string                                    $sqlExpr
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform)
     {
@@ -290,12 +240,7 @@ abstract class Type implements TypeInterface
     }
 
     /**
-     * Modifies the SQL expression (identifier, parameter) to convert to a PHP value.
-     *
-     * @param string                                    $sqlExpr
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function convertToPHPValueSQL($sqlExpr, $platform)
     {
@@ -303,11 +248,7 @@ abstract class Type implements TypeInterface
     }
 
     /**
-     * Gets an array of database types that map to this Doctrine type.
-     *
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getMappedDatabaseTypes(AbstractPlatform $platform)
     {
@@ -315,14 +256,7 @@ abstract class Type implements TypeInterface
     }
 
     /**
-     * If this Doctrine Type maps to an already mapped database type,
-     * reverse schema engineering can't tell them apart. You need to mark
-     * one of those types as commented, which will have Doctrine use an SQL
-     * comment to typehint the actual Doctrine Type.
-     *
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function requiresSQLCommentHint(AbstractPlatform $platform)
     {

@@ -16,31 +16,31 @@ use Doctrine\DBAL\DBALException;
  */
 abstract class Type implements TypeInterface
 {
-    public const TARRAY = 'array';
-    public const SIMPLE_ARRAY = 'simple_array';
-    public const JSON_ARRAY = 'json_array';
-    public const JSON = 'json';
-    public const BIGINT = 'bigint';
-    public const BOOLEAN = 'boolean';
-    public const DATETIME = 'datetime';
-    public const DATETIME_IMMUTABLE = 'datetime_immutable';
-    public const DATETIMETZ = 'datetimetz';
-    public const DATETIMETZ_IMMUTABLE = 'datetimetz_immutable';
-    public const DATE = 'date';
-    public const DATE_IMMUTABLE = 'date_immutable';
-    public const TIME = 'time';
-    public const TIME_IMMUTABLE = 'time_immutable';
-    public const DECIMAL = 'decimal';
-    public const INTEGER = 'integer';
-    public const OBJECT = 'object';
-    public const SMALLINT = 'smallint';
-    public const STRING = 'string';
-    public const TEXT = 'text';
-    public const BINARY = 'binary';
-    public const BLOB = 'blob';
-    public const FLOAT = 'float';
-    public const GUID = 'guid';
-    public const DATEINTERVAL = 'dateinterval';
+    public const TARRAY               = DefaultTypes::TARRAY;
+    public const SIMPLE_ARRAY         = DefaultTypes::SIMPLE_ARRAY;
+    public const JSON_ARRAY           = DefaultTypes::JSON_ARRAY;
+    public const JSON                 = DefaultTypes::JSON;
+    public const BIGINT               = DefaultTypes::BIGINT;
+    public const BOOLEAN              = DefaultTypes::BOOLEAN;
+    public const DATETIME             = DefaultTypes::DATETIME;
+    public const DATETIME_IMMUTABLE   = DefaultTypes::DATETIME_IMMUTABLE;
+    public const DATETIMETZ           = DefaultTypes::DATETIMETZ;
+    public const DATETIMETZ_IMMUTABLE = DefaultTypes::DATETIMETZ_IMMUTABLE;
+    public const DATE                 = DefaultTypes::DATE;
+    public const DATE_IMMUTABLE       = DefaultTypes::DATE_IMMUTABLE;
+    public const TIME                 = DefaultTypes::TIME;
+    public const TIME_IMMUTABLE       = DefaultTypes::TIME_IMMUTABLE;
+    public const DECIMAL              = DefaultTypes::DECIMAL;
+    public const INTEGER              = DefaultTypes::INTEGER;
+    public const OBJECT               = DefaultTypes::OBJECT;
+    public const SMALLINT             = DefaultTypes::SMALLINT;
+    public const STRING               = DefaultTypes::STRING;
+    public const TEXT                 = DefaultTypes::TEXT;
+    public const BINARY               = DefaultTypes::BINARY;
+    public const BLOB                 = DefaultTypes::BLOB;
+    public const FLOAT                = DefaultTypes::FLOAT;
+    public const GUID                 = DefaultTypes::GUID;
+    public const DATEINTERVAL         = DefaultTypes::DATEINTERVAL;
 
     private const DEFAULT_TYPES_MAP = [
         self::TARRAY => ArrayType::class,

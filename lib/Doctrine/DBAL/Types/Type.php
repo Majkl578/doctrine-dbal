@@ -102,11 +102,6 @@ abstract class Type implements TypeInterface
      */
     abstract public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform);
 
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function getName();
-
     private static function getRegistry() : TypeRegistry
     {
         if (self::$typeRegistry === null) {
@@ -175,6 +170,14 @@ abstract class Type implements TypeInterface
     public static function overrideType($name, $className)
     {
         self::getRegistry()->overrideType($name, $className);
+    }
+
+    /**
+     * @throws DBALException
+     */
+    public static function lookupName(TypeInterface $type) : string
+    {
+        return self::getRegistry()->lookupName($type);
     }
 
     /**

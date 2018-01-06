@@ -4,6 +4,9 @@ namespace Doctrine\Tests\DBAL\Functional\Schema;
 
 use Doctrine\DBAL\Schema;
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Types\DateTimeType;
+use Doctrine\DBAL\Types\DateTimeTzType;
+use Doctrine\DBAL\Types\DateType;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\Tests\TestUtil;
 
@@ -269,9 +272,9 @@ class OracleSchemaManagerTest extends SchemaManagerFunctionalTestCase
 
         $columns = $this->_sm->listTableColumns('tbl_date');
 
-        self::assertSame('date', $columns['col_date']->getType()->getName());
-        self::assertSame('datetime', $columns['col_datetime']->getType()->getName());
-        self::assertSame('datetimetz', $columns['col_datetimetz']->getType()->getName());
+        self::assertInstanceOf(DateType::class, $columns['col_date']->getType());
+        self::assertInstanceOf(DateTimeType::class, $columns['col_datetime']->getType());
+        self::assertInstanceOf(DateTimeTzType::class, $columns['col_datetimetz']->getType());
     }
 
     public function testCreateAndListSequences() : void

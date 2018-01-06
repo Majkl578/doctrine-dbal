@@ -122,7 +122,7 @@ abstract class AbstractPlatform
      * Contains a list of all columns that should generate parseable column comments for type-detection
      * in reverse engineering scenarios.
      *
-     * @var array|null
+     * @var Types\TypeInterface[]|null
      */
     protected $doctrineTypeComments = null;
 
@@ -447,7 +447,7 @@ abstract class AbstractPlatform
             $type = Type::getType($typeName);
 
             if ($type->requiresSQLCommentHint($this)) {
-                $this->doctrineTypeComments[] = $typeName;
+                $this->doctrineTypeComments[] = $type;
             }
         }
     }
@@ -465,7 +465,7 @@ abstract class AbstractPlatform
             $this->initializeCommentedDoctrineTypes();
         }
 
-        return in_array($doctrineType->getName(), $this->doctrineTypeComments);
+        return in_array($doctrineType, $this->doctrineTypeComments, true);
     }
 
     /**
@@ -481,7 +481,7 @@ abstract class AbstractPlatform
             $this->initializeCommentedDoctrineTypes();
         }
 
-        $this->doctrineTypeComments[] = $doctrineType instanceof Type ? $doctrineType->getName() : $doctrineType;
+        $this->doctrineTypeComments[] = $doctrineType instanceof Type ? $doctrineType : Type::getType($doctrineType);
     }
 
     /**
@@ -493,7 +493,7 @@ abstract class AbstractPlatform
      */
     public function getDoctrineTypeComment(Type $doctrineType)
     {
-        return '(DC2Type:' . $doctrineType->getName() . ')';
+        return '(DC2Type:' . (Type::lookupName($doctrineType)) . ')';
     }
 
     /**

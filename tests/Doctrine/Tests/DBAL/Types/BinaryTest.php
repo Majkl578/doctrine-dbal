@@ -2,6 +2,7 @@
 
 namespace Doctrine\Tests\DBAL\Types;
 
+use Doctrine\DBAL\Types\BinaryType;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\Tests\DBAL\Mocks\MockPlatform;
 
@@ -33,7 +34,7 @@ class BinaryTest extends \Doctrine\Tests\DbalTestCase
 
     public function testReturnsName()
     {
-        self::assertSame(Type::BINARY, $this->type->getName());
+        self::assertInstanceOf(BinaryType::class, $this->type);
     }
 
     public function testReturnsSQLDeclaration()

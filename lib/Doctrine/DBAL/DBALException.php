@@ -6,6 +6,7 @@ use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\ExceptionConverterDriver;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Types\TypeInterface;
 
 class DBALException extends \Exception
 {
@@ -273,5 +274,15 @@ class DBALException extends \Exception
     public static function typeNotFound($name)
     {
         return new self('Type to be overwritten '.$name.' does not exist.');
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return \Doctrine\DBAL\DBALException
+     */
+    public static function typeNotRegistered(TypeInterface $type)
+    {
+        return new self('Type of the ' . get_class($type) . ' instance is not registered.');
     }
 }

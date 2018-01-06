@@ -14,14 +14,6 @@ class TimeType extends Type
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return Type::TIME;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
         return $platform->getTimeTypeDeclarationSQL($fieldDeclaration);
@@ -40,7 +32,7 @@ class TimeType extends Type
             return $value->format($platform->getTimeFormatString());
         }
 
-        throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'DateTime']);
+        throw ConversionException::conversionFailedInvalidType($value, static::class, ['null', 'DateTime']);
     }
 
     /**
@@ -54,7 +46,7 @@ class TimeType extends Type
 
         $val = \DateTime::createFromFormat('!' . $platform->getTimeFormatString(), $value);
         if ( ! $val) {
-            throw ConversionException::conversionFailedFormat($value, $this->getName(), $platform->getTimeFormatString());
+            throw ConversionException::conversionFailedFormat($value, static::class, $platform->getTimeFormatString());
         }
 
         return $val;

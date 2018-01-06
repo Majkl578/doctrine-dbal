@@ -12,14 +12,6 @@ class DateIntervalType extends Type
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return Type::DATEINTERVAL;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
         $fieldDeclaration['length'] = 255;
@@ -41,7 +33,7 @@ class DateIntervalType extends Type
             return $value->format('P%YY%MM%DDT%HH%IM%SS');
         }
 
-        throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'DateInterval']);
+        throw ConversionException::conversionFailedInvalidType($value, static::class, ['null', 'DateInterval']);
     }
 
     /**
@@ -56,7 +48,7 @@ class DateIntervalType extends Type
         try {
             return new \DateInterval($value);
         } catch (\Exception $exception) {
-            throw ConversionException::conversionFailedFormat($value, $this->getName(), 'P%YY%MM%DDT%HH%IM%SS', $exception);
+            throw ConversionException::conversionFailedFormat($value, static::class, 'P%YY%MM%DDT%HH%IM%SS', $exception);
         }
     }
 

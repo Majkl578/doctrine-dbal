@@ -46,14 +46,6 @@ class BinaryType extends Type
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return Type::BINARY;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBindingType()
     {
         return \PDO::PARAM_LOB;

@@ -3,6 +3,8 @@
 namespace Doctrine\DBAL\Schema;
 
 use Doctrine\DBAL\Exception\DriverException;
+use Doctrine\DBAL\Types\JsonArrayType;
+use Doctrine\DBAL\Types\JsonType;
 use Doctrine\DBAL\Types\Type;
 
 /**
@@ -423,13 +425,14 @@ class PostgreSqlSchemaManager extends AbstractSchemaManager
                 : null,
         ];
 
-        $column = new Column($tableColumn['field'], Type::getType($type), $options);
+        $type   = Type::getType($type);
+        $column = new Column($tableColumn['field'], $type, $options);
 
         if (isset($tableColumn['collation']) && !empty($tableColumn['collation'])) {
             $column->setPlatformOption('collation', $tableColumn['collation']);
         }
 
-        if (in_array($column->getType()->getName(), [Type::JSON_ARRAY, Type::JSON], true)) {
+        if ($type instanceof JsonType || $type instanceof JsonArrayType) {
             $column->setPlatformOption('jsonb', $jsonb);
         }
 

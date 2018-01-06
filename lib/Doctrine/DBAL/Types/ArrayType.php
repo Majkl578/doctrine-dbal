@@ -40,18 +40,10 @@ class ArrayType extends Type
         $value = (is_resource($value)) ? stream_get_contents($value) : $value;
         $val = unserialize($value);
         if ($val === false && $value != 'b:0;') {
-            throw ConversionException::conversionFailed($value, $this->getName());
+            throw ConversionException::conversionFailed($value, get_class($this));
         }
 
         return $val;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return Type::TARRAY;
     }
 
     /**

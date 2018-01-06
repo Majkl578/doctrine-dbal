@@ -31,7 +31,7 @@ class VarDateTimeType extends DateTimeType
 
         $val = date_create($value);
         if ( ! $val) {
-            throw ConversionException::conversionFailed($value, $this->getName());
+            throw ConversionException::conversionFailed($value, static::class);
         }
 
         return $val;

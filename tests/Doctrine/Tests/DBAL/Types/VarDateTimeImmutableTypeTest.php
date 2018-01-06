@@ -29,11 +29,6 @@ class VarDateTimeImmutableTypeTest extends \PHPUnit\Framework\TestCase
         $this->platform = $this->prophesize(AbstractPlatform::class);
     }
 
-    public function testReturnsName()
-    {
-        self::assertSame('datetime_immutable', $this->type->getName());
-    }
-
     public function testReturnsBindingType()
     {
         self::assertSame(\PDO::PARAM_STR, $this->type->getBindingType());

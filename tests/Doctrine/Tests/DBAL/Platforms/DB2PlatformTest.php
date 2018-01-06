@@ -9,6 +9,7 @@ use Doctrine\DBAL\Schema\ColumnDiff;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\TableDiff;
+use Doctrine\DBAL\Types\BooleanType;
 use Doctrine\DBAL\Types\Type;
 
 class DB2PlatformTest extends AbstractPlatformTestCase

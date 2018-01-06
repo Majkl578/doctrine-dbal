@@ -15,14 +15,6 @@ class BigIntType extends Type implements PhpIntegerMappingType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return Type::BIGINT;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
         return $platform->getBigIntTypeDeclarationSQL($fieldDeclaration);

@@ -100,4 +100,24 @@ final class TypeRegistry
     {
         return $this->typesMap;
     }
+
+    /**
+     * @throws DBALException
+     */
+    public function lookupName(TypeInterface $type) : string
+    {
+        $name = array_search($type, $this->typeInstances, true);
+
+        if ($name !== false) {
+            return $name;
+        }
+
+        $name = array_search(get_class($type), $this->typesMap, true);
+
+        if ($this->typesMap !== false) {
+            return $name;
+        }
+
+        throw DBALException::typeNotFound($type);
+    }
 }

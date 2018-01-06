@@ -38,14 +38,6 @@ class BooleanType extends Type
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return Type::BOOLEAN;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBindingType()
     {
         return \PDO::PARAM_BOOL;

@@ -83,18 +83,18 @@ class SqliteSchemaManagerTest extends \PHPUnit\Framework\TestCase
 , "b" TEXT DEFAULT "a" COLLATE RTRIM',
             ],
             'Column with numeric but no comment 1' => [
-                null, 'a', 'CREATE TABLE "a" ("a" NUMERIC(10, 0) NOT NULL, "b" CLOB NOT NULL --(DC2Type:array)
-, "c" CHAR(36) NOT NULL --(DC2Type:guid)
+                null, 'a', 'CREATE TABLE "a" ("a" NUMERIC(10, 0) NOT NULL, "b" CLOB NOT NULL --(DC2Type:Doctrine\\DBAL\\Types\\ArrayType)
+, "c" CHAR(36) NOT NULL --(DC2Type:Doctrine\DBAL\Types\GuidType)
 )',
             ],
             'Column with numeric but no comment 2' => [
-                null, 'a', 'CREATE TABLE "b" ("a" NUMERIC(10, 0) NOT NULL, "b" CLOB NOT NULL --(DC2Type:array)
-, "c" CHAR(36) NOT NULL --(DC2Type:guid)
+                null, 'a', 'CREATE TABLE "b" ("a" NUMERIC(10, 0) NOT NULL, "b" CLOB NOT NULL --(DC2Type:Doctrine\\DBAL\\Types\\ArrayType)
+, "c" CHAR(36) NOT NULL --(DC2Type:Doctrine\\DBAL\\Types\\GuidType)
 )',
             ],
             'Column with numeric but no comment 3' => [
-                '(DC2Type:guid)', 'c', 'CREATE TABLE "b" ("a" NUMERIC(10, 0) NOT NULL, "b" CLOB NOT NULL --(DC2Type:array)
-, "c" CHAR(36) NOT NULL --(DC2Type:guid)
+                '(DC2Type:Doctrine\\DBAL\\Types\\GuidType)', 'c', 'CREATE TABLE "b" ("a" NUMERIC(10, 0) NOT NULL, "b" CLOB NOT NULL --(DC2Type:Doctrine\\DBAL\\Types\\ArrayType)
+, "c" CHAR(36) NOT NULL --(DC2Type:Doctrine\\DBAL\\Types\\GuidType)
 )',
             ],
         ];

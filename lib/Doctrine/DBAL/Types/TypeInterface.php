@@ -59,32 +59,6 @@ interface TypeInterface
     public function getBindingType();
 
     /**
-     * Does working with this column require SQL conversion functions?
-     * This is a metadata function that is required for example in the ORM.
-     * Usage of {@link convertToDatabaseValueSQL} and
-     * {@link convertToPHPValueSQL} works for any type and mostly
-     * does nothing. This method can additionally be used for optimization purposes.
-     * @return boolean
-     */
-    public function canRequireSQLConversion();
-
-    /**
-     * Modifies the SQL expression (identifier, parameter) to convert to a database value.
-     * @param string $sqlExpr
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
-     * @return string
-     */
-    public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform);
-
-    /**
-     * Modifies the SQL expression (identifier, parameter) to convert to a PHP value.
-     * @param string $sqlExpr
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
-     * @return string
-     */
-    public function convertToPHPValueSQL($sqlExpr, $platform);
-
-    /**
      * Gets an array of database types that map to this Doctrine type.
      * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      * @return array

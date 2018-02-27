@@ -328,13 +328,22 @@ class SQLServerPlatform extends AbstractPlatform
      */
     protected function getCreateColumnCommentSQL($tableName, $columnName, $comment)
     {
+        if (strpos($tableName, ".") !== false) {
+            list($schema, $table) = explode(".", $tableName);
+            $schema = $this->quoteStringLiteral($schema);
+            $table = $this->quoteStringLiteral($table);
+        } else {
+            $schema = "dbo";
+            $table = $this->quoteStringLiteral($tableName);
+        }
+
         return $this->getAddExtendedPropertySQL(
             'MS_Description',
             $comment,
             'SCHEMA',
-            'dbo',
+            $schema,
             'TABLE',
-            $tableName,
+            $table,
             'COLUMN',
             $columnName
         );
@@ -676,13 +685,22 @@ class SQLServerPlatform extends AbstractPlatform
      */
     protected function getAlterColumnCommentSQL($tableName, $columnName, $comment)
     {
+        if (strpos($tableName, ".") !== false) {
+            list($schema, $table) = explode(".", $tableName);
+            $schema = $this->quoteStringLiteral($schema);
+            $table = $this->quoteStringLiteral($table);
+        } else {
+            $schema = "dbo";
+            $table = $this->quoteStringLiteral($tableName);
+        }
+
         return $this->getUpdateExtendedPropertySQL(
             'MS_Description',
             $comment,
             'SCHEMA',
-            'dbo',
+            $schema,
             'TABLE',
-            $tableName,
+            $table,
             'COLUMN',
             $columnName
         );
@@ -706,12 +724,21 @@ class SQLServerPlatform extends AbstractPlatform
      */
     protected function getDropColumnCommentSQL($tableName, $columnName)
     {
+        if (strpos($tableName, ".") !== false) {
+            list($schema, $table) = explode(".", $tableName);
+            $schema = $this->quoteStringLiteral($schema);
+            $table = $this->quoteStringLiteral($table);
+        } else {
+            $schema = "dbo";
+            $table = $this->quoteStringLiteral($tableName);
+        }
+
         return $this->getDropExtendedPropertySQL(
             'MS_Description',
             'SCHEMA',
-            'dbo',
+            $schema,
             'TABLE',
-            $tableName,
+            $table,
             'COLUMN',
             $columnName
         );

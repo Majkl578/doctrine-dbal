@@ -586,7 +586,7 @@ abstract class AbstractSQLServerPlatformTestCase extends AbstractPlatformTestCas
     {
         return array(
             "CREATE TABLE test (id INT NOT NULL, PRIMARY KEY (id))",
-            "EXEC sp_addextendedproperty N'MS_Description', N'This is a comment', N'SCHEMA', dbo, N'TABLE', test, N'COLUMN', id",
+            "EXEC sp_addextendedproperty N'MS_Description', N'This is a comment', N'SCHEMA', 'dbo', N'TABLE', 'test', N'COLUMN', id",
         );
     }
 
@@ -597,7 +597,7 @@ abstract class AbstractSQLServerPlatformTestCase extends AbstractPlatformTestCas
     {
         return array(
             "ALTER TABLE mytable ADD quota INT NOT NULL",
-            "EXEC sp_addextendedproperty N'MS_Description', N'A comment', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', quota",
+            "EXEC sp_addextendedproperty N'MS_Description', N'A comment', N'SCHEMA', 'dbo', N'TABLE', 'mytable', N'COLUMN', quota",
             // todo
             //"EXEC sp_addextendedproperty N'MS_Description', N'B comment', N'SCHEMA', dbo, N'TABLE', mytable, N'COLUMN', baz",
         );
@@ -610,7 +610,7 @@ abstract class AbstractSQLServerPlatformTestCase extends AbstractPlatformTestCas
     {
         return array(
             "CREATE TABLE test (id INT NOT NULL, data VARCHAR(MAX) NOT NULL, PRIMARY KEY (id))",
-            "EXEC sp_addextendedproperty N'MS_Description', N'(DC2Type:array)', N'SCHEMA', dbo, N'TABLE', test, N'COLUMN', data",
+            "EXEC sp_addextendedproperty N'MS_Description', N'(DC2Type:array)', N'SCHEMA', 'dbo', N'TABLE', 'test', N'COLUMN', data",
         );
     }
 

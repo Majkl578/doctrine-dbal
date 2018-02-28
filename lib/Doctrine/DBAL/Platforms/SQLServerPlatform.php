@@ -690,7 +690,7 @@ class SQLServerPlatform extends AbstractPlatform
             $schema = $this->quoteStringLiteral($schema);
             $table = $this->quoteStringLiteral($table);
         } else {
-            $schema = "dbo";
+            $schema = "'dbo'";
             $table = $this->quoteStringLiteral($tableName);
         }
 
@@ -729,7 +729,7 @@ class SQLServerPlatform extends AbstractPlatform
             $schema = $this->quoteStringLiteral($schema);
             $table = $this->quoteStringLiteral($table);
         } else {
-            $schema = "dbo";
+            $schema = "'dbo'";
             $table = $this->quoteStringLiteral($tableName);
         }
 

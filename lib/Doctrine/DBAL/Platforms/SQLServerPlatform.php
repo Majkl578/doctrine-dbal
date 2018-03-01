@@ -28,6 +28,8 @@ use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\DBAL\Types;
+use function explode;
+use function strpos;
 
 /**
  * The SQLServerPlatform provides the behavior, features and SQL dialect of the
@@ -328,13 +330,13 @@ class SQLServerPlatform extends AbstractPlatform
      */
     protected function getCreateColumnCommentSQL($tableName, $columnName, $comment)
     {
-        if (strpos($tableName, ".") !== false) {
-            list($schema, $table) = explode(".", $tableName);
-            $schema = $this->quoteStringLiteral($schema);
-            $table = $this->quoteStringLiteral($table);
+        if (strpos($tableName, '.') !== false) {
+            list($schema, $table) = explode('.', $tableName);
+            $schema               = $this->quoteStringLiteral($schema);
+            $table                = $this->quoteStringLiteral($table);
         } else {
             $schema = "'dbo'";
-            $table = $this->quoteStringLiteral($tableName);
+            $table  = $this->quoteStringLiteral($tableName);
         }
 
         return $this->getAddExtendedPropertySQL(
@@ -685,13 +687,13 @@ class SQLServerPlatform extends AbstractPlatform
      */
     protected function getAlterColumnCommentSQL($tableName, $columnName, $comment)
     {
-        if (strpos($tableName, ".") !== false) {
-            list($schema, $table) = explode(".", $tableName);
-            $schema = $this->quoteStringLiteral($schema);
-            $table = $this->quoteStringLiteral($table);
+        if (strpos($tableName, '.') !== false) {
+            list($schema, $table) = explode('.', $tableName);
+            $schema               = $this->quoteStringLiteral($schema);
+            $table                = $this->quoteStringLiteral($table);
         } else {
             $schema = "'dbo'";
-            $table = $this->quoteStringLiteral($tableName);
+            $table  = $this->quoteStringLiteral($tableName);
         }
 
         return $this->getUpdateExtendedPropertySQL(
@@ -724,13 +726,13 @@ class SQLServerPlatform extends AbstractPlatform
      */
     protected function getDropColumnCommentSQL($tableName, $columnName)
     {
-        if (strpos($tableName, ".") !== false) {
-            list($schema, $table) = explode(".", $tableName);
-            $schema = $this->quoteStringLiteral($schema);
-            $table = $this->quoteStringLiteral($table);
+        if (strpos($tableName, '.') !== false) {
+            list($schema, $table) = explode('.', $tableName);
+            $schema               = $this->quoteStringLiteral($schema);
+            $table                = $this->quoteStringLiteral($table);
         } else {
             $schema = "'dbo'";
-            $table = $this->quoteStringLiteral($tableName);
+            $table  = $this->quoteStringLiteral($tableName);
         }
 
         return $this->getDropExtendedPropertySQL(

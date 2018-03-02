@@ -580,6 +580,79 @@ abstract class AbstractSQLServerPlatformTestCase extends AbstractPlatformTestCas
     }
 
     /**
+     * @group DBAL-42
+     */
+    public function testCreateTableWithSchemaColumnComments()
+    {
+        $table = new Table('testschema.test');
+        $table->addColumn('id', 'integer', array('comment' => 'This is a comment'));
+        $table->setPrimaryKey(array('id'));
+
+        $expectedSql = [
+            "CREATE TABLE testschema.test (id INT NOT NULL, PRIMARY KEY (id))",
+            "EXEC sp_addextendedproperty N'MS_Description', N'This is a comment', N'SCHEMA', 'testschema', N'TABLE', 'test', N'COLUMN', id",
+        ];
+
+        self::assertEquals($expectedSql, $this->_platform->getCreateTableSQL($table));
+    }
+
+    /**
+     * @group DBAL-42
+     */
+    public function testAlterTableWithSchemaColumnComments()
+    {
+        $tableDiff = new TableDiff('testschema.mytable');
+        $tableDiff->addedColumns['quota'] = new \Doctrine\DBAL\Schema\Column('quota', \Doctrine\DBAL\Types\Type::getType('integer'), array('comment' => 'A comment'));
+
+        $expectedSql = [
+            "ALTER TABLE testschema.mytable ADD quota INT NOT NULL",
+            "EXEC sp_addextendedproperty N'MS_Description', N'A comment', N'SCHEMA', 'testschema', N'TABLE', 'mytable', N'COLUMN', quota"
+        ];
+
+        self::assertEquals($expectedSql, $this->_platform->getAlterTableSQL($tableDiff));
+    }
+
+    /**
+     * @group DBAL-42
+     */
+    public function testAlterTableWithSchemaDropColumnComments()
+    {
+        $tableDiff = new TableDiff('testschema.mytable');
+        $tableDiff->changedColumns['quota'] = new ColumnDiff(
+            'quota',
+            new Column('quota', Type::getType('integer'), array()),
+            array('comment'),
+            new Column('quota', Type::getType('integer'), array('comment' => 'A comment'))
+        );
+
+        $expectedSql = [
+            "EXEC sp_dropextendedproperty N'MS_Description', N'SCHEMA', 'testschema', N'TABLE', 'mytable', N'COLUMN', quota"
+        ];
+
+        self::assertEquals($expectedSql, $this->_platform->getAlterTableSQL($tableDiff));
+    }
+
+    /**
+     * @group DBAL-42
+     */
+    public function testAlterTableWithSchemaUpdateColumnComments()
+    {
+        $tableDiff = new TableDiff('testschema.mytable');
+        $tableDiff->changedColumns['quota'] = new ColumnDiff(
+            'quota',
+            new Column('quota', Type::getType('integer'), array('comment' => 'B comment')),
+            array('comment'),
+            new Column('quota', Type::getType('integer'), array('comment' => 'A comment'))
+        );
+
+        $expectedSql = [
+            "EXEC sp_updateextendedproperty N'MS_Description', N'B comment', N'SCHEMA', 'testschema', N'TABLE', 'mytable', N'COLUMN', quota"
+        ];
+
+        self::assertEquals($expectedSql, $this->_platform->getAlterTableSQL($tableDiff));
+    }
+
+    /**
      * @group DBAL-543
      */
     public function getCreateTableColumnCommentsSQL()

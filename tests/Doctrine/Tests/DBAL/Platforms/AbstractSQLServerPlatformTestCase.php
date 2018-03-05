@@ -622,7 +622,7 @@ abstract class AbstractSQLServerPlatformTestCase extends AbstractPlatformTestCas
             'quota',
             new Column('quota', Type::getType('integer'), []),
             ['comment'],
-            new Column('quota', Type::getType('integer'), array('comment' => 'A comment'))
+            new Column('quota', Type::getType('integer'), ['comment' => 'A comment'])
         );
 
         $expectedSql = ["EXEC sp_dropextendedproperty N'MS_Description', N'SCHEMA', 'testschema', N'TABLE', 'mytable', N'COLUMN', quota"];

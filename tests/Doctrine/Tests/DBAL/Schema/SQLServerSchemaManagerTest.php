@@ -7,11 +7,12 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Doctrine\DBAL\Schema\SQLServerSchemaManager;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Doctrine\DBAL\Schema\SQLServerSchemaManager
  */
-final class SQLServerSchemaManagerTest extends \PHPUnit\Framework\TestCase
+final class SQLServerSchemaManagerTest extends TestCase
 {
     public function testListTableNames()
     {
@@ -38,9 +39,7 @@ final class SQLServerSchemaManagerTest extends \PHPUnit\Framework\TestCase
                         'name'        => 'myThirdTable',
                         'schema_name' => 'dbo',
                     ],
-                    [
-                        'name' => 'myFourthTable',
-                    ],
+                    ['name' => 'myFourthTable'],
                 ]
             )
         );

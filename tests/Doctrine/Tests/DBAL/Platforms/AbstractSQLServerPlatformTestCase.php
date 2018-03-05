@@ -585,11 +585,11 @@ abstract class AbstractSQLServerPlatformTestCase extends AbstractPlatformTestCas
     public function testCreateTableWithSchemaColumnComments()
     {
         $table = new Table('testschema.test');
-        $table->addColumn('id', 'integer', array('comment' => 'This is a comment'));
-        $table->setPrimaryKey(array('id'));
+        $table->addColumn('id', 'integer', ['comment' => 'This is a comment']);
+        $table->setPrimaryKey(['id']);
 
         $expectedSql = [
-            "CREATE TABLE testschema.test (id INT NOT NULL, PRIMARY KEY (id))",
+            'CREATE TABLE testschema.test (id INT NOT NULL, PRIMARY KEY (id))',
             "EXEC sp_addextendedproperty N'MS_Description', N'This is a comment', N'SCHEMA', 'testschema', N'TABLE', 'test', N'COLUMN', id",
         ];
 
@@ -601,12 +601,12 @@ abstract class AbstractSQLServerPlatformTestCase extends AbstractPlatformTestCas
      */
     public function testAlterTableWithSchemaColumnComments()
     {
-        $tableDiff = new TableDiff('testschema.mytable');
-        $tableDiff->addedColumns['quota'] = new \Doctrine\DBAL\Schema\Column('quota', \Doctrine\DBAL\Types\Type::getType('integer'), array('comment' => 'A comment'));
+        $tableDiff                        = new TableDiff('testschema.mytable');
+        $tableDiff->addedColumns['quota'] = new Column('quota', Type::getType('integer'), ['comment' => 'A comment']);
 
         $expectedSql = [
-            "ALTER TABLE testschema.mytable ADD quota INT NOT NULL",
-            "EXEC sp_addextendedproperty N'MS_Description', N'A comment', N'SCHEMA', 'testschema', N'TABLE', 'mytable', N'COLUMN', quota"
+            'ALTER TABLE testschema.mytable ADD quota INT NOT NULL',
+            "EXEC sp_addextendedproperty N'MS_Description', N'A comment', N'SCHEMA', 'testschema', N'TABLE', 'mytable', N'COLUMN', quota",
         ];
 
         self::assertEquals($expectedSql, $this->_platform->getAlterTableSQL($tableDiff));
@@ -617,17 +617,15 @@ abstract class AbstractSQLServerPlatformTestCase extends AbstractPlatformTestCas
      */
     public function testAlterTableWithSchemaDropColumnComments()
     {
-        $tableDiff = new TableDiff('testschema.mytable');
+        $tableDiff                          = new TableDiff('testschema.mytable');
         $tableDiff->changedColumns['quota'] = new ColumnDiff(
             'quota',
-            new Column('quota', Type::getType('integer'), array()),
-            array('comment'),
+            new Column('quota', Type::getType('integer'), []),
+            ['comment'],
             new Column('quota', Type::getType('integer'), array('comment' => 'A comment'))
         );
 
-        $expectedSql = [
-            "EXEC sp_dropextendedproperty N'MS_Description', N'SCHEMA', 'testschema', N'TABLE', 'mytable', N'COLUMN', quota"
-        ];
+        $expectedSql = ["EXEC sp_dropextendedproperty N'MS_Description', N'SCHEMA', 'testschema', N'TABLE', 'mytable', N'COLUMN', quota"];
 
         self::assertEquals($expectedSql, $this->_platform->getAlterTableSQL($tableDiff));
     }
@@ -637,17 +635,15 @@ abstract class AbstractSQLServerPlatformTestCase extends AbstractPlatformTestCas
      */
     public function testAlterTableWithSchemaUpdateColumnComments()
     {
-        $tableDiff = new TableDiff('testschema.mytable');
+        $tableDiff                          = new TableDiff('testschema.mytable');
         $tableDiff->changedColumns['quota'] = new ColumnDiff(
             'quota',
-            new Column('quota', Type::getType('integer'), array('comment' => 'B comment')),
-            array('comment'),
-            new Column('quota', Type::getType('integer'), array('comment' => 'A comment'))
+            new Column('quota', Type::getType('integer'), ['comment' => 'B comment']),
+            ['comment'],
+            new Column('quota', Type::getType('integer'), ['comment' => 'A comment'])
         );
 
-        $expectedSql = [
-            "EXEC sp_updateextendedproperty N'MS_Description', N'B comment', N'SCHEMA', 'testschema', N'TABLE', 'mytable', N'COLUMN', quota"
-        ];
+        $expectedSql = ["EXEC sp_updateextendedproperty N'MS_Description', N'B comment', N'SCHEMA', 'testschema', N'TABLE', 'mytable', N'COLUMN', quota"];
 
         self::assertEquals($expectedSql, $this->_platform->getAlterTableSQL($tableDiff));
     }

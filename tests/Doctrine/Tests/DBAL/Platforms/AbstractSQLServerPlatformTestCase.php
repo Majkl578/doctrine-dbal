@@ -579,9 +579,6 @@ abstract class AbstractSQLServerPlatformTestCase extends AbstractPlatformTestCas
         self::assertEquals('CREATE SCHEMA ' . $schemaName, $sql);
     }
 
-    /**
-     * @group DBAL-42
-     */
     public function testCreateTableWithSchemaColumnComments()
     {
         $table = new Table('testschema.test');
@@ -596,9 +593,6 @@ abstract class AbstractSQLServerPlatformTestCase extends AbstractPlatformTestCas
         self::assertEquals($expectedSql, $this->_platform->getCreateTableSQL($table));
     }
 
-    /**
-     * @group DBAL-42
-     */
     public function testAlterTableWithSchemaColumnComments()
     {
         $tableDiff                        = new TableDiff('testschema.mytable');
@@ -612,9 +606,6 @@ abstract class AbstractSQLServerPlatformTestCase extends AbstractPlatformTestCas
         self::assertEquals($expectedSql, $this->_platform->getAlterTableSQL($tableDiff));
     }
 
-    /**
-     * @group DBAL-42
-     */
     public function testAlterTableWithSchemaDropColumnComments()
     {
         $tableDiff                          = new TableDiff('testschema.mytable');
@@ -630,9 +621,6 @@ abstract class AbstractSQLServerPlatformTestCase extends AbstractPlatformTestCas
         self::assertEquals($expectedSql, $this->_platform->getAlterTableSQL($tableDiff));
     }
 
-    /**
-     * @group DBAL-42
-     */
     public function testAlterTableWithSchemaUpdateColumnComments()
     {
         $tableDiff                          = new TableDiff('testschema.mytable');

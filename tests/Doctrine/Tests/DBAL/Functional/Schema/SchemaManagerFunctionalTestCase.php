@@ -13,6 +13,7 @@ use Doctrine\DBAL\Schema\Sequence;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\DBAL\Types\Type;
+use function in_array;
 
 class SchemaManagerFunctionalTestCase extends \Doctrine\Tests\DbalFunctionalTestCase
 {
@@ -578,7 +579,7 @@ class SchemaManagerFunctionalTestCase extends \Doctrine\Tests\DbalFunctionalTest
             $this->markTestSkipped('Schema definition is not supported by this platform.');
         }
 
-        if (!\in_array('testschema', $this->_sm->listNamespaceNames(), true)) {
+        if (!in_array('testschema', $this->_sm->listNamespaceNames(), true)) {
             $diff                  = new SchemaDiff();
             $diff->newNamespaces[] = 'testschema';
 
@@ -588,7 +589,7 @@ class SchemaManagerFunctionalTestCase extends \Doctrine\Tests\DbalFunctionalTest
         }
 
         $myTable = $this->createTestTable('testschema.my_table');
-        self::assertTrue(\in_array('testschema.my_table', $this->_sm->listTableNames(), true));
+        self::assertTrue(in_array('testschema.my_table', $this->_sm->listTableNames(), true));
 
         $tableDetails = $this->_sm->listTableDetails('testschema.my_table');
         self::assertTrue($tableDetails->hasColumn('id'));
@@ -597,9 +598,9 @@ class SchemaManagerFunctionalTestCase extends \Doctrine\Tests\DbalFunctionalTest
         self::assertCount(0, $tableDetails->getForeignKeys());
         self::assertCount(1, $tableDetails->getIndexes());
 
-        $tableDiff                         = new \Doctrine\DBAL\Schema\TableDiff("testschema.my_table");
+        $tableDiff                         = new TableDiff('testschema.my_table');
         $tableDiff->fromTable              = $myTable;
-        $tableDiff->addedColumns['foo']    = new \Doctrine\DBAL\Schema\Column('foo', Type::getType('integer'));
+        $tableDiff->addedColumns['foo']    = new Column('foo', Type::getType('integer'));
         $tableDiff->removedColumns['test'] = $myTable->getColumn('test');
 
         $this->_sm->alterTable($tableDiff);

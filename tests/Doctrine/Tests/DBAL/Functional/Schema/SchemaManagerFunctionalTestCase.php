@@ -575,11 +575,11 @@ class SchemaManagerFunctionalTestCase extends \Doctrine\Tests\DbalFunctionalTest
 
     public function testAlterTableInNamespace()
     {
-        if (!$this->_sm->getDatabasePlatform()->supportsSchemas()) {
+        if (! $this->_sm->getDatabasePlatform()->supportsSchemas()) {
             $this->markTestSkipped('Schema definition is not supported by this platform.');
         }
 
-        if (!in_array('testschema', $this->_sm->listNamespaceNames(), true)) {
+        if (! in_array('testschema', $this->_sm->listNamespaceNames(), true)) {
             $diff                  = new SchemaDiff();
             $diff->newNamespaces[] = 'testschema';
 

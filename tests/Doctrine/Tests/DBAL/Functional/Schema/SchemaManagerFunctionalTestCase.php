@@ -8,6 +8,7 @@ use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\ColumnDiff;
 use Doctrine\DBAL\Schema\Comparator;
+use Doctrine\DBAL\Schema\SchemaDiff;
 use Doctrine\DBAL\Schema\Sequence;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\TableDiff;
@@ -568,6 +569,44 @@ class SchemaManagerFunctionalTestCase extends \Doctrine\Tests\DbalFunctionalTest
             self::assertEquals(array('foreign_key_test'), array_map('strtolower', $foreignKey->getColumns()));
             self::assertEquals(array('id'), array_map('strtolower', $foreignKey->getForeignColumns()));
         }
+    }
+
+
+    public function testAlterTableInNamespace()
+    {
+        if (!$this->_sm->getDatabasePlatform()->supportsSchemas()) {
+            $this->markTestSkipped('Schema definition is not supported by this platform.');
+        }
+
+        if (!\in_array('testschema', $this->_sm->listNamespaceNames(), true)) {
+            $diff                  = new SchemaDiff();
+            $diff->newNamespaces[] = 'testschema';
+
+            foreach ($diff->toSql($this->_sm->getDatabasePlatform()) as $sql) {
+                $this->_conn->exec($sql);
+            }
+        }
+
+        $myTable = $this->createTestTable('testschema.my_table');
+        self::assertTrue(\in_array('testschema.my_table', $this->_sm->listTableNames(), true));
+
+        $tableDetails = $this->_sm->listTableDetails('testschema.my_table');
+        self::assertTrue($tableDetails->hasColumn('id'));
+        self::assertTrue($tableDetails->hasColumn('test'));
+        self::assertTrue($tableDetails->hasColumn('foreign_key_test'));
+        self::assertCount(0, $tableDetails->getForeignKeys());
+        self::assertCount(1, $tableDetails->getIndexes());
+
+        $tableDiff                         = new \Doctrine\DBAL\Schema\TableDiff("testschema.my_table");
+        $tableDiff->fromTable              = $myTable;
+        $tableDiff->addedColumns['foo']    = new \Doctrine\DBAL\Schema\Column('foo', Type::getType('integer'));
+        $tableDiff->removedColumns['test'] = $myTable->getColumn('test');
+
+        $this->_sm->alterTable($tableDiff);
+
+        $tableDetails = $this->_sm->listTableDetails('alter_table');
+        self::assertFalse($tableDetails->hasColumn('test'));
+        self::assertTrue($tableDetails->hasColumn('foo'));
     }
 
     public function testCreateAndListViews()

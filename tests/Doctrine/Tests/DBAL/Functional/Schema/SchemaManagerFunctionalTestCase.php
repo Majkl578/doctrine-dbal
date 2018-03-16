@@ -612,16 +612,10 @@ class SchemaManagerFunctionalTestCase extends \Doctrine\Tests\DbalFunctionalTest
         $this->createTestTable('testschema.my_table_in_namespace');
         self::assertContains('testschema.my_table_in_namespace', $this->_sm->listTableNames());
 
-        //tables without namespace should be created in default namspace
+        //tables without namespace should be created in default namespace
+        //default namespaces are ignored in table listings
         $this->createTestTable('my_table_not_in_namespace');
-
-        $defaultNamespace = $this->_conn->getDatabasePlatform()->getDefaultSchemaName() . '.';
-        if ($this->_conn->getDatabasePlatform()->getName() === 'mssql') {
-            //'dbo' should be ignored for BC
-            $defaultNamespace = '';
-        }
-
-        self::assertContains($defaultNamespace . 'my_table_not_in_namespace', $this->_sm->listTableNames());
+        self::assertContains('my_table_not_in_namespace', $this->_sm->listTableNames());
     }
 
     public function testCreateAndListViews()

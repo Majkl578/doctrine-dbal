@@ -13,7 +13,6 @@ use Doctrine\DBAL\Schema\Sequence;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\DBAL\Types\Type;
-use function in_array;
 
 class SchemaManagerFunctionalTestCase extends \Doctrine\Tests\DbalFunctionalTestCase
 {
@@ -43,6 +42,28 @@ class SchemaManagerFunctionalTestCase extends \Doctrine\Tests\DbalFunctionalTest
 
         $this->_sm = $this->_conn->getSchemaManager();
     }
+
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+
+        if ($this->getName() === 'testTableInNamespace' && $this->_sm->getDatabasePlatform()->supportsSchemas()) {
+
+            $this->_sm->dropTable('testschema.my_table_in_namespace');
+
+            //TODO: SchemaDiff does not drop removed Namespaces?
+            $this->_conn->exec('DROP SCHEMA testschema');
+
+            //$diff                      = new SchemaDiff();
+            //$diff->removedNamespaces[] = 'testschema';
+
+            //foreach ($diff->toSql($this->_sm->getDatabasePlatform()) as $sql) {
+            //    $this->_conn->exec($sql);
+            //}
+        }
+    }
+
 
     /**
      * @group DBAL-1220
@@ -573,41 +594,34 @@ class SchemaManagerFunctionalTestCase extends \Doctrine\Tests\DbalFunctionalTest
     }
 
 
-    public function testAlterTableInNamespace()
+    public function testTableInNamespace()
     {
         if (! $this->_sm->getDatabasePlatform()->supportsSchemas()) {
             $this->markTestSkipped('Schema definition is not supported by this platform.');
         }
 
-        if (! in_array('testschema', $this->_sm->listNamespaceNames(), true)) {
-            $diff                  = new SchemaDiff();
-            $diff->newNamespaces[] = 'testschema';
+        //create schema
+        $diff                  = new SchemaDiff();
+        $diff->newNamespaces[] = 'testschema';
 
-            foreach ($diff->toSql($this->_sm->getDatabasePlatform()) as $sql) {
-                $this->_conn->exec($sql);
-            }
+        foreach ($diff->toSql($this->_sm->getDatabasePlatform()) as $sql) {
+            $this->_conn->exec($sql);
         }
 
-        $myTable = $this->createTestTable('testschema.my_table');
-        self::assertTrue(in_array('testschema.my_table', $this->_sm->listTableNames(), true));
+        //test if table is create in namespace
+        $this->createTestTable('testschema.my_table_in_namespace');
+        self::assertContains('testschema.my_table_in_namespace', $this->_sm->listTableNames());
 
-        $tableDetails = $this->_sm->listTableDetails('testschema.my_table');
-        self::assertTrue($tableDetails->hasColumn('id'));
-        self::assertTrue($tableDetails->hasColumn('test'));
-        self::assertTrue($tableDetails->hasColumn('foreign_key_test'));
-        self::assertCount(0, $tableDetails->getForeignKeys());
-        self::assertCount(1, $tableDetails->getIndexes());
+        //tables without namespace should be created in default namspace
+        $this->createTestTable('my_table_not_in_namespace');
 
-        $tableDiff                         = new TableDiff('testschema.my_table');
-        $tableDiff->fromTable              = $myTable;
-        $tableDiff->addedColumns['foo']    = new Column('foo', Type::getType('integer'));
-        $tableDiff->removedColumns['test'] = $myTable->getColumn('test');
+        $defaultNamespace = $this->_conn->getDatabasePlatform()->getDefaultSchemaName() . '.';
+        if ($this->_conn->getDatabasePlatform()->getName() === 'mssql') {
+            //'dbo' should be ignored for BC
+            $defaultNamespace = '';
+        }
 
-        $this->_sm->alterTable($tableDiff);
-
-        $tableDetails = $this->_sm->listTableDetails('alter_table');
-        self::assertFalse($tableDetails->hasColumn('test'));
-        self::assertTrue($tableDetails->hasColumn('foo'));
+        self::assertContains($defaultNamespace . 'my_table_not_in_namespace', $this->_sm->listTableNames());
     }
 
     public function testCreateAndListViews()

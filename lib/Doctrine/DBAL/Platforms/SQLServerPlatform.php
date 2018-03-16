@@ -331,21 +331,21 @@ class SQLServerPlatform extends AbstractPlatform
     protected function getCreateColumnCommentSQL($tableName, $columnName, $comment)
     {
         if (strpos($tableName, '.') !== false) {
-            list($schema, $table) = explode('.', $tableName);
-            $schema               = $this->quoteStringLiteral($schema);
-            $table                = $this->quoteStringLiteral($table);
+            list($schemaSQL, $tableSQL) = explode('.', $tableName);
+            $schemaSQL                  = $this->quoteStringLiteral($schemaSQL);
+            $tableSQL                   = $this->quoteStringLiteral($tableSQL);
         } else {
-            $schema = "'dbo'";
-            $table  = $this->quoteStringLiteral($tableName);
+            $schemaSQL = "'dbo'";
+            $tableSQL  = $this->quoteStringLiteral($tableName);
         }
 
         return $this->getAddExtendedPropertySQL(
             'MS_Description',
             $comment,
             'SCHEMA',
-            $schema,
+            $schemaSQL,
             'TABLE',
-            $table,
+            $tableSQL,
             'COLUMN',
             $columnName
         );
@@ -688,21 +688,21 @@ class SQLServerPlatform extends AbstractPlatform
     protected function getAlterColumnCommentSQL($tableName, $columnName, $comment)
     {
         if (strpos($tableName, '.') !== false) {
-            list($schema, $table) = explode('.', $tableName);
-            $schema               = $this->quoteStringLiteral($schema);
-            $table                = $this->quoteStringLiteral($table);
+            list($schemaSQL, $tableSQL) = explode('.', $tableName);
+            $schemaSQL                  = $this->quoteStringLiteral($schemaSQL);
+            $tableSQL                   = $this->quoteStringLiteral($tableSQL);
         } else {
-            $schema = "'dbo'";
-            $table  = $this->quoteStringLiteral($tableName);
+            $schemaSQL = "'dbo'";
+            $tableSQL  = $this->quoteStringLiteral($tableName);
         }
 
         return $this->getUpdateExtendedPropertySQL(
             'MS_Description',
             $comment,
             'SCHEMA',
-            $schema,
+            $schemaSQL,
             'TABLE',
-            $table,
+            $tableSQL,
             'COLUMN',
             $columnName
         );
@@ -727,20 +727,20 @@ class SQLServerPlatform extends AbstractPlatform
     protected function getDropColumnCommentSQL($tableName, $columnName)
     {
         if (strpos($tableName, '.') !== false) {
-            list($schema, $table) = explode('.', $tableName);
-            $schema               = $this->quoteStringLiteral($schema);
-            $table                = $this->quoteStringLiteral($table);
+            list($schemaSQL, $tableSQL) = explode('.', $tableName);
+            $schemaSQL                  = $this->quoteStringLiteral($schemaSQL);
+            $tableSQL                   = $this->quoteStringLiteral($tableSQL);
         } else {
-            $schema = "'dbo'";
-            $table  = $this->quoteStringLiteral($tableName);
+            $schemaSQL = "'dbo'";
+            $tableSQL  = $this->quoteStringLiteral($tableName);
         }
 
         return $this->getDropExtendedPropertySQL(
             'MS_Description',
             'SCHEMA',
-            $schema,
+            $schemaSQL,
             'TABLE',
-            $table,
+            $tableSQL,
             'COLUMN',
             $columnName
         );

@@ -48,21 +48,14 @@ class SchemaManagerFunctionalTestCase extends \Doctrine\Tests\DbalFunctionalTest
     {
         parent::tearDown();
 
-        if ($this->getName() !== 'testTableInNamespace' || ! $this->_sm->getDatabasePlatform()->supportsSchemas()) {
-            return;
+        $this->_sm->tryMethod('dropTable', 'testschema.my_table_in_namespace');
+
+        //TODO: SchemaDiff does not drop removed namespaces?
+        try {
+            //sql server versions below 2016 do not support 'IF EXISTS' so we have to catch the exception here
+            $this->_conn->exec('DROP SCHEMA testschema');
+        } catch (\Exception $e) {
         }
-
-        $this->_sm->dropTable('testschema.my_table_in_namespace');
-
-        //TODO: SchemaDiff does not drop removed Namespaces?
-        $this->_conn->exec('DROP SCHEMA testschema');
-
-        //$diff                      = new SchemaDiff();
-        //$diff->removedNamespaces[] = 'testschema';
-
-        //foreach ($diff->toSql($this->_sm->getDatabasePlatform()) as $sql) {
-        //    $this->_conn->exec($sql);
-        //}
     }
 
 

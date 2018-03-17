@@ -3,6 +3,7 @@
 namespace Doctrine\Tests\DBAL\Functional\Schema;
 
 use Doctrine\Common\EventManager;
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Events;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Column;
@@ -54,7 +55,8 @@ class SchemaManagerFunctionalTestCase extends \Doctrine\Tests\DbalFunctionalTest
         try {
             //sql server versions below 2016 do not support 'IF EXISTS' so we have to catch the exception here
             $this->_conn->exec('DROP SCHEMA testschema');
-        } catch (\Exception $e) {
+        } catch (DBALException $e) {
+            return;
         }
     }
 

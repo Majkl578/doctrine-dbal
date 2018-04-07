@@ -4,7 +4,7 @@ platform:
 #matrix:
 #  fast_finish: true # kills the build at the first failure
 clone_folder: C:\projects\dbal
-clone_depth: 1
+clone_depth: 5
 
 cache:
   - C:\ProgramData\chocolatey\bin -> .appveyor.yml
@@ -112,6 +112,9 @@ before_test:
 
 test_script:
   - cd C:\projects\dbal
+  - ps: git remote -v
+  - ps: git rev-parse HEAD
+  - ps: git log --pretty="%P" -n1 HEAD
   - ps: >-
       if ($env:db_version) {
         $env:phpunit_config = "tests\appveyor\$($env:db).$($env:db_version).$($env:driver).appveyor.xml"
@@ -121,7 +124,7 @@ test_script:
   - ps: >-
       if ($env:coverage -eq "yes") {
         vendor\bin\phpunit -c $($env:phpunit_config) --coverage-clover clover.xml
-        php.exe ocular.phar code-coverage:upload --repository $($env:APPVEYOR_REPO_NAME) --revision $($env:APPVEYOR_REPO_COMMIT) --format=php-clover clover.xml
+        php.exe ocular.phar code-coverage:upload --format=php-clover clover.xml
       } else {
         vendor\bin\phpunit -c $($env:phpunit_config)
       }

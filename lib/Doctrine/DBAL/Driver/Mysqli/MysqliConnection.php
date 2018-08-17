@@ -80,7 +80,7 @@ class MysqliConnection implements Connection, PingableConnection, ServerInfoAwar
         $this->setSecureConnection($params);
         $this->setDriverOptions($driverOptions);
 
-        set_error_handler(function () {});
+        set_error_handler(static function () {});
         try {
             if ( ! $this->_conn->real_connect($params['host'], $username, $password, $dbname, $port, $socket, $flags)) {
                 throw new MysqliException($this->_conn->connect_error, $this->_conn->sqlstate ?? 'HY000', $this->_conn->connect_errno);

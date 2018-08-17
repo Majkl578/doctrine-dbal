@@ -99,7 +99,7 @@ class Driver extends AbstractSQLAnywhereDriver
             ';PWD=' . $password .
             ';' . implode(
                 ';',
-                array_map(function ($key, $value) {
+                array_map(static function ($key, $value) {
                     return $key . '=' . $value;
                 }, array_keys($driverOptions), $driverOptions)
             );

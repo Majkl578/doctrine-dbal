@@ -191,7 +191,7 @@ class SqliteSchemaManager extends AbstractSchemaManager
         $stmt = $this->_conn->executeQuery("PRAGMA TABLE_INFO ('$tableName')");
         $indexArray = $stmt->fetchAll(FetchMode::ASSOCIATIVE);
 
-        usort($indexArray, function($a, $b) {
+        usort($indexArray, static function ($a, $b) {
             if ($a['pk'] == $b['pk']) {
                 return $a['cid'] - $b['cid'];
             }

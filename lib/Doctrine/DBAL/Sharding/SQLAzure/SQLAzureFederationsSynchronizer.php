@@ -99,7 +99,7 @@ class SQLAzureFederationsSynchronizer extends AbstractSchemaSynchronizer
      */
     public function getUpdateSchema(Schema $toSchema, $noDrops = false)
     {
-        return $this->work($toSchema, function ($synchronizer, $schema) use ($noDrops) {
+        return $this->work($toSchema, static function ($synchronizer, $schema) use ($noDrops) {
             return $synchronizer->getUpdateSchema($schema, $noDrops);
         });
     }
@@ -109,7 +109,7 @@ class SQLAzureFederationsSynchronizer extends AbstractSchemaSynchronizer
      */
     public function getDropSchema(Schema $dropSchema)
     {
-        return $this->work($dropSchema, function ($synchronizer, $schema) {
+        return $this->work($dropSchema, static function ($synchronizer, $schema) {
             return $synchronizer->getDropSchema($schema);
         });
     }

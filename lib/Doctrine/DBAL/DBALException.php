@@ -197,7 +197,7 @@ class DBALException extends \Exception
      */
     private static function formatParameters(array $params)
     {
-        return '[' . implode(', ', array_map(function ($param) {
+        return '[' . implode(', ', array_map(static function ($param) {
             if (is_resource($param)) {
                 return (string) $param;
             }

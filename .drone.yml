@@ -6,7 +6,7 @@ steps:
   group: bootstrap
   image: docker:18
   privileged: true
-    volume:
+  volume:
       - /var/run/docker.sock:/var/run/docker.sock
   commands:
     - sleep 10

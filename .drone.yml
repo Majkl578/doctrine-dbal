@@ -1,0 +1,160 @@
+kind: pipeline
+name: default
+
+steps:
+- name: Bootstrap DB2
+  group: bootstrap
+  image: docker:18
+  privileged: true
+    volume:
+      - /var/run/docker.sock:/var/run/docker.sock
+  commands:
+    - sleep 10
+    - docker exec db2 su - db2inst1 -c 'db2 CREATE DB doctrine && db2 CONNECT TO doctrine && db2 CREATE USER TEMPORARY TABLESPACE doctrine_tbsp PAGESIZE 4 K'
+- name: Bootstrap PostgreSQL
+  group: bootstrap
+  image: postgres:10
+  commands:
+    -|
+      for db in postgres-9.2 postgres-9.3 postgres-9.4 postgres-9.5 postgres-9.6 postgres-10 postgres-11; do
+        while ! pg_isready -d "postgresql://test:test@$db/test" > /dev/null; do
+          echo waiting for $db
+        done
+      done
+- name: Bootstrap MySQL
+  group: bootstrap
+  image: mysql:5.7
+  commands:
+    -|
+      for db in mysql-5.5 mysql-5.7 mysql-8.0 mariadb-5.5 mariadb-10.1 mariadb-10.2 mariadb-10.3; do
+        while ! mysql -h $db -u test -ptest -e "SHOW DATABASES;" > /dev/null; do
+          echo Waiting for $db
+        done
+      done
+- name: Bootstrap MSSQL
+  group: bootstrap
+  image: microsoft/mssql-server-linux:2017-latest
+  commands:
+    -|
+      for db in mssql-2017; do
+        retries=15
+        until (echo quit | /opt/mssql-tools/bin/sqlcmd -S mssql-2017 -l 1 -U sa -P Doctrine2018 &> /dev/null)
+        do
+          if [[ "$retries" -eq 0 ]]; then
+            echo SQL Server failed to start
+            exit 1
+          fi
+
+          retries=$((retries - 1))
+
+          echo Waiting for $db...
+          sleep 1
+        done
+      done
+- name: Test SQLite (PHP 7.2, no coverage)
+  group: test
+  image: php:7.2-cli-stretch
+  commands:
+    - composer install
+    - vendor/bin/phpunit -c tests/travis/sqlite.travis.xml
+- name: Lint (Coding Standards)
+  group: test
+  image: php:7.2-cli-stretch
+  commands:
+    - composer install
+    - vendor/bin/phpcs
+- name: Lint (PHPStan)
+  group: test
+  image: php:7.2-cli-stretch
+  commands:
+    - composer install
+    - vendor/bin/phpstan analyse
+
+services:
+- name: mysql-5.5
+  image: mysql:5.5
+  environment:
+    MYSQL_USER: test
+    MYSQL_PASSWORD: test
+- name: mysql-5.7
+  image: mysql:5.7
+  environment:
+    MYSQL_USER: test
+    MYSQL_PASSWORD: test
+- name: mysql-8.0
+  image: mysql:8.0
+  environment:
+    MYSQL_USER: test
+    MYSQL_PASSWORD: test
+- name: mariadb-5.5
+  image: mariadb:5.5
+  environment:
+    MYSQL_USER: test
+    MYSQL_PASSWORD: test
+- name: mariadb-10.1
+  image: mariadb:10.1
+  environment:
+    MYSQL_USER: test
+    MYSQL_PASSWORD: test
+- name: mariadb-10.2
+  image: mariadb:10.2
+  environment:
+    MYSQL_USER: test
+    MYSQL_PASSWORD: test
+- name: mariadb-10.3
+  image: mariadb:10.3
+  environment:
+    MYSQL_USER: test
+    MYSQL_PASSWORD: test
+- name: posttgres-9.2
+  image: postgres:9.2
+  pull: always
+  environment:
+    POSTGRES_USER: test
+    POSTGRES_PASSWORD: test
+- name: posttgres-9.3
+  image: postgres:9.3
+  pull: always
+  environment:
+    POSTGRES_USER: test
+    POSTGRES_PASSWORD: test
+- name: posttgres-9.4
+  image: postgres:9.4
+  pull: always
+  environment:
+    POSTGRES_USER: test
+    POSTGRES_PASSWORD: test
+- name: posttgres-9.5
+  image: postgres:9.5
+  pull: always
+  environment:
+    POSTGRES_USER: test
+    POSTGRES_PASSWORD: test
+- name: posttgres-9.6
+  image: postgres:9.6
+  pull: always
+  environment:
+    POSTGRES_USER: test
+    POSTGRES_PASSWORD: test
+- name: posttgres-10
+  image: postgres:10
+  pull: always
+  environment:
+    POSTGRES_USER: test
+    POSTGRES_PASSWORD: test
+- name: posttgres-11
+  image: postgres:11
+  pull: always
+  environment:
+    POSTGRES_USER: test
+    POSTGRES_PASSWORD: test
+- name: db2
+  image: ibmcom/db2express-c:10.5.0.5-3.10.0
+  DB2INST1_PASSWORD: Doctrine2018
+  LICENSE: accept
+  entrypoint: [ db2start ]
+- name: mssql-2017
+  image: microsoft/mssql-server-linux:2017-latest
+  environment:
+    - ACCEPT_EULA: y
+    - SA_PASSWORD: Doctrine2018

@@ -15,7 +15,7 @@ steps:
   group: bootstrap
   image: postgres:10
   commands:
-    -|
+    - |
       for db in postgres-9.2 postgres-9.3 postgres-9.4 postgres-9.5 postgres-9.6 postgres-10 postgres-11; do
         while ! pg_isready -d "postgresql://test:test@$db/test" > /dev/null; do
           echo waiting for $db
@@ -25,7 +25,7 @@ steps:
   group: bootstrap
   image: mysql:5.7
   commands:
-    -|
+    - |
       for db in mysql-5.5 mysql-5.7 mysql-8.0 mariadb-5.5 mariadb-10.1 mariadb-10.2 mariadb-10.3; do
         while ! mysql -h $db -u test -ptest -e "SHOW DATABASES;" > /dev/null; do
           echo Waiting for $db
@@ -35,7 +35,7 @@ steps:
   group: bootstrap
   image: microsoft/mssql-server-linux:2017-latest
   commands:
-    -|
+    - |
       for db in mssql-2017; do
         retries=15
         until (echo quit | /opt/mssql-tools/bin/sqlcmd -S mssql-2017 -l 1 -U sa -P Doctrine2018 &> /dev/null)

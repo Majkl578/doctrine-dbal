@@ -74,13 +74,13 @@ services:
 - name: mysql-5.5
   image: mysql:5.5
   environment:
-    MYSQL_USER: test
-    MYSQL_PASSWORD: test
+    - MYSQL_USER: test
+    - MYSQL_PASSWORD: test
 - name: mysql-5.7
   image: mysql:5.7
   environment:
-    MYSQL_USER: test
-    MYSQL_PASSWORD: test
+    - MYSQL_USER: test
+    - MYSQL_PASSWORD: test
 - name: mysql-8.0
   image: mysql:8.0
   environment:
@@ -89,65 +89,65 @@ services:
 - name: mariadb-5.5
   image: mariadb:5.5
   environment:
-    MYSQL_USER: test
-    MYSQL_PASSWORD: test
+    - MYSQL_USER: test
+    - MYSQL_PASSWORD: test
 - name: mariadb-10.1
   image: mariadb:10.1
   environment:
-    MYSQL_USER: test
-    MYSQL_PASSWORD: test
+    - MYSQL_USER: test
+    - MYSQL_PASSWORD: test
 - name: mariadb-10.2
   image: mariadb:10.2
   environment:
-    MYSQL_USER: test
-    MYSQL_PASSWORD: test
+    - MYSQL_USER: test
+    - MYSQL_PASSWORD: test
 - name: mariadb-10.3
   image: mariadb:10.3
   environment:
-    MYSQL_USER: test
-    MYSQL_PASSWORD: test
+    - MYSQL_USER: test
+    - MYSQL_PASSWORD: test
 - name: posttgres-9.2
   image: postgres:9.2
   pull: always
   environment:
-    POSTGRES_USER: test
-    POSTGRES_PASSWORD: test
+    - POSTGRES_USER: test
+    - POSTGRES_PASSWORD: test
 - name: posttgres-9.3
   image: postgres:9.3
   pull: always
   environment:
-    POSTGRES_USER: test
-    POSTGRES_PASSWORD: test
+    - POSTGRES_USER: test
+    - POSTGRES_PASSWORD: test
 - name: posttgres-9.4
   image: postgres:9.4
   pull: always
   environment:
-    POSTGRES_USER: test
-    POSTGRES_PASSWORD: test
+    - POSTGRES_USER: test
+    - POSTGRES_PASSWORD: test
 - name: posttgres-9.5
   image: postgres:9.5
   pull: always
   environment:
-    POSTGRES_USER: test
-    POSTGRES_PASSWORD: test
+    - POSTGRES_USER: test
+    - POSTGRES_PASSWORD: test
 - name: posttgres-9.6
   image: postgres:9.6
   pull: always
   environment:
-    POSTGRES_USER: test
-    POSTGRES_PASSWORD: test
+    - POSTGRES_USER: test
+    - POSTGRES_PASSWORD: test
 - name: posttgres-10
   image: postgres:10
   pull: always
   environment:
-    POSTGRES_USER: test
-    POSTGRES_PASSWORD: test
+    - POSTGRES_USER: test
+    - POSTGRES_PASSWORD: test
 - name: posttgres-11
   image: postgres:11
   pull: always
   environment:
-    POSTGRES_USER: test
-    POSTGRES_PASSWORD: test
+    - POSTGRES_USER: test
+    - POSTGRES_PASSWORD: test
 - name: db2
   image: ibmcom/db2express-c:10.5.0.5-3.10.0
   DB2INST1_PASSWORD: Doctrine2018

@@ -6,14 +6,11 @@ steps:
   group: bootstrap
   image: ibmcom/db2express-c:10.5.0.5-3.10.0
   commands:
-    - su - db2inst1
-    - whoami
-    - which db2cli
     - echo SELECT 1 > /tmp/test.sql
     - echo -e 'CREATE DB doctrine;\nCONNECT TO doctrine;\nCREATE USER TEMPORARY TABLESPACE doctrine_tbsp PAGESIZE 4 K;\n' > /tmp/init.sql
     - |
       retries=30
-      until db2cli execsql -execute -inputsql /tmp/test.sql -connstring 'HOSTNAME=db2;UID=db2inst1;PWD=Doctrine2018;DATABASE=DB2INST1' #&> /dev/null
+      until su - db2inst1 -c "db2cli execsql -execute -inputsql /tmp/test.sql -connstring 'HOSTNAME=db2;UID=db2inst1;PWD=Doctrine2018;DATABASE=DB2INST1'" #&> /dev/null
       do
         if [[ "$retries" -eq 0 ]]; then
           echo SQL Anywhere failed to start
@@ -25,7 +22,7 @@ steps:
         echo Waiting for SQL Anywhere...
         sleep 1
       done
-    - db2cli execsql -execute -inputsql /tmp/init.sql -connstring 'HOSTNAME=db2;UID=db2inst1;PWD=Doctrine2018;DATABASE=DB2INST1'
+    - su - db2inst1 -c "db2cli execsql -execute -inputsql /tmp/init.sql -connstring 'HOSTNAME=db2;UID=db2inst1;PWD=Doctrine2018;DATABASE=DB2INST1'"
 - name: Bootstrap PostgreSQL
   group: bootstrap
   image: postgres:10

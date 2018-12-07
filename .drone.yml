@@ -10,17 +10,19 @@ steps:
     - su - db2inst1 -c 'db2 catalog database TEST AS TESTDB at node remote1'
     - |
       retries=90
-      until su - db2inst1 -c 'db2 CONNECT TO TESTDB USER db2inst1 USING OpenSource123'
+      until su - db2inst1 -c 'db2 CONNECT TO TESTDB USER db2inst1 USING OpenSource123' &> /dev/null
       do
         if [[ "$retries" -eq 0 ]]; then
-          echo DB2 failed to start
+          echo DB2 instance failed to start.
           exit 1
         fi
 
         retries=$((retries - 1))
 
-        echo Waiting for DB2...
+        echo Waiting for DB2 instance...
         sleep 1
+        
+        echo DB2 instance ready.
       done
 - name: Bootstrap PostgreSQL
   group: bootstrap
@@ -32,15 +34,17 @@ steps:
         until pg_isready -d "postgresql://test:test@$db/test" > /dev/null
         do
           if [[ "$retries" -eq 0 ]]; then
-            echo PostgreSQL failed to start
+            echo PostgreSQL instance $db failed to start.
             exit 1
           fi
 
           retries=$((retries - 1))
 
-          echo Waiting for PostgreSQL...
+          echo Waiting for PostgreSQL instance $db...
           sleep 1
         done
+        
+        echo PostgreSQL instance $db ready.
       done
 - name: Bootstrap MySQL
   group: bootstrap
@@ -52,15 +56,17 @@ steps:
         until mysql -h $db -u test -ptest -e "SHOW DATABASES;" > /dev/null
         do
           if [[ "$retries" -eq 0 ]]; then
-            echo MySQL failed to start
+            echo MySQL instance $db failed to start.
             exit 1
           fi
 
           retries=$((retries - 1))
 
-          echo Waiting for MySQL...
+          echo Waiting for MySQL instance $db...
           sleep 1
         done
+        
+        echo MySQL instance $db ready.
       done
 - name: Bootstrap MariaDB
   group: bootstrap
@@ -72,15 +78,17 @@ steps:
         until mysql -h $db -u test -ptest -e "SHOW DATABASES;" > /dev/null
         do
           if [[ "$retries" -eq 0 ]]; then
-            echo MariaDB failed to start
+            echo MariaDB instance $db failed to start.
             exit 1
           fi
 
           retries=$((retries - 1))
 
-          echo Waiting for MariaDB...
+          echo Waiting for MariaDB instance $db...
           sleep 1
         done
+        
+        echo MariaDB instance $db ready.
       done
 - name: Bootstrap MSSQL
   group: bootstrap
@@ -92,26 +100,20 @@ steps:
         until (echo quit | /opt/mssql-tools/bin/sqlcmd -S mssql-2017 -l 1 -U sa -P Doctrine2018 &> /dev/null)
         do
           if [[ "$retries" -eq 0 ]]; then
-            echo SQL Server failed to start
+            echo SQL Server instance $db failed to start.
             exit 1
           fi
 
           retries=$((retries - 1))
 
-          echo Waiting for $db...
+          echo Waiting for SQL Server instance $db...
           sleep 1
         done
+        
+        echo SQL Server instance $db started.
       done
-- name: Test SQLite (PHP 7.2, no coverage)
-  group: test
-  image: php:7.2-cli-stretch
-  commands:
-    - apt-get update && apt-get install unzip
-    - curl -sSL https://getcomposer.org/composer.phar > /usr/local/bin/composer
-    - chmod +x /usr/local/bin/composer
-    - composer install --prefer-dist
-    - vendor/bin/phpunit -c tests/travis/sqlite.travis.xml
-- name: Lint (Coding Standards)
+
+- name: Lint (Coding Standards, PHP 7.2)
   group: test
   image: php:7.2-cli-stretch
   commands:
@@ -120,7 +122,16 @@ steps:
     - chmod +x /usr/local/bin/composer
     - composer install --prefer-dist
     - vendor/bin/phpcs
-- name: Lint (PHPStan)
+- name: Lint (PHPStan, PHP 7.2)
+  group: test
+  image: php:7.3-rc-cli-stretch
+  commands:
+    - apt-get update && apt-get install unzip
+    - curl -sSL https://getcomposer.org/composer.phar > /usr/local/bin/composer
+    - chmod +x /usr/local/bin/composer
+    - composer install --prefer-dist
+    - vendor/bin/phpstan analyse
+- name: Test SQLite (PHP 7.1, no coverage)
   group: test
   image: php:7.2-cli-stretch
   commands:
@@ -128,7 +139,16 @@ steps:
     - curl -sSL https://getcomposer.org/composer.phar > /usr/local/bin/composer
     - chmod +x /usr/local/bin/composer
     - composer install --prefer-dist
-    - vendor/bin/phpstan analyse
+    - vendor/bin/phpunit -c tests/travis/sqlite.travis.xml
+- name: Test SQLite (PHP 7.3, no coverage)
+  group: test
+  image: php:7.3-rc-cli-stretch
+  commands:
+    - apt-get update && apt-get install unzip
+    - curl -sSL https://getcomposer.org/composer.phar > /usr/local/bin/composer
+    - chmod +x /usr/local/bin/composer
+    - composer install --prefer-dist
+    - vendor/bin/phpunit -c tests/travis/sqlite.travis.xml
 
 services:
 - name: mysql-5.5

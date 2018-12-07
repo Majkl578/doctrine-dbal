@@ -10,7 +10,7 @@ steps:
     - echo -e 'CREATE DB doctrine;\nCONNECT TO doctrine;\nCREATE USER TEMPORARY TABLESPACE doctrine_tbsp PAGESIZE 4 K;\n' > /tmp/init.sql
     - |
       retries=30
-      until db2cli execsql -execute -inputsql /tmp/test.sql -connstring 'HOSTNAME=db2;UID=db2inst1;PWD=Doctrine2018;DATABASE=DB2INST1' &> /dev/null
+      until db2cli execsql -execute -inputsql /tmp/test.sql -connstring 'HOSTNAME=db2;UID=db2inst1;PWD=Doctrine2018;DATABASE=DB2INST1' #&> /dev/null
       do
         if [[ "$retries" -eq 0 ]]; then
           echo SQL Anywhere failed to start

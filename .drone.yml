@@ -48,7 +48,7 @@ steps:
   image: mysql:5.7
   commands:
     - |
-      for db in mysql-5.5 mysql-5.7 mysql-8.0
+      for db in mysql-5.5 mysql-5.7 mysql-8.0; do
         retries=15
         until mysql -h $db -u test -ptest -e "SHOW DATABASES;" > /dev/null
         do

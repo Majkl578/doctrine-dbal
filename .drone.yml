@@ -7,7 +7,7 @@ steps:
   image: majkl578/db2-test
   commands:
     - su - db2inst1 -c "db2 catalog tcpip node remote1 remote `getent hosts db2 | cut -d' ' -f1` server 50000"
-    - su - db2inst1 -c 'db2 catalog database TESTDB at node remote1'
+    - su - db2inst1 -c 'db2 catalog database TEST AS TESTDB at node remote1'
     - |
       retries=90
       until su - db2inst1 -c 'db2 CONNECT TO TESTDB USER db2inst1 USING OpenSource123'

@@ -107,7 +107,7 @@ steps:
   group: test
   image: php:7.2-cli-stretch
   commands:
-    - curl -sSL -O /usr/local/bin/composer https://getcomposer.org/composer.phar
+    - curl -sSL https://getcomposer.org/composer.phar > /usr/local/bin/composer
     - chmod +x /usr/local/bin/composer
     - composer install
     - vendor/bin/phpunit -c tests/travis/sqlite.travis.xml
@@ -115,7 +115,7 @@ steps:
   group: test
   image: php:7.2-cli-stretch
   commands:
-    - curl -sSL -O /usr/local/bin/composer https://getcomposer.org/composer.phar
+    - curl -sSL https://getcomposer.org/composer.phar > /usr/local/bin/composer
     - chmod +x /usr/local/bin/composer
     - composer install
     - vendor/bin/phpcs
@@ -123,7 +123,7 @@ steps:
   group: test
   image: php:7.2-cli-stretch
   commands:
-    - curl -sSL -O /usr/local/bin/composer https://getcomposer.org/composer.phar
+    - curl -sSL https://getcomposer.org/composer.phar > /usr/local/bin/composer
     - chmod +x /usr/local/bin/composer
     - composer install
     - vendor/bin/phpstan analyse

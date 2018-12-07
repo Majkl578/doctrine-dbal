@@ -109,7 +109,7 @@ steps:
   commands:
     - curl -sSL https://getcomposer.org/composer.phar > /usr/local/bin/composer
     - chmod +x /usr/local/bin/composer
-    - composer install
+    - composer install --prefer-dist
     - vendor/bin/phpunit -c tests/travis/sqlite.travis.xml
 - name: Lint (Coding Standards)
   group: test
@@ -117,7 +117,7 @@ steps:
   commands:
     - curl -sSL https://getcomposer.org/composer.phar > /usr/local/bin/composer
     - chmod +x /usr/local/bin/composer
-    - composer install
+    - composer install --prefer-dist
     - vendor/bin/phpcs
 - name: Lint (PHPStan)
   group: test
@@ -125,7 +125,7 @@ steps:
   commands:
     - curl -sSL https://getcomposer.org/composer.phar > /usr/local/bin/composer
     - chmod +x /usr/local/bin/composer
-    - composer install
+    - composer install --prefer-dist
     - vendor/bin/phpstan analyse
 
 services:

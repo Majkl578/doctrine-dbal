@@ -6,7 +6,7 @@ steps:
   group: bootstrap
   image: majkl578/db2-test
   commands:
-    - db2 CONNECT TO test
+    - su - db2inst1 -c "db2 CONNECT TO test"
     - |
       retries=30
       until su - db2inst1 -c "db2 SELECT 1;" #&> /dev/null

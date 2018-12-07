@@ -5,6 +5,8 @@ steps:
 - name: Bootstrap DB2
   group: bootstrap
   image: majkl578/db2-test
+  environment:
+    DB2INST1_PASSWORD: OpenSource123
   commands:
     - |
       retries=30

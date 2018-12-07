@@ -21,9 +21,9 @@ steps:
 
         echo Waiting for DB2 instance...
         sleep 1
-        
-        echo DB2 instance ready.
       done
+
+      echo DB2 instance ready.
 - name: Bootstrap PostgreSQL
   group: bootstrap
   image: postgres:10

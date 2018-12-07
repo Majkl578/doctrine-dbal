@@ -29,8 +29,18 @@ steps:
   commands:
     - |
       for db in postgres-9.2 postgres-9.3 postgres-9.4 postgres-9.5 postgres-9.6 postgres-10 postgres-11; do
-        while ! pg_isready -d "postgresql://test:test@$db/test" > /dev/null; do
-          echo waiting for $db
+        retries=15
+        until pg_isready -d "postgresql://test:test@$db/test" > /dev/null
+        do
+          if [[ "$retries" -eq 0 ]]; then
+            echo PostgreSQL failed to start
+            exit 1
+          fi
+
+          retries=$((retries - 1))
+
+          echo Waiting for PostgreSQL...
+          sleep 1
         done
       done
 - name: Bootstrap MySQL
@@ -38,9 +48,39 @@ steps:
   image: mysql:5.7
   commands:
     - |
-      for db in mysql-5.5 mysql-5.7 mysql-8.0 mariadb-5.5 mariadb-10.1 mariadb-10.2 mariadb-10.3; do
-        while ! mysql -h $db -u test -ptest -e "SHOW DATABASES;" > /dev/null; do
-          echo Waiting for $db
+      for db in mysql-5.5 mysql-5.7 mysql-8.0
+        retries=15
+        until mysql -h $db -u test -ptest -e "SHOW DATABASES;" > /dev/null
+        do
+          if [[ "$retries" -eq 0 ]]; then
+            echo MySQL failed to start
+            exit 1
+          fi
+
+          retries=$((retries - 1))
+
+          echo Waiting for MySQL...
+          sleep 1
+        done
+      done
+- name: Bootstrap MariaDB
+  group: bootstrap
+  image: mariadb:10.3
+  commands:
+    - |
+      for db in mariadb-5.5 mariadb-10.1 mariadb-10.2 mariadb-10.3; do
+        retries=15
+        until mysql -h $db -u test -ptest -e "SHOW DATABASES;" > /dev/null
+        do
+          if [[ "$retries" -eq 0 ]]; then
+            echo MariaDB failed to start
+            exit 1
+          fi
+
+          retries=$((retries - 1))
+
+          echo Waiting for MariaDB...
+          sleep 1
         done
       done
 - name: Bootstrap MSSQL
@@ -125,43 +165,43 @@ services:
     MYSQL_USER: test
     MYSQL_PASSWORD: test
     MYSQL_RANDOM_ROOT_PASSWORD: yes
-- name: posttgres-9.2
+- name: postgres-9.2
   image: postgres:9.2
   pull: always
   environment:
     POSTGRES_USER: test
     POSTGRES_PASSWORD: test
-- name: posttgres-9.3
+- name: postgres-9.3
   image: postgres:9.3
   pull: always
   environment:
     POSTGRES_USER: test
     POSTGRES_PASSWORD: test
-- name: posttgres-9.4
+- name: postgres-9.4
   image: postgres:9.4
   pull: always
   environment:
     POSTGRES_USER: test
     POSTGRES_PASSWORD: test
-- name: posttgres-9.5
+- name: postgres-9.5
   image: postgres:9.5
   pull: always
   environment:
     POSTGRES_USER: test
     POSTGRES_PASSWORD: test
-- name: posttgres-9.6
+- name: postgres-9.6
   image: postgres:9.6
   pull: always
   environment:
     POSTGRES_USER: test
     POSTGRES_PASSWORD: test
-- name: posttgres-10
+- name: postgres-10
   image: postgres:10
   pull: always
   environment:
     POSTGRES_USER: test
     POSTGRES_PASSWORD: test
-- name: posttgres-11
+- name: postgres-11
   image: postgres:11
   pull: always
   environment:

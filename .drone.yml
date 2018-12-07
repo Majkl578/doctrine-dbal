@@ -4,13 +4,25 @@ name: default
 steps:
 - name: Bootstrap DB2
   group: bootstrap
-  image: docker:18
-  privileged: true
-  volume:
-      - /var/run/docker.sock:/var/run/docker.sock
+  image: ibmcom/db2express-c:10.5.0.5-3.10.0
   commands:
-    - sleep 10
-    - docker exec db2 su - db2inst1 -c 'db2 CREATE DB doctrine && db2 CONNECT TO doctrine && db2 CREATE USER TEMPORARY TABLESPACE doctrine_tbsp PAGESIZE 4 K'
+    - echo SELECT 1 > /tmp/test.sql
+    - echo -e 'CREATE DB doctrine;\nCONNECT TO doctrine;\nCREATE USER TEMPORARY TABLESPACE doctrine_tbsp PAGESIZE 4 K;\n' > /tmp/init.sql
+    - |
+      retries=15
+      until db2cli execsql -execute -inputsql /tmp/test.sql -connstring 'HOSTNAME=db2;UID=db2inst1;PWD=Doctrine2018' &> /dev/null
+      do
+        if [[ "$retries" -eq 0 ]]; then
+          echo SQL Anywhere failed to start
+          exit 1
+        fi
+
+        retries=$((retries - 1))
+
+        echo Waiting for SQL Anywhere...
+        sleep 1
+      done
+    - db2cli execsql -execute -inputsql /tmp/init.sql -connstring 'HOSTNAME=db2;UID=db2inst1;PWD=Doctrine2018'
 - name: Bootstrap PostgreSQL
   group: bootstrap
   image: postgres:10
@@ -74,13 +86,13 @@ services:
 - name: mysql-5.5
   image: mysql:5.5
   environment:
-    - MYSQL_USER: test
-    - MYSQL_PASSWORD: test
+    MYSQL_USER: test
+    MYSQL_PASSWORD: test
 - name: mysql-5.7
   image: mysql:5.7
   environment:
-    - MYSQL_USER: test
-    - MYSQL_PASSWORD: test
+    MYSQL_USER: test
+    MYSQL_PASSWORD: test
 - name: mysql-8.0
   image: mysql:8.0
   environment:
@@ -89,13 +101,13 @@ services:
 - name: mariadb-5.5
   image: mariadb:5.5
   environment:
-    - MYSQL_USER: test
-    - MYSQL_PASSWORD: test
+    MYSQL_USER: test
+    MYSQL_PASSWORD: test
 - name: mariadb-10.1
   image: mariadb:10.1
   environment:
-    - MYSQL_USER: test
-    - MYSQL_PASSWORD: test
+    MYSQL_USER: test
+    MYSQL_PASSWORD: test
 - name: mariadb-10.2
   image: mariadb:10.2
   environment:
@@ -104,57 +116,63 @@ services:
 - name: mariadb-10.3
   image: mariadb:10.3
   environment:
-    - MYSQL_USER: test
-    - MYSQL_PASSWORD: test
+    MYSQL_USER: test
+    MYSQL_PASSWORD: test
 - name: posttgres-9.2
   image: postgres:9.2
   pull: always
   environment:
-    - POSTGRES_USER: test
-    - POSTGRES_PASSWORD: test
+    POSTGRES_USER: test
+    POSTGRES_PASSWORD: test
 - name: posttgres-9.3
   image: postgres:9.3
   pull: always
   environment:
-    - POSTGRES_USER: test
-    - POSTGRES_PASSWORD: test
+    POSTGRES_USER: test
+    POSTGRES_PASSWORD: test
 - name: posttgres-9.4
   image: postgres:9.4
   pull: always
   environment:
-    - POSTGRES_USER: test
-    - POSTGRES_PASSWORD: test
+    POSTGRES_USER: test
+    POSTGRES_PASSWORD: test
 - name: posttgres-9.5
   image: postgres:9.5
   pull: always
   environment:
-    - POSTGRES_USER: test
-    - POSTGRES_PASSWORD: test
+    POSTGRES_USER: test
+    POSTGRES_PASSWORD: test
 - name: posttgres-9.6
   image: postgres:9.6
   pull: always
   environment:
-    - POSTGRES_USER: test
-    - POSTGRES_PASSWORD: test
+    POSTGRES_USER: test
+    POSTGRES_PASSWORD: test
 - name: posttgres-10
   image: postgres:10
   pull: always
   environment:
-    - POSTGRES_USER: test
-    - POSTGRES_PASSWORD: test
+    POSTGRES_USER: test
+    POSTGRES_PASSWORD: test
 - name: posttgres-11
   image: postgres:11
   pull: always
   environment:
-    - POSTGRES_USER: test
-    - POSTGRES_PASSWORD: test
+    POSTGRES_USER: test
+    POSTGRES_PASSWORD: test
 - name: db2
   image: ibmcom/db2express-c:10.5.0.5-3.10.0
-  DB2INST1_PASSWORD: Doctrine2018
-  LICENSE: accept
   entrypoint: [ db2start ]
+  environment:
+    DB2INST1_PASSWORD: Doctrine2018
+    LICENSE: accept
 - name: mssql-2017
   image: microsoft/mssql-server-linux:2017-latest
   environment:
-    - ACCEPT_EULA: y
-    - SA_PASSWORD: Doctrine2018
+    ACCEPT_EULA: y
+    SA_PASSWORD: Doctrine2018
+
+volumes:
+- name: docker
+  host:
+    path: /var/run/docker.sock

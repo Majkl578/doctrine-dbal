@@ -171,8 +171,3 @@ services:
   environment:
     ACCEPT_EULA: y
     SA_PASSWORD: Doctrine2018
-
-volumes:
-- name: docker
-  host:
-    path: /var/run/docker.sock

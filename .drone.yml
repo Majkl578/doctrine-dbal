@@ -5,8 +5,8 @@ steps:
 - name: Bootstrap DB2
   group: bootstrap
   image: ibmcom/db2express-c:10.5.0.5-3.10.0
-  command: [ bash ]
   commands:
+    - su - db2inst1
     - echo SELECT 1 > /tmp/test.sql
     - echo -e 'CREATE DB doctrine;\nCONNECT TO doctrine;\nCREATE USER TEMPORARY TABLESPACE doctrine_tbsp PAGESIZE 4 K;\n' > /tmp/init.sql
     - |

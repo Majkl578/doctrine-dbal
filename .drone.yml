@@ -107,6 +107,7 @@ steps:
   group: test
   image: php:7.2-cli-stretch
   commands:
+    - apt-get update && apt-get install unzip
     - curl -sSL https://getcomposer.org/composer.phar > /usr/local/bin/composer
     - chmod +x /usr/local/bin/composer
     - composer install --prefer-dist
@@ -115,6 +116,7 @@ steps:
   group: test
   image: php:7.2-cli-stretch
   commands:
+    - apt-get update && apt-get install unzip
     - curl -sSL https://getcomposer.org/composer.phar > /usr/local/bin/composer
     - chmod +x /usr/local/bin/composer
     - composer install --prefer-dist
@@ -123,6 +125,7 @@ steps:
   group: test
   image: php:7.2-cli-stretch
   commands:
+    - apt-get update && apt-get install unzip
     - curl -sSL https://getcomposer.org/composer.phar > /usr/local/bin/composer
     - chmod +x /usr/local/bin/composer
     - composer install --prefer-dist

@@ -107,18 +107,24 @@ steps:
   group: test
   image: php:7.2-cli-stretch
   commands:
+    - curl -sSL https://getcomposer.org/composer.phar -O /usr/local/bin/composer
+    - chmod +x /usr/local/bin/composer
     - composer install
     - vendor/bin/phpunit -c tests/travis/sqlite.travis.xml
 - name: Lint (Coding Standards)
   group: test
   image: php:7.2-cli-stretch
   commands:
+    - curl -sSL https://getcomposer.org/composer.phar -O /usr/local/bin/composer
+    - chmod +x /usr/local/bin/composer
     - composer install
     - vendor/bin/phpcs
 - name: Lint (PHPStan)
   group: test
   image: php:7.2-cli-stretch
   commands:
+    - curl -sSL https://getcomposer.org/composer.phar -O /usr/local/bin/composer
+    - chmod +x /usr/local/bin/composer
     - composer install
     - vendor/bin/phpstan analyse
 

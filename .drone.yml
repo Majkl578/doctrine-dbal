@@ -2,27 +2,27 @@ kind: pipeline
 name: default
 
 steps:
-- name: Bootstrap DB2
-  group: bootstrap
-  image: ibmcom/db2express-c:10.5.0.5-3.10.0
-  commands:
-    - echo SELECT 1 > /tmp/test.sql
-    - echo -e 'CREATE DB doctrine;\nCONNECT TO doctrine;\nCREATE USER TEMPORARY TABLESPACE doctrine_tbsp PAGESIZE 4 K;\n' > /tmp/init.sql
-    - |
-      retries=15
-      until db2cli execsql -execute -inputsql /tmp/test.sql -connstring 'HOSTNAME=db2;UID=db2inst1;PWD=Doctrine2018' &> /dev/null
-      do
-        if [[ "$retries" -eq 0 ]]; then
-          echo SQL Anywhere failed to start
-          exit 1
-        fi
-
-        retries=$((retries - 1))
-
-        echo Waiting for SQL Anywhere...
-        sleep 1
-      done
-    - db2cli execsql -execute -inputsql /tmp/init.sql -connstring 'HOSTNAME=db2;UID=db2inst1;PWD=Doctrine2018'
+#- name: Bootstrap DB2
+#  group: bootstrap
+#  image: ibmcom/db2express-c:10.5.0.5-3.10.0
+#  commands:
+#    - echo SELECT 1 > /tmp/test.sql
+#    - echo -e 'CREATE DB doctrine;\nCONNECT TO doctrine;\nCREATE USER TEMPORARY TABLESPACE doctrine_tbsp PAGESIZE 4 K;\n' > /tmp/init.sql
+#    - |
+#      retries=15
+#      until db2cli execsql -execute -inputsql /tmp/test.sql -connstring 'HOSTNAME=db2;UID=db2inst1;PWD=Doctrine2018' &> /dev/null
+#      do
+#        if [[ "$retries" -eq 0 ]]; then
+#          echo SQL Anywhere failed to start
+#          exit 1
+#        fi
+#
+#        retries=$((retries - 1))
+#
+#        echo Waiting for SQL Anywhere...
+#        sleep 1
+#      done
+#    - db2cli execsql -execute -inputsql /tmp/init.sql -connstring 'HOSTNAME=db2;UID=db2inst1;PWD=Doctrine2018'
 - name: Bootstrap PostgreSQL
   group: bootstrap
   image: postgres:10

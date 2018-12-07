@@ -111,8 +111,8 @@ services:
 - name: mariadb-10.2
   image: mariadb:10.2
   environment:
-    - MYSQL_USER: test
-    - MYSQL_PASSWORD: test
+    MYSQL_USER: test
+    MYSQL_PASSWORD: test
 - name: mariadb-10.3
   image: mariadb:10.3
   environment:
